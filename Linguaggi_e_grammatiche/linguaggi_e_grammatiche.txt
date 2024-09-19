@@ -1,0 +1,9 @@
+Che cos'è un linguaggio?
+    - insieme FINITO di parole
+    - metodi di combinazione di parole
+    - compreso da comunità di persone
+        -> un linguaggio serve a comunicare con ALTRI
+
+NON BASTA!
+
+LINGUAGGIO COME SISTEMA FORMALE
