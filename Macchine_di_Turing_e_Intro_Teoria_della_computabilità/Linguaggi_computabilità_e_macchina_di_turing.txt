@@ -23,25 +23,25 @@ Deve esistere qualcosa che è in grado di eseguire delle azioni (fornite da qual
 del problema. In altri termini deve esistere qualcosa capace di eseguire le azioni dell’algoritmo. L'idea di fondo è che non voglio eseguire io, essere umano, i passi
 dell'algoritmo a mano.
 
-DEF Automa esecutore: sinonimo di macchina ASTRATTA esecutrice di algoritmi (tipo Von Neumann).
+DEF Automa esecutore: sinonimo di macchina ASTRATTA capace di eseguire le azioni dell'algoritmo (tipo Von Neumann).
 
 Che caratteristiche deve avere tale automa?
     -> deve ricevere dall’esterno una descrizione dell’algoritmo. (programma)
         -> Ma poiché una descrizione è una frase di un LINGUAGGIO
-            -> l'automa esecutore deve essere capace di INTERPRETARE un LINGUAGGIO! -> LINGUAGGIO MACCHINA
+            -> l'automa esecutore deve essere capace di INTERPRETARE un LINGUAGGIO! -> LINGUAGGIO MACCHINA!
 
 VINCOLI DI REALiZZABILITà FISICA
     - se l’automa è fatto di parti, esse sono in numero finito
     - di conseguenza, ingresso e uscita devono essere denotabili attraverso un insieme FINITO di simboli
 NB: i simboli fisicamente possono avere le forme più disparate. lettere, suoni, tocchi, ...
 
-COMPUTABILITà
+--- COMPUTABILITà
 Formalizzando cosa sia l'automa esecutore si arriva a definire il concetto stesso di computabilità (in pratica, computabilità -> sinonimo di elaborazione)
 
 Vari approcci per questa definizione, noi useremo l'approccio a gerarchia di macchine astratte. Macchine sempre più complicate fino a che non sbatto contro l'upper bound dei
 problemi non risolvibili (dalle macchine, umani riescono)
 
---- GERARCHIA DI MACCHINE ASTRATTEù
+GERARCHIA DI MACCHINE ASTRATTE
 Perché definire una gerarchia ?
     - Macchine diverse potrebbero avere (e in effetti hanno..) diversa capacità di risolvere problemi
         -> e noi vogliamo scegliere quella più adatta
@@ -69,12 +69,13 @@ Un automa a stati finiti è definito dalla quintupla <I, O, S, mfn, sfn>:
 
 Poiché lo stato funge da memoria interna, le risposte possono essere diverse anche a parità di dati d’ingresso.
 
-Limite computazionale: stati FINITI. Il numero di stati è congelato una volta definito l'automa. Alcuni problemi hanno bisogno di più dinamicità.
+Limite computazionale: è un dispositivo a memoria finita e come tale inadatto a problemi che non consentano di limitare a priori la lunghezza delle sequenze da ricordare.
+In altri termini -> stati FINITI. Il numero di stati è congelato una volta definito l'automa. Alcuni problemi hanno bisogno di più dinamicità.
     -> esempio: bilanciamento delle parentesi, il numero di stati viene definito in base ad ogni ingresso.
 Vanno bene per i problemi in cui riesco a trovare il numero massimo di stati necessario.
 
-MACCHINA DI TURING
-Stati infiniti (o meglio illimitatamente espandibili) non ci stanno dentro la macchina, mettiamoli fuori!
+--- MACCHINA DI TURING
+Sequenza di lunghezza non definibile a priori non ci stanno dentro la macchina, mettiamole fuori!
     -> idea di nastro (infinitamente espandibile) come supporto per la memoria. La macchina si può muovere sul nastro.
 Per superare il limite della memoria finita, si introduce un “nastro” come supporto di memorizzazione esterno. 
 
@@ -87,7 +88,7 @@ La macchina di Turing è quindi definita dalla quintupla: <A, S, mfn, sfn, dfn> 
 NB: Input e output hanno lo stesso alfabeto (A) dato che quello che scrivi lo vuoi anche saper leggere e viceversa.
 
 FUNZIONAMENTO DELLA MACCHINA DI TURING
-La macchina di turing è, in sostanza, una macchina a stati finiti con in aggiunta il nastro. Il nastro illimitatamente espandibile rappresenta il deposito dei dati (memoria).
+La macchina di turing è, in sostanza, una macchina a STATI FINITI con in aggiunta il nastro. Il nastro illimitatamente espandibile rappresenta il deposito dei dati (memoria).
 La macchina è munita di una testina di lettura / scrittura e può:
     - Leggere un simbolo dal nastro
     - Scrivere sul nastro il simbolo specificato da mfn()
@@ -98,7 +99,6 @@ IPOTESI: quando raggiunge lo stato HALT, la macchina si ferma.
 Risolvere un problema con questa macchina richiede di:
     - definire la rappresentazione dei dati di partenza da porre inizialmente sul nastro e di quelli di uscita che ci si aspetta di trovare alla fine sul nastro.
     - definire il comportamento, ossia le tre funzioni: mfn(), sfn() e dfn(), concepite in modo da lasciare sul nastro la soluzione quando alla fine la macchina si ferma.
-
 La definizione dice che quando alla fine la macchina si ferma, sul nastro c'è la soluzione del problema, altrimenti, c'è stato un errore di programmazione.
 
 MA... è certo che prima o poi si fermi? In realtà, NO: come vedremo, è possibile che il comportamento definito dalle tre funzioni causi un ciclo infinito!
@@ -139,3 +139,51 @@ Non sempre è necessaria una Macchina di Turing
     - il Push Down Automaton (PDA), ad esempio, prevede un "nastro" espandibile da una parte sola, col vincolo di poter accedere solo alla cella "al top". (stack)
     
 Il PDA porta ad un modo di lavorare efficente, ma non tutti i problemi si possono risolvere con questo automa. Quelli che ci riescono però guadagnano molto di efficienza. 
+
+--- MACCHINA DI TURING UNIVERSALE
+La macchina di Turing vista fino ad adesso è cablata su uno specifico problema (le tre tabelle vengono definite e congelate alla creazione della macchina).
+In altri termini, quna macchina di Turing definita in questo modo è specifica per un determinato problema.
+
+Se si desiderasse risolvere n problemi, si avrebbe bisogno di n macchine di turing diverse :(
+    -> Sarebbe possibile costruire una Macchina di Turing UNIVERSALE?
+
+La risposta è si, bisogna tuttavia fare delle modifica. è necessario che l'algoritmo (le tre tabelle) non sia più cablato nella macchina, ma che esso risieda nel nastro 
+(mondo esterno). La parte hardware (cablata) della macchina di turing diventa quella che recupera l'algoritmo sul nastro (caricamento del programma). In altri termini la 
+macchina di turint universale (UDT) può essere considerata un semplice LOADER.
+
+Creare una UDT richiede sapere descrivere l'algoritmo richiesto.
+    -> occorre un LINGUAGGIO
+    -> e una macchina (l'hardware cablato) che lo INTERPRETI 
+Conclusione: LA UTM è UN INTERPRETE DI UN LINGUAGGIO!!!     
+    -> ritorniamo all'idea iniziale di automa esecutori!
+
+La Macchina di Turing Universale modella il concetto di elaboratore di uso generale:
+    - una macchina che va a cercare le “istruzioni” da svolgere…    -> fetch
+    - .. le interpreta...                                           -> decode
+    - .. e le esegue.                                               -> execute
+Ha quindi senso confrontare la UTM con la Macchina di Von Neumann, che esprime architettura di base di un elaboratore di uso generale.
+
+PARALLELO UTM e MACCHINA DI VON NEUMANN
+In pratica:                                             Corrisponde a:
+ leggere/scrivere un simbolo dal/sul nastro             lettura/scrittura dalla/sulla memoria RAM/ROM
+ transitare in un nuovo stato interno                   nuova configurazione dei registri della CPU
+ spostarsi sul nastro di una (o più) posizioni          scelta della cella di memoria su cui operare (indirizzo contenuto nell’Address Register)
+
+NB: La UTM, però, NON cattura tutti gli aspetti dell'architettura di Von Neumann. Nella macchina di Turing NON c'è I/O, essa non concepisce il mondo esterno.
+Concepisce solo la computazione dei dati per raggiungere il risultato (che salva sul nastro (memoria interna)). Come i dati siano finiti sul nastro non si sa, L'obiettivo
+della MDT era solo rappresentare la computazione.
+
+In altre parole La UTM è pura computazione: non modella la dimensione dell’interazione, che invece esiste nella macchina di Von Neumann. Infatti, La macchina di Von Neumann
+possiede istruzioni di I/O, la UTM no.
+
+--- COMPUTAZIONE E INTERAZIONE
+Pensandoci bene, Computazione e Interazione sono dimensioni ortogonali, espresse (potenzialmente) da due LINGUAGGI distinti.
+
+Un linguaggio di programmazione comprende in verità (almeno) tre linguaggi
+    - linguaggio di computazione (macchina di turing):          definisce le primitive per esprimere l'elaborazione dei dati.
+    - linguaggio di coordinazione (macchina di von neumann):    definisce COME si legge/scrive verso l'esterno.
+        - linguaggio di comunicazione:                          dice che COSA leggo/scrivo verso l'esterno
+
+NB: con la macchina di Turing, per adesso, ci interessa solo la dimensione del linguaggio di COMPUTAZIONE
+
+CONCLUSIONE: l'I/O è una dimensione diversa dalla computazione.
