@@ -1,0 +1,60 @@
+
+SPECIFICA DI UN LINGUAGGIO
+come si specifica un linguaggio -> GRAMMATICA FORMALE
+
+    VT  -> simboli terminali       = elementi dell'alfabeto
+    VN  -> simboli non terminali   = simboli che servono a scrivere le regole
+    P   -> Regole di produzione    = ...
+    S   -> ...
+
+Sentantial form -> frase in divenire
+
+LINGUAGGIO GENERATO DA UNA GRAMMATICA
+partendo dal simbolo s il linguaggio generato dalla grammatica è l'insieme di tutte le frasi generabili con tutte le regole della grammatica quante volte voglio (impreciso)
+
+NB: quello che conta veramente di una grammatica sono le REGOLE DI PRODUZIONE -> scriveremo solo queste.
+
+GRAMMATICHE EQUIVALENTI
+In GENERALE stabilire se una grammatica è equivalente ad un'altre è un problema indecidibile.
+
+FONDAMENTALE: GRAMMATICHE CON UNA DIVERSA STRUTTURA necessitano di MACCHINE DIVERSE PER ELABORARE I LINGUAGGI PRODOTTI
+
+CLASSIFICAZIONE DI CHOMSKY
+identifichiamo le grammatiche in quattro tipi, in ordine di complessità
+
+Tipo 0
+posso accorciare le frasi ...
+
+Tipo 1
+regole chirurgiche
+vincolo: in pratica non posso accorciare le frasi
+prevede anche vicoli cechi
+
+Tipo 2, quello che ci interessa davvero
+regole a grana grossa
+Follia: si ritorna a poter accorciare le frasi, cosa? Qua me lo posso permettere perchè esiste un teorema che mi permette di tirar via epsilon. 
+
+Tipo 3
+le frasi crescono da una parte sola.
+non ha idea del conteggio.
+
+NB: Le grammatiche sono in relazione gerarchica
+
+TEOREMA PER GRAMMATICHE DI TIPO 2 con epsilon.
+
+la stringa vuota è utile perchè evita combinazioni. Pensa a (public static void), (private static void), (static void), ...
+
+ELIMINAZIONE DELLE epsilon-RULES
+...
+
+TIPO DI UNA GRAMMATICA E TIPO DI UN LINGUAGGIO
+Diremo che un linguaggio è di un certo tipo se troviamo la grammatica più semplice che lo descrive.
+
+Intuitivamente, il tipo 1 è necessario quando bisogna scambiare qualcosa, dato che scambio implica che siamo in due. Il tipo 2 lavore solo su un simbolo non terminale alla
+volta.
+
+Allo stesso modo, il self embedding è la caratteristica fondamentale del tipo 2.
+
+SELF EMBEDDING
+...
+serve per bilanciare parentesi, ecc...
