@@ -75,7 +75,7 @@ In altri termini -> stati FINITI. Il numero di stati è congelato una volta defi
 Vanno bene per i problemi in cui riesco a trovare il numero massimo di stati necessario.
 
 --- MACCHINA DI TURING
-Sequenza di lunghezza non definibile a priori non ci stanno dentro la macchina, mettiamole fuori!
+Sequenze di lunghezza non definibile a priori non ci stanno dentro la macchina, mettiamole fuori!
     -> idea di nastro (infinitamente espandibile) come supporto per la memoria. La macchina si può muovere sul nastro.
 Per superare il limite della memoria finita, si introduce un “nastro” come supporto di memorizzazione esterno. 
 
@@ -142,14 +142,13 @@ Il PDA porta ad un modo di lavorare efficente, ma non tutti i problemi si posson
 
 --- MACCHINA DI TURING UNIVERSALE
 La macchina di Turing vista fino ad adesso è cablata su uno specifico problema (le tre tabelle vengono definite e congelate alla creazione della macchina).
-In altri termini, quna macchina di Turing definita in questo modo è specifica per un determinato problema.
+In altri termini, una macchina di Turing definita in questo modo è specifica per un determinato problema.
 
 Se si desiderasse risolvere n problemi, si avrebbe bisogno di n macchine di turing diverse :(
     -> Sarebbe possibile costruire una Macchina di Turing UNIVERSALE?
 
 La risposta è si, bisogna tuttavia fare delle modifica. è necessario che l'algoritmo (le tre tabelle) non sia più cablato nella macchina, ma che esso risieda nel nastro 
-(mondo esterno). La parte hardware (cablata) della macchina di turing diventa quella che recupera l'algoritmo sul nastro (caricamento del programma). In altri termini la 
-macchina di turint universale (UDT) può essere considerata un semplice LOADER.
+(mondo esterno). La parte hardware (cablata) della macchina di turing diventa quella che recupera l'algoritmo sul nastro (caricamento del programma).
 
 Creare una UDT richiede sapere descrivere l'algoritmo richiesto.
     -> occorre un LINGUAGGIO
@@ -169,7 +168,7 @@ In pratica:                                             Corrisponde a:
  transitare in un nuovo stato interno                   nuova configurazione dei registri della CPU
  spostarsi sul nastro di una (o più) posizioni          scelta della cella di memoria su cui operare (indirizzo contenuto nell’Address Register)
 
-NB: La UTM, però, NON cattura tutti gli aspetti dell'architettura di Von Neumann. Nella macchina di Turing NON c'è I/O, essa non concepisce il mondo esterno.
+NB: La UTM, però, NON cattura TUTTI gli aspetti dell'architettura di Von Neumann. Nella macchina di Turing NON c'è I/O, essa non concepisce il mondo esterno.
 Concepisce solo la computazione dei dati per raggiungere il risultato (che salva sul nastro (memoria interna)). Come i dati siano finiti sul nastro non si sa, L'obiettivo
 della MDT era solo rappresentare la computazione.
 

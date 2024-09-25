@@ -8,10 +8,10 @@ si inlooppa (loop infinito).
 
 NB: NON c'è modo di distinguere una macchina inlooppata da una macchina che ci sta mettendo tanto tempo.
 NB: a volte l'irrisolubilità di un problema si manifesta in base ai dati d'ingresso. I problemi vengono etichettati come irrisolubili anche se si riescono a risolvere
-in 99 casi su 100. Bisogna poter contare sulla macchina.
+in 99 casi su 100. -> Bisogna poter contare sulla macchina.
 
-DEF: Formalizzando meglio, possiamo definire un PROBLEMA RISOLUBILE come: un problema la cui soluzione può essere espressa da una MdT. Analogamente, un problema
-     irrisolubile è un problema la cui soluzione NON può essere espressa con una MdT. 
+DEF PROBLEMA RISOLUBILE: Formalizzando meglio, possiamo definire un problema risolubile come: un problema la cui soluzione può essere espressa da una MdT. Analogamente,
+un problema irrisolubile è un problema la cui soluzione NON può essere espressa con una MdT. 
 NB: ricorda che computabile è sinonimo di calcolabile/risolubile/ecc..., quindi un problema è computabile se risolvibile da una macchina di turing.
 
 Però, la macchina di Turing computa funzioni, non "problemi": perché tutto torni, occorre quindi un modo per associare a un problema una funzione. 
@@ -31,15 +31,12 @@ la funzione f_P che associa a ogni dato d’ingresso x appartenente X la corrisp
 FUNZIONE COMPUTABILE
 Si tratta ora di formalizzare quando una funzione caratteristica sia computabile o meno. Di nuovo, poiché l'arma più potente è la MdT, è logico appoggiare ad essa la
 definizione:
-
     Una funzione f: A→B è computabile se esiste una Macchina di Turing che
         – data sul nastro una rappresentazione di x appartenente A (ingresso QUALSIASI)
     Dopo un numero FINITO di passi
         – produce sul nastro una rappresentazione della relativa f(x) appartente B
 
-Perché f non sia computabile occorre dunque che la MdT non riesca a produrre un risultato in un numero finito di passi, ossia che non si fermi (ovvero, che entri in un
-ciclo infinito) anche in UN SOLO CASO.
-
+Purché f NON sia computabile occorre dunque che la MdT non riesca a produrre un risultato in un numero finito di passi, ossia che non si fermi anche in UN SOLO CASO.
 CONCLUSIONE: un problema è risolubile (ovvero risolvibile in tempo finito da una MdT) è un problema la cui funzione caratteristica è computabile da una macchina di turing. 
 
 DOMANDE SPONTANEE: Quali sono i problemi irrisolubili? possiamo evitarli?
@@ -58,12 +55,12 @@ Limitarsi all'insieme di funzioni definibili considerando solo quelle da N a N N
 Per questo motivo è possibile limtarsi alla funzioni da N a N nel considerare le funzioni definibili.
 
 è noto dall'analisi matematica che Le funzioni da N a N sono NON numerabili. Per contro, l'insieme delle macchine di turing che corrisponde alle funzioni computabili è
-numerabile. -> la grande maggioranza delle funzioni definibili non è computabile. COSA? Non solo esistono funzioni definibili ma non computabili, ma esse sono la maggior 
-parte?!?!? -> SVENGO
+numerabile. Di conseguenza la grande maggioranza delle funzioni definibili non è computabile. COSA? Non solo esistono funzioni definibili ma non computabili, ma esse sono
+la maggior parte?!?!? -> SVENGO
 
 In realta, me ne sbatto della maggior parte delle funzioni da N a N (godo!). Le sole funzioni che possiamo esprimere (e che quindi ci interessano) sono quelle definibili
-con un linguaggio basato su un alfabeto FINITO di simboli, quelle costituiscono un insieme numerabile! I due insiemi hanno quindi la stessa cardinalità(godo!!).
-Questi due insiemi coincidono? Purtroppo no :(. 
+con un linguaggio basato su un alfabeto FINITO di simboli, quelle costituiscono un insieme numerabile! I due insiemi hanno quindi la stessa cardinalità (godo!!).
+Questi due insiemi coincidono? Purtroppo no :( . 
 
 Conclusione: esistono funzioni definibili ma non computabili, questo  equivale a dire che esistono problemi irrisolubili da una MdT. Per dimostrare questa affermazione
              basta trovare UN SINGOLO problema definibile ma non computabile.
@@ -77,11 +74,10 @@ Siccome questo problema appartiene alla categoria particolare dei problemi di de
 ingresso, si fermi oppure no è un problema INDECIDIBILE.
 
 
-
 --- GENERABILITÀ e DECIDIBILITÀ
 Riprendiamo le DOMANDE di prima: Quali sono i problemi irrisolubili? possiamo evitarli? Per capire come evitare i problemi irrisolubili/indecidibili il prossimo passo è
 indagare la DECIDIBILITà dei problemi che ci interessano, in particolare, la decidibilità di un INSIEME.
-    IDEA: voglia mo capire se una stringa appartiene ad un insieme valido (analisi sintattica di un compilatore)
+    -> IDEA: vogliamo capire se una stringa appartiene ad un insieme valido (analisi sintattica di un compilatore)
 
 Poiché un linguaggio è, come vedremo, un INSIEME di frasi, ci interessa indagare in generale il problema della generabilità vs. decidibilità di un INSIEME.
     - L’analisi matematica introduce il concetto di insieme numerabile (i cui elementi possono essere contati)
@@ -107,9 +103,9 @@ La funzione caratteristica di un insieme è una funzione di questo tipo:
 
             | 1, se x appartiene S
     f (x) = |
-            | 0, se x appartiene S
+            | 0, se x non appartiene S
 
-In altre parole un insieme è generabile, se esiste una Macchina di Turing capace di rispondere sì o no, senza entrare mai in un ciclo infinito, alla domanda se un certo
+In altre parole un insieme è decidibile, se esiste una Macchina di Turing capace di rispondere sì o no, senza entrare mai in un ciclo infinito, alla domanda se un certo
 elemento appartenga all’insieme.
 
 TEOREMI SU INSIEMI DECIDIBILI
