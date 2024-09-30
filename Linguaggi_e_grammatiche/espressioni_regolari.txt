@@ -1,0 +1,18 @@
+è un formalismo per definire linguaggi alternativo alle grammatiche.
+
+solo 3 operazioni possibili.
+
+--- ESPRESSIONI REGOLARI vs LINGUAGGI
+grammatica              = formalismo costruttivo, ci dicono le regole per capire come derivare le frasi, ma non quali frasi produce
+espressioni regolari    = il contrario, ci dicono che frasi sono presenti nel linguaggio, ma non come si arriva ad esse 
+
+formalismi ortogonali, usandoli insieme abbiamo sia il come, sia il cosa.
+
+DOMANDA: si puo passare dall'una all'altra.
+
+--- EQUAZIONI SINTATTICHE
+si risolvono con sostituzioni e raccoglimenti
+
+--- RIFLESSIONE
+sia le grammatiche che le espressioni regolari si possono mappare su un automa a stati finiti. Di cui si puo ottenere l'automa minimo
+da cui si torna indietro e si recupera l'espressione minima.

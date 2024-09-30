@@ -19,8 +19,8 @@ che consenta di risponde a domande come:
     − quali elementi linguistici primitivi?
 
 SINTASSI e SEMANTICA
-    • Sintassi:     l’insieme di regole formali per la scrittura di frasi corrette («programmi») in un linguaggio, che dettano le modalità per costruire frasi corrette nel 
-                    linguaggio stesso.
+    • Sintassi:     l’insieme di regole formali per la scrittura di frasi corrette («programmi») in un linguaggio, che dettano le modalità per costruire frasi 
+                    corrette nel linguaggio stesso.
     • Semantica:    l’insieme dei significati da attribuire alle frasi (sintatticamente corrette) del linguaggio.
 NB: Una frase può essere sintatticamente corretta e tuttavia non avere significato!
 
@@ -45,9 +45,9 @@ La semantica è esprimibile:
         • accetta in ingresso un intero programma scritto in L
         • e lo riscrive in un altro linguaggio (più semplice).
             -> Il risultato è dunque una riscrittura del programma ("macro-frase")
-In realtà la differenza è sottile, un programma potrebbe essere considerato una frase lunga per esempio. In generale, un interprete porduce direttamente il risultato finale
-"che ci si aspetta". Un compilatore produce un passaggio intermedio (ad esempio codice assembly). La differenza tuttavia, è nell'occhio di chi osserva, se ci si apetta dell'
-assembly, anche un compilatore potrebbe essere considerato un interprete. 
+In realtà la differenza è sottile, un programma potrebbe essere considerato una frase lunga per esempio. In generale, un interprete produce direttamente il
+risultato finale "che ci si aspetta". Un compilatore produce un passaggio intermedio (ad esempio codice assembly). La differenza tuttavia, è nell'occhio di
+chi osserva, se ci si apetta dell'assembly, anche un compilatore potrebbe essere considerato un interprete. 
 
 --- ANALISI LESSICALE, SINTATTICA e SEMANTICA
     - L’analisi lessicale consiste nella individuazione delle singole parole (token) di una frase. Un lessico è corretto se ogni parola (token) fa parte del vocabolario.
@@ -58,7 +58,6 @@ assembly, anche un compilatore potrebbe essere considerato un interprete.
       se la combinazione dei token è corretta, ad esempio, la frase "Il gatta mangio" possiede tutti i token correti ma combinati in modo sbagliato.
         -> L'analizzatore sintattico (detto parser), data la sequenza di token prodotta dallo scanner, genera una rappresentazione interna della frase 
             -> solitamente sotto forma di opportuno albero
-
     - L’analisi semantica consiste nel determinare il significato di una frase
         • L'analizzatore semantico, data la rappresentazione intermedia prodotta dal parser, controlla la coerenza logica della frase
             • se le variabili sono usate solo dopo essere state definite
@@ -91,8 +90,8 @@ DESCRIZIONE DI UN LINGUAGGIO
         - cardinalità di un linguaggio: il numero delle frasi del linguaggio
             –> linguaggio finito: ha cardinalità finita
             –> linguaggio infinito: ha cardinalità infinita
-            NB: i linguaggio utili sono tipicamente con cardinalità infinita, o meglio illimitatamente espandibili. Non avrai mai in mano un programma con infinite keyword,
-                ma avrai infiniti modi di combinare quest'ultime.
+            NB: i linguaggio utili sono tipicamente con cardinalità infinita, o meglio illimitatamente espandibili. Non avrai mai in mano un programma con
+                infinite keyword, ma avrai infiniti modi di combinare quest'ultime.
     • Chiusura A* di un alfabeto A (o ling. universale su A): È l’insieme INFINITO di tutte le stringhe composte con simboli di A
         - A* = A^0 unito A^1 unito …
     • Chiusura positiva A+ di un alfabeto A: È l’insieme infinito di tutte le stringhe NON NULLE composte con simboli di A

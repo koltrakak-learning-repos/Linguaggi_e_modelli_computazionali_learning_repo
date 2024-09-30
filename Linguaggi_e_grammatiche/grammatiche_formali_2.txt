@@ -1,0 +1,53 @@
+// esempio grammatica sui numeri naturali iniziale è sovrabbondante in quanto ripete i numeri con una sola cifra.
+
+ALBERI DI DERIVAZIONE
+notazione ad albero per esprimere come una frase è stata derivata da una grammatica di almeno tipo 2.
+
+NB: tipo 2 perchè queste grammatiche ammettono solo un padre a sinistra. Per le grammatiche di tipo 1 otterrei un grafo e non si capirebbe niente.
+NB: Questi alberi sono facilmente producibili dagli umani in quanto ci si può far guidare dal ragionamento, le macchine hanno piu difficolta
+
+NOMENCLATURA: scopo, starting simbol, simbolo iniziale usati intercambiabilmente.
+
+AMBIGUITA
+l'ambiguita è quella situazione in cui posso scrivere una stessa frase del linguaggio applicando in modi diversi le regole della grammatica 
+    -> almeno due alberi diversi che portano la stessa frase
+NB: non centra il verso di derivazione  
+
+L'ambiguità è il male! perchè? -> L'ambiguità è indesiderabile perchè incasina le macchine -> incrementa l'ordine di complessità degli algoritmi riconoscitori.
+
+TEOREMA STRINGA VUOTA 2
+per un qualsiasi linguaggio avere o meno la stringa vuota non cambia il tipo DEL LINGUAGGIO (non della grammatica)
+
+FORME NORMALI
+    - Chomsky   -> weak
+    - Greibach -> goated
+
+TRASFORMAZIONI
+utili per arrivare alla forma di Greaibach per le regole di una grammatica.
+
+In particolare
+    - ...
+    - Raccoglimento a fattore comune
+        -> fondamentale, se non si raccoglie si tira a caso e ti puoi sfracellare -> ambiguità
+        -> la soluzione è guadagnare tempo, intanto ti occupi del primo simbolo. Nei passi successivi avrai in ingresso nuovi simboli e saprà decidere senza andare a caso.
+            -> è un problema di non determinismo: adesso con le informazioni che hai non sai prendere un scelta certa. Soluzione: aspetta e recupera nuove informazioni
+               per fare una scelta certa.
+    - Eliminazine della ricorsione sinistra
+        -> sempre possibile, ma cambia l'ordine di derivazione dato che cambia le regole della grammatica. A volte non ce lo si può permettere di farlo
+
+--- COME CAPIRE SE UN LINGUAGGIO è DI TIPO 2/3 o MENO?
+Se hai la grammatica è facile. Tuttavia di solito si parte dal LINGUAGGIO non dalla grammatica, poi provo a definire una grammatica che lo genera. A questo punto la 
+grammatica è semplice/corretta/ambigua? Ma in primo luogo, posso capire la tipologia del linguaggio ancora prima di definire la grammatica?
+    
+PUMPING LEMMA
+Condizione necessaria ma non sufficiente.
+
+idea: Per generare un linguaggio infinito da una grammatica finita è necessario avere almeno una regola ricorsiva. 
+    -> Si possono "pompare" caratteri
+    -> studiando questo comportamento
+
+pumping lemma per tipo 2: due cose crescono insieme
+pumping lemma per tipo 3: c'è una crescita o solo dietro o solo davanti
+
+--- DOMANDA DI DENTI
+come si fa a trovare la grammatica adatta per un linguaggio? Con il pumping lemma.
