@@ -1,0 +1,17 @@
+//manda mail per concetto di turing completness
+
+Un elenco di ordini non è invertibile
+
+Il paradigma dichiarativo cattura la rappresentazione delle relazioni.
+    -> invertibile
+    -> si delega il controllo alla macchina a runtime
+
+--- PROLOG
+
+...
+somiglianza con i db
+...
+CONCETTO DI BACKTRACKING; non mi piace un risultato, ne chiedo un altro
+
+con un paradigma imperativo le cose semplice paradossalmente diventano complicate.
+    -> bisogna ridefinire in maniera logica le fondamenta

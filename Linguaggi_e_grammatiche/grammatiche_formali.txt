@@ -113,8 +113,8 @@ che la prima grammatica che si trova per generare un dato linguaggio sia necessa
 
 Diremo che un linguaggio è di un certo tipo, se troviamo la grammatica più semplice che lo descrive.
 
-- DOMANDA PROCATORIA: ci si potrebbe chiedere se ci sia un modo generale per capire se, trovata una grammatica che descrive il linguaggio desiderato, esista o meno
-                      una grammatica più semplice ... e magari trovarla.
+- DOMANDA PROVOCATORIA: ci si potrebbe chiedere se ci sia un modo generale per capire se, trovata una grammatica che descrive il linguaggio desiderato, esista o meno
+                        una grammatica più semplice ... e magari trovarla.  -> pumping lemma
 
 Intuitivamente:
     - Un linguaggio è di tipo 1 se è necessario scambiare qualcosa, dato che lo scambio implica due simboli. mentre le regole del tipo 2 lavorano solo su un simbolo
@@ -215,7 +215,7 @@ Un linguaggio di tipo 2 non vuoto può essere sempre generato da una grammatica 
 In particolare si può fare in modo che tutte le produzioni abbiano una forma ben precisa:
     • forma normale di Chomsky                              -> weak
       produzioni della forma A → BC | a;    con A,B,C appartenenti VN, a appartenente VT unito epsilon
-    • forma normale di Greibach (per linguaggi privi di )  -> goated  
+    • forma normale di Greibach (per linguaggi privi di epsilon)  -> goated  
       produzioni della forma A → a"alpha";  con A appartenente VN, a appartenente VT, alpha appartenente VN*
 NB: La forma normale di Greibach facilita, come si vedrà, la costruzione di riconoscitori; è quella che ci interressa
 
@@ -259,18 +259,26 @@ significato alle frasi (lecite), regole diverse tipicamente implicano significat
     -> guarda esempio operazioni matematiche slide 93
 
 --- PUMPING LEMMA, COME CAPIRE SE UN LINGUAGGIO è DI TIPO 2/3 o MENO? 
-Se hai la grammatica è facile. Tuttavia di solito si parte dal LINGUAGGIO non dalla grammatica, poi provo a definire una grammatica che lo genera. A questo punto la 
-grammatica è semplice/corretta/ambigua? Ma in primo luogo, posso capire la tipologia del linguaggio ancora prima di definire la grammatica?
+Capire se un linguaggio è di Tipo 2 (o di Tipo 3) "solo guardandolo" in generale non è banale. Se hai la grammatica è facile. Tuttavia di solito si parte dal
+LINGUAGGIO desiderato, non dalla grammatica; successivamente si prova a definire una grammatica che lo genera.
+
+A questo punto molte domande -> la grammatica è semplice/corretta/ambigua?
+Ma in primo luogo, posso capire la tipologia del linguaggio ancora prima di definire la grammatica?
     
 PUMPING LEMMA
-Condizione necessaria ma non sufficiente.
+Il pumping lemma dà una condizione NECESSARIA, ma non sufficiente, perché un linguaggio sia di Tipo 2 (o 3)
+    – può quindi essere usato per dimostrare "in negativo" che un linguaggio non è di Tipo 2 (o di Tipo 3)…
+    – ... ma purtroppo non per affermarlo "in positivo
 
-idea: Per generare un linguaggio infinito da una grammatica finita è necessario avere almeno una regola ricorsiva. 
-    -> Si possono "pompare" caratteri
-    -> studiando questo comportamento
+idea: in un linguaggio infinito, ogni stringa sufficientemente lunga deve avere una parte che si ripete (regola ricorsiva). ergo, essa può essere "pompata"
+un qualunque numero di volte ottenendo sempre altre stringhe del linguaggio.
+
+La formulazione è leggermente diversa a seconda che si tratti di linguaggi di Tipo 2 o 3, ma la sostanza non cambia.
+    - nei linguaggi di tipo 2, la stringa ha questa forma: z = uvwxy; con v e x sottoparti pompabili    -> u(v^i)w(x^i)y    appartenente al linguaggio
+    - nei linguaggi di tipo 3, la stringa ha questa forma: z = xyw; con v sottoparte pompabile          -> x(y^i)W          appartenente al linguaggio
 
 pumping lemma per tipo 2: due cose crescono insieme
 pumping lemma per tipo 3: c'è una crescita o solo dietro o solo davanti
 
---- DOMANDA DI DENTI
-come si fa a trovare la grammatica adatta per un linguaggio? Con il pumping lemma.
+-> DOMANDA DI DENTI come si fa a trovare la grammatica adatta per un linguaggio? Una prima analisi è possibile applicando il pumping lemma. Possiamo capire se
+   il linguaggio desiderato NON è di tipo 2 o 3.
