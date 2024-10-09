@@ -1,16 +1,31 @@
-...
+--- RSF
+Un linguaggio regolare (tipo 3) è riconoscibile da un Automa a Stati Finiti (ASF).
 
-idea: cambiare stato n volte carattere per carattere è equivalente a ricevere un input la relativa stringa di lunghezza n e
-saltare direttamente allo stato n
+Un Riconoscitore a Stati Finiti (RSF) è una specializzazione di ASF.
+    -> idea: cambiare stato n volte carattere per carattere è equivalente a ricevere un input la relativa stringa di lunghezza n
+    e saltare direttamente allo stato n
 
-...
+La funzione sfn*:
+    • definisce l’evoluzione dell’automa a partire dallo stato iniziale s0 in corrispondenza a ogni sequenza di ingresso 
+      x appartenente A*
+    • è definita in termini della funzione sfn: AxS→S. 
+        -> sfn* tratta non più il singolo simbolo dell’alfabeto A, ma una sequenza di simboli (cioè una stringa) di A
+    • data la stringa x-a, si considera prima la sottostringa x, poi si applica la funzione sfn al simbolo a e allo stato s’=sfn*(x,s))
+
+Inoltre non c'è una uscita esplicita ma si ha un insieme di stati finali, e quindi si ha bisogno di un unico alfabeto
+    -> Si dice frase accettata da un RSF una frase x appartenente A* che porta il riconoscitore, a partire dallo stato iniziale, in uno
+       stato finale; ovvero: sfn*(x,s0) appartente F
+
+OSS: Il linguaggio L(R) accettato dal riconoscitore R è infinito se la rappresentazione grafica presenta cicli; finito se non ci sono
+cicli.
+
+--- TEOREMI PER DECIDERE SE UN LINGUAGGIO REGOLARE è VUOTO o FINITO
 
 TEOREMA 1
 Un linguaggio L(R) è non vuoto se e solo se il riconoscitore R accetta una stringa x di lunghezza Lx minore del numero di stati N
 dell’automa
 
-in parole povere ...
-
+in parole povere:
 Il teorema afferma che un linguaggio accettato da un automa (chiamato  L(R)) non è vuoto (cioè contiene almeno una stringa), se
 e solo se l’automa stesso può accettare una stringa di lunghezza minore del numero dei suoi stati.
 
@@ -29,51 +44,91 @@ CONSEGUENZE
 In conseguenza di questi due teoremi, decidere se un linguaggio regolare sia vuoto o infinito è un problema risolubile!
     • nel primo caso, basta esaminare se esiste una stringa accettata di lunghezza minore di N
     • nel secondo caso, basta verificare se esiste una stringa accettata fra quelle di lunghezza compresa fra N (incluso) e 2N (escluso).
-    • Come si vedrà più avanti, tali proprietà sono decidibili anche nel Tipo 2, mentre non lo sono nel Tipo 1 (e 0).
+Come si vedrà più avanti, tali proprietà sono decidibili anche nel Tipo 2, mentre non lo sono nel Tipo 1 (e 0).
 
-GENERATORI
-Riconsideriamo l'automa riconoscitore precedente, Se sostituiamo alla parola “accettare” la parola “generare” otteniamo un nuovo
+--- GENERATORI
+Riconsiderando l'automa riconoscitore precedente, Se sostituiamo alla parola “accettare” la parola “generare” otteniamo un nuovo
 insieme di affermazioni:
     • nello stato I l’automa genera a e si porta in A (per poi proseguire)
     • nello stato A l’automa genera a e si riporta in A (per poi proseguire)
     • nello stato A l’automa genera b e si ferma (F è uno stato finale)
-NB: Queste frasi sono interpretabili come produzioni di una qualche grammatica (regolare)!
+NB: Queste frasi sono interpretabili come PRODUZIONI di una qualche grammatica (regolare)!
 
 Si può definire un mapping:
-    - stati         ->simboli non terminali
+    - stati         -> simboli non terminali
     - transizioni   -> produzioni
     - scopo         -> uno stato particolare
 
 CONCLUSIONE
-Si può dunque automatizzare la costruzione di un RSF a partire dalla grammatica, o, viceversa, risalire a una grammatica dato un RSF.
+Si può dunque automatizzare la costruzione di un RSF a partire dalla grammatica, o, viceversa, risalire
+a una grammatica dato un RSF.
 
-...
-Non sempre però le cose vanno così lisce:
-    - l’analisi bottom-up può non essere immediata in presenza di più stati finali, che corrisponderebbero a scopi multipli di G2,
-      o in presenza di archi entranti nello stato iniziale
+--- DOMANDA FONDAMENTALE
+come si fa guardando un RSF a recuperare la relativa grammatica?
+    -> due approcci
+Si immagini un osservatore che, stando in ogni stato, guardi, rispettivamente:
+    • in avanti. Da ogni stato, vede dove si va:
+        - stato di partenza                 = simbolo non terminale sinistro
+        - la freccia col simbolo terminale  = primo simbolo a destra
+        - lo stato successivo               = successivo nuovo simbolo non terminale a destra
+    -> NB: non c'è una regola per lo stato finale in quanto: l'ultimo passo non ha un successivo
+    • all'indietro. Da ogni stato, vede da dove viene:
+        - stato di partenza                 = simbolo non terminale sinistro
+        - lo stato precedente               = nuovo simbolo non terminale a destra
+        - la freccia col simbolo terminale  = simbolo terminale a destra finale
+    -> NB: non c'è una regola per lo stato iniziale in quanto: il primo passo non ha un precedente
+        
+MAPPING FRA GRAMMATICHE & RICONOSCITORI
+Il mapping fra automa riconoscitore e grammatica:
+    • stati dell’automa         = metasimboli della grammatica
+    • transizioni dell’automa   = produzioni della grammatica
+    • uno stato dell’automa     = scopo della grammatica
+presenta alcuni gradi di libertà:
+    • se la grammatica è regolare a destra, si ottiene un automa riconoscitore “top down”
+    • se la grammatica è regolare a sinistra, si ottiene un automa riconoscitore “bottom up”
+
+Viceversa, dallo stesso RSF si possono trarre con la strategia vista sopra:
+    • una grammatica regolare a destra, interpretandolo top-down
+    • una grammatica regolare a sinistra, interpretandolo bottom-up
+
+STATI INIZIALI/FINALI DI TRANSITO
+Esistono anche casi in cui gli stati iniziali e finali presentano cicli.
+    -> Non sono "puri" stati iniziale/finale, sono anche stati di transito. 
+    -> Nella grammatica ci saranno anche produzioni che comprendono gli stati iniziali/finali  (di transito)
+
+--- RICONOSCITORI 
+
+TOP-DOWN
+Data una GRAMMATICA REGOLARE LINEARE A DESTRA, il riconoscitore:
+    • ha tanti stati quanti i simboli non terminali
+    • ha come stato iniziale lo scopo S
+    • per ogni regola del tipo X → xY, l’automa, con ingresso x, si porta dallo stato X allo stato Y
+    • per ogni regola del tipo X → x, l’automa, con ingresso x, si porta dallo stato X allo stato finale F.
+DERIVAZIONE (della grammatica a partire dall'automa) TOP-DOWN
+    • si parte dallo scopo della grammatica
+    • e si tenta di coprire la frase data tramite produzioni successive.
+
+BOTTOM-UP
+Data una GRAMMATICA REGOLARE LINEARE A SINISTRA, il riconoscitore:
+    • ha tanti stati quanti i simboli non terminali
+    • ha come stato FINALE lo SCOPO S
+    • per ogni regola del tipo X → Yx l’automa, con ingresso x, riduce lo stato Y allo stato X
+    • per ogni regola del tipo X → x l’automa, con ingresso x, riduce lo stato iniziale I allo stato X.
+DERIVAZIONE BOTTOM-UP
+    • si parte dalla frase data
+    • e si risale verso lo scopo S tramite riduzioni successive.
+NB:
+Dato un automa riconoscitore, se ne possono trarre:
+    • una grammatica regolare a destra, interpretandolo top-down
+        -> approccio a generazione, si cerca di produrre la frase
+    • una grammatica regolare a sinistra, interpretandolo bottom-up
+        -> approccio a riduzione, dalla frase si cerca di raggiungere lo scopo
+
+NB_2: Non sempre però le cose vanno lisce:
+    - l’analisi bottom-up può non essere immediata in presenza di più stati finali, che corrisponderebbero a scopi multipli, o in
+      presenza di archi entranti nello stato iniziale
     - l’analisi top-down richiede attenzione se vi sono archi uscenti da stati finali.
 
-
---- AUTOMI NON DETERMINISTICI
-almeno in uno stato, con lo stesso ingresso, ci sono due o più alternative.
-
-    -> ALMENO UNA ... se ne vuole ESATTAMENTE una
-
-Esempi prolog come linguaggio che supporta il non determinismo
-
---- TEOREMA DEL MARTELLOOOOOOO!!!!
-nel tipo 3 il non determinismo non ci piace. In parole povere è sempre possibile trovare un automa deterministico equivalente alla sua 
-versione non deterministica.
-
-idea: sostituzione!
-
-...
-
-gli stati finali sono quelli con la F dentro
-
-è estremamente probabile che l'automa cosi definito non sia minimo -> minimizziamolo
-
-il ciclo causava il bivio modena-modena -> colpevole
-    -> ci siamo liberati del non determinismo spostando un ciclo da uno stato a quello dopo
-    -> ricorda: il non determinismo è sempre causato dal dover decidere troppo presto
-        -> soluzione: guadagnare tempo
+Nel primo caso, per uscire dal dilemma, è utile esprimere il linguaggio riconosciuto o generato come UNIONE di due linguaggi, ciascuno
+denotato da una sua propria grammatica che prende come scopo uno dei vari stati finali.
+Attenzione: rimappando una grammatica ottenuta in questo modo in un automa, esso potrebbe risultare non-deterministico.

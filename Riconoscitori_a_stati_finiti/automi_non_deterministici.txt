@@ -1,0 +1,24 @@
+
+--- AUTOMI NON DETERMINISTICI
+almeno in uno stato, con lo stesso ingresso, ci sono due o più alternative.
+
+    -> ALMENO UNA ... se ne vuole ESATTAMENTE una
+
+Esempi prolog come linguaggio che supporta il non determinismo
+
+--- TEOREMA DEL MARTELLOOOOOOO!!!!
+nel tipo 3 il non determinismo non ci piace. In parole povere è sempre possibile trovare un automa deterministico equivalente alla sua 
+versione non deterministica.
+
+idea: sostituzione!
+
+...
+
+gli stati finali sono quelli con la F dentro
+
+è estremamente probabile che l'automa cosi definito non sia minimo -> minimizziamolo
+
+il ciclo causava il bivio modena-modena -> colpevole
+    -> ci siamo liberati del non determinismo spostando un ciclo da uno stato a quello dopo
+    -> ricorda: il non determinismo è sempre causato dal dover decidere troppo presto
+        -> soluzione: guadagnare tempo
