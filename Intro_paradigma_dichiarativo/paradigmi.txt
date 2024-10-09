@@ -1,17 +1,32 @@
 //manda mail per concetto di turing completness
 
-Un elenco di ordini non è invertibile
+--- IL PARADIGMA IMPERATIVO
+Nel paradigma imperativo, un programma è una sequenza di ordini
+    • intuitivo per noi (comandare ci viene facile..)
+    • immediato da mappare su una macchina (che "esegue" mini-azioni)
+    • MA un elenco di ordini è pensato per una ben precisa situazione
+        -> è intrinsecamente NON invertibile
+        -> per esprimere la situazione "inversa", occorre un elenco di ordini completamente diverso, anche se in origine la relazione
+           fra i dati era simmetrica!
+        -> esempio funzione che computa una equazione
 
-Il paradigma dichiarativo cattura la rappresentazione delle relazioni.
-    -> invertibile
-    -> si delega il controllo alla macchina a runtime
+--- IL PARADIGMA DICHIARATIVO
+Nel paradigma dichiarativo, non si esprimono ordini, piuttosto si esprimono le RELAZIONI fra le entità
+    • un po' meno intuitivo per noi (all'inizio)
+    • MA intrinsecamente invertibile perché non "battezza" fin dall'inizio quali elementi siano input e quali output
+        -> si può esprimere la relazione as is, demandando a runtime la scelta di usarla in un verso o nell'altro
+            -> si delega il controllo di dettaglio alla macchina
+            -> niente più ossessione del controllo tipica di un paradigma imperativo
+    • si limita ad affermare ciò che è vero
 
---- PROLOG
+APPROCCIO DICHIARATIVO
+si danno le regole per computare, ma non si esplicita COME usarle.
+    -> SI DELEGA IL CONTROLLO.
 
-...
-somiglianza con i db
-...
-CONCETTO DI BACKTRACKING; non mi piace un risultato, ne chiedo un altro
+Maggiore livello di astrazione:
+    • la macchina gestisce il controllo
+    • focus sull'obiettivo, non sul "come"
 
-con un paradigma imperativo le cose semplice paradossalmente diventano complicate.
-    -> bisogna ridefinire in maniera logica le fondamenta
+OSS: col paradigma dichiarativo le cose complicate diventano semplici (es. concatenazione di due liste), ma è anche vero il contrario.
+le cose semplici, paradossalmente diventano complicate (es. numeri naturali), in quanto bisogna ridefinire in maniera logica le
+fondamenta.

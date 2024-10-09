@@ -1,0 +1,80 @@
+--- MINI-CORSO DI PROLOG
+Un programma Prolog è un insieme di regole (teoria logica) espresse secondo la seguente notazione:
+   -> testa :- corpo.
+
+L'operatore :- esprime l'implicazione logica (<-): informalmente, se il corpo è vero, allora anche la testa è vera (non viceversa)
+
+Se il corpo manca, si considera true e quindi la testa è sempre vera. In tal caso, la testa viene  chiamata "fatto" (o assioma)
+e l'operatore :- si omette
+    -> fatto.
+
+La testa ha la forma "funtore(lista_argomenti)"
+    -> p(a,12,X) :- corpo.
+
+La lista argomenti può mancare, nel qual caso le parentesi si omettono:
+    -> p :- corpo.
+
+Il corpo è una congiunzione di termini separati da virgole. Ogni termine ha anch'esso la forma "funtore(lista_argomenti)"
+    -> p(a,12,X) :- q(a), r(13), s(X,1).
+
+Testa e corpo possono contenere variabili (iniziano con maiuscola, es. X)
+    -> p(a,12,X)    :- q(a), r(13), s(X,1).
+    -> s(Y,X)       :- q(X), r(Y).
+
+NB: Lo scope di una variabile è la SINGOLA regola: la variabile X nella prima regola non ha nulla a che fare con la variabile X nella
+seconda regola.
+
+Se occorrono termini che iniziano per maiuscola, o che contengono caratteri non standard, occorre quotarli con apici:
+    -> p('Alfa',12, ':') :- q(X), q(Y).
+
+--- ESEMPIO FIGLI E GENITORI
+//assiomi
+man(adam).
+man(peter).
+woman(mary).
+woman(eve).
+parent(adam, peter).
+parent(eve, peter).
+parent(adam, paul).
+parent(mary, paul).
+//regole
+father(Y,C) :- man(Y), parent(Y,C).
+mother(X,C) :- woman(X), parent(X,C).
+
+NB: Come un database, il sistema Prolog ha una base di conoscenza. Ma, a differenza di un database, la conoscenza non comprende solo
+fatti ma anche regole per dedurre nuova conoscenza. Quindi, le possibili query possono non solo recuperare tuple dal db, come:
+    ?- woman(X).
+ma anche recuperare tuple da sintetizzare al volo.
+
+--- ESEMPIO EQUAZIONE Y=X+2
+L'equazione x+2 = y si può allora esprimere direttamente come relazione:
+    eq(X,Y) :- s(s(X))=Y.   -> Si legge: eq(X,Y) è vero SE è vero il lato destro, ossia se s(s(X))=Y
+oppure più compattamente:
+    eq(X, s(s(X))).         -> Si legge: per ogni X, è sempre vero che X sia in relazione con s(s(X))
+
+Si può sfruttare la relazione anche per far generare via via le possibili soluzioni, una ad una. Per farlo bisogna alimentare
+l'equazione con numeri naturali via via diversi
+    -> ci serve un generatore di numeri naturali
+Per ottenerlo, basta seguire pari pari la definizione matematica:
+    • 1 è naturale num(1).
+    • se N è naturale, anche il successore di N lo è    -> num(s(N)) :- num(N).
+Invocando num(X) si otterranno via via tutte le soluzioni.
+    ?- num(X), eq(X, Y)
+
+NB: CONCETTO DI BACKTRACKING; non mi piace un risultato, ne chiedo un altro.
+
+--- TRATTAMENTO PRATICO DEI NUMERI IN PROLOG
+In pratica, esprimere i numeri con la notazione successore s(N) è molto scomodo. Il linguaggio Prolog accetta quindi numeri
+reali (non ha la nozione di numero intero) nell'usuale notazione decimale.
+    • il predicato number(X) è vero se X rappresenta un reale, ossia ne rispetta la sintassi
+    • per calcolare il valore di un’espressione numerica, tuttavia, non si può usare il classico = perché in Prolog esso
+    indica unificazione sintattica (alias) ->  non ha semantica
+    • Value = 13-4 dà come risultato la struttura 13-4 (ossia, '-'(13,4)), non 9
+
+Per calcolare il valore di un’espressione numerica, occorre mettere in pista la semantica dei numeri reali.
+    • In Prolog essa è embedded nel predicato speciale is
+    • A differenza di Value = 13-4, che non effettua alcun «calcolo» perché l’operatore = è intenzionalmente privo di
+      semantica specifica di un qualunque dominio,
+    • Value is 13-4 dà come risultato 9 perché prima di assegnare un valore alla variabile Value viene fatta una valutazione
+      semantica del lato destro, nel dominio dei numeri reali
+    NB: is, predicato di utilità, extra logico, non invertibile. Piccolo pezzo di paradigma imperativo nel mondo dichiarativo
