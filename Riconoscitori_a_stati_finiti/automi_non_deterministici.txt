@@ -1,24 +1,43 @@
+Certe grammatiche possono portare a un automa non deterministico, cioè nella cui tabella di transizioni compaiono più stati futuri
+per una stessa configurazione.
+    -> almeno in uno stato, con lo stesso ingresso, ci sono due o più alternative.
 
---- AUTOMI NON DETERMINISTICI
-almeno in uno stato, con lo stesso ingresso, ci sono due o più alternative.
+Un automa riconoscitore non deterministico dev’essere intrinsecamente dotato della capacità di scegliere in quale stato portarsi,
+quando ha più alternative.
 
-    -> ALMENO UNA ... se ne vuole ESATTAMENTE una
+Se il linguaggio supporta il non determinismo, implementare il riconoscitore è semplice
+    • prolog come linguaggio che supporta il non determinismo
+        -> ogni produzione diventa una regola
+        -> la macchina virtuale del linguaggio è in grado di "tentare una strada" e tornare indietro nel caso si riveli
+           sbagliata, provando via via tutte le possibili alternative.
 
-Esempi prolog come linguaggio che supporta il non determinismo
+Un riconoscitore non-deterministico
+    • è meno efficiente di un riconoscitore deterministico
+    • deve disporre di strutture dati interne per «ricordare la strada fatta» e poterla disfare se necessario per esplorarne un'altra
 
---- TEOREMA DEL MARTELLOOOOOOO!!!!
-nel tipo 3 il non determinismo non ci piace. In parole povere è sempre possibile trovare un automa deterministico equivalente alla sua 
+Come può essere costruito se il linguaggio non supporta il non-determinismo ?
+In un linguaggio imperativo, occorre costruirsi a mano tutte le strutture per "ricordare la strada" e mettere in piedi il "motore"
+per gestirle… cioè ricostruirsi la stessa capacità che il motore Prolog ha già innata.
+
+oppure...
+
+--- Da AUTOMI NON DETERMINISTICI ad AUTOMI DETERMINISTICI
+Nel tipo 3 il non determinismo non ci piace, ma per fortuna è sempre possibile trovare un automa deterministico equivalente alla sua 
 versione non deterministica.
+
+TEOREMA DEL MARTELLOOOOOOO!!!!
+un automa non deterministico può sempre essere ricondotto a un automa deterministico equivalente. (successivamente minimizzabile)
 
 idea: sostituzione!
 
-...
+Procedimento:
+    • Si definisce un automa i cui stati corrispondano a dei set di stati dell’automa originale (non det.)
+    • Si costruisce la tabella delle transizioni del nuovo automa aggiungendo righe via via che si analizzano nuovi casi.
+        -> (gli stati finali sono quelli con la F dentro)
+    NB: è estremamente probabile che l'automa cosi definito non sia minimo -> minimizziamolo
 
-gli stati finali sono quelli con la F dentro
-
-è estremamente probabile che l'automa cosi definito non sia minimo -> minimizziamolo
-
-il ciclo causava il bivio modena-modena -> colpevole
+OSS:
+nell'esempio delle slide il non determinismo era causato da un ciclo in uno stato NON-terminale (chiaramente con un input ritrovabile 
+altrove). Il ciclo causava il bivio modena-modena che ci faceva decidere troppo presto che strada prendere nel riconoscimento
     -> ci siamo liberati del non determinismo spostando un ciclo da uno stato a quello dopo
-    -> ricorda: il non determinismo è sempre causato dal dover decidere troppo presto
-        -> soluzione: guadagnare tempo
+    -> ricorda: il non determinismo è sempre causato dal dover decidere troppo presto -> soluzione: guadagnare tempo

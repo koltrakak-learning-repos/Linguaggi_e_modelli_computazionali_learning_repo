@@ -1,0 +1,12 @@
+TEOREMA
+l'insieme dei linguaggi riconosciuti da un ASF COINCIDE con l'insieme dei LINGUAGGI REGOLARI, ossia quelli descritti da
+espressioni regolari.
+    -> Espressioni regolari e automi a stati finiti sono metodi descrittivi appartenenti a due differenti categorie ma entrambi 
+       descrivono linguaggi regolari
+    • Gli automi a stati sono un metodo di descrizione operazionale, in quanto evidenziano i passi computazionali da compiere per
+    riconoscere le frasi – che quindi sono descritte tramite le operazioni necessarie a riconoscerle.
+    • Le espressioni regolari sono invece un metodo di descrizione denotazionale, in cui un’entità è specificata tramite operatori
+    (funzioni) di tipo matematico.
+
+CONCLUSIONE: gli automi a stati finiti diventano un terzo punto di vista con cui osservare linguaggi regolari, insieme a grammatiche
+e espressioni regolari.
