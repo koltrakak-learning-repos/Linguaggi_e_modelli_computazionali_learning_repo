@@ -1,0 +1,76 @@
+...
+problema del dare un upper bound al numero degli stati appropriato
+    -> numero di stati spropositato -> spreco di risorse
+    -> non si riesce a determinare un numero di stati a priori
+
+PDA
+...
+alla fine della fiera se non riesco a determinare il numero di stati a priori gli metto fuori
+    -> supporto di memoria ulteriore rispetto agli stati -> stack 
+    -> PDA = RSF + STACK
+
+Qua cambi stato ANCHE in base anche allo stack (top dello stack)
+Quando transiti in uno stato futuro, se vuoi puoi anche modificare lo stack (esattamente come quando cambi stato)
+
+...
+adesso si può giocare da due parti, posso avere un gran numero di stati e usare poco lo stack o viceversa. Spesso è più conveniente il secondo.
+    -> Il minimo numero di stati è due (uno stato è uguale a non avere stati)
+
+...
+qua ha senso tenere le epsilon-moves, fuori non vieni stimolato da fuori, nonostante questo il PDA può agire per dare una risistemata allo stack
+    -> Mosse spontanee
+
+STACK
+implementato come stringa
+
+dentro allo stack non risiede lo stesso alfabeto dei simboli di input in quanto una rappresentazione interna dei dati (comoda per il programmatore) è utile.
+    -> alfabeto Z dei simboli interni
+Inoltre, è furbo imporre che lo stack abbia un contenuto iniziale (esattamente como esiste uno stato iniziale)
+    -> per sapere che cosa c'è al top dello stack bisogna fare una pop, se non c'è niente non posso
+
+...
+
+stato finale oppure stop della macchina quando lo stack è vuoto
+
+sempre una pop e poi zero o più push
+
+...
+
+fase ascendente = accumulo
+fase discendente= verifica 
+    -> due stati! Minimo necessario
+
+ESEMPIO UTILE
+...
+combinazioni non elencate danno errore
+
+NON DETERMINISMO
+anche un PDA può essere non deterministico, purtroppo stavolta non è risolvibile come nel caso delle RSF
+    -> sintomo di un linguaggio disgusting -> soluzione: cambiare il linguaggio
+
+...
+un nuovo tipo di non determinismo è dovuto dalla presenza delle mosse spontanee
+    -> in presenza di mosse spontanee possibili con la stessa configurazione rispetto ad altre mosse con un input da leggere invece
+
+TEOREMA
+per riconoscere il GENERICO linguaggio di tipo 2 è necessario di un PDA non deterministico
+    -> un PDA deterministico non riconosce alcuni linguaggi di tipo 2 (i più brutti però)
+    -> in molti casi di interesse è sufficiente un PDA deterministico (linguaggi belli)
+        -> in oltre in questo caso il riconoscimento scende ad una complessità lineare
+...
+
+DOMANDA: Che forma deve avere una grammatica di un linguaggio per poter essere riconosciuta da un PDA deterministico?
+
+...
+aggiungere ad un linguaggio deterministico dei pezzi di un linguaggio regolare lo lascia deterministico!
+
+COME SI REALIZZA UN PDA DETERMINISTICO?
+idea: mapping delle regole delle grammatica in chiamate di funzioni!!!
+
+    -> chiedi per usare stack anche per implementare il non determinismo
+...
+è quasi sempre più comodo fare la lettura prima
+
+FLASH: per creare un linguaggio uso il compilatore del linguaggio stesso per definire una sua nuova versioni espansa
+
+PARSING TABLE
