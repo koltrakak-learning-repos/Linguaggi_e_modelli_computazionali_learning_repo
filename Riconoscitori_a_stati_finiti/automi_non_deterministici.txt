@@ -37,7 +37,7 @@ Procedimento:
     NB: è estremamente probabile che l'automa cosi definito non sia minimo -> minimizziamolo
 
 OSS:
-nell'esempio delle slide il non determinismo era causato da un ciclo in uno stato NON-terminale (chiaramente con un input ritrovabile 
-altrove). Il ciclo causava il bivio modena-modena che ci faceva decidere troppo presto che strada prendere nel riconoscimento
+nell'esempio delle slide, il non determinismo era causato da un ciclo posto troppo in anticipo.
+Il ciclo causava il bivio modena-modena che ci faceva decidere troppo presto che strada prendere nel riconoscimento
     -> ci siamo liberati del non determinismo spostando un ciclo da uno stato a quello dopo
     -> ricorda: il non determinismo è sempre causato dal dover decidere troppo presto -> soluzione: guadagnare tempo
