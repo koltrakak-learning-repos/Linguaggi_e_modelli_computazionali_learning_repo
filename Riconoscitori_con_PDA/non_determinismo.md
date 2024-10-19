@@ -1,5 +1,5 @@
 ### NON DETERMINISMO
-Anche un PDA può essere non deterministico: in tal caso, la funzione sfn produce __insiemi__ di elementi di W -> W^k (W sottinsieme finito di SxZ*)
+Anche un PDA può essere non deterministico: in tal caso, la funzione sfn produce __insiemi__ di elementi di W, ovvero W^k (W sottinsieme finito di SxZ*)
 
 Il non-determinismo dell'automa può emergere sotto
 due aspetti:
@@ -15,7 +15,6 @@ In tal caso, infatti, l'automa può sia leggere x, sia non farlo.
 Stavolta, purtroppo, il non-determinismo non è risolvibile operando direttamente sull'automa come nel caso delle RSF. Bisogna andare a modificare il linguaggio.
 
     PDA non deterministico -> sintomo di un linguaggio disgusting -> soluzione: cambiare il linguaggio
-
 
 ### TEOREMA 
 La classe dei linguaggi riconosciuti da un __PDA non-deterministico coincide con la classe dei linguaggi context-free__. Perciò qualunque linguaggio context free può sempre essere riconosciuto da un opportuno PDA nondet.
@@ -37,7 +36,7 @@ Esistono linguaggi context-free riconoscibili da PDA deterministici (linguaggi c
 .. e allora la cose cambiano, perché la complessità del PDA deterministico è __lineare__ rispetto alla lunghezza della stringa da riconoscere.
 
 #### In altre parole: 
-Per riconoscere il GENERICO linguaggio di tipo 2 è necessario un PDA non-deterministico
+Per riconoscere il GENERICO linguaggio di tipo 2 è necessario un PDA __non-deterministico__
 - un PDA deterministico non riconosce alcuni linguaggi di tipo 2 (i più brutti e meno interessanti)
 - in molti casi di interesse è sufficiente un PDA deterministico (linguaggi belli e di interesse)
     - inoltre, in questo caso il costo del riconoscimento scende ad una complessità lineare.
@@ -52,7 +51,6 @@ Sicuramente non deve succedere quanto detto sopra, ovvero che l’automa, in un 
 Dovremo capire come __tradurre questi vincoli sulla grammatica__, in modo da sapere quali regole scrivere (e quali non scrivere) per assicurarsi che il risultato sia un linguaggio (context-free) deterministico.
 
 #### Proprietà linguaggi deterministici
-
 - Mix fra linguaggi deterministici
     - __L'unione, l'intersezione e il concatenamento__ di due linguaggi deterministici __non__ dà necessariamente luogo a un linguaggio __deterministico__.
     - Il __complemento__ di un linguaggio deterministico invece __è deterministico__ (ovvio…).

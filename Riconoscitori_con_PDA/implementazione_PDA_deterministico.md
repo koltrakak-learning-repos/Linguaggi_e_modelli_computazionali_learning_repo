@@ -1,12 +1,10 @@
 ### COME SI IMPLEMENTA UN PDA DETERMINISTICO?
 Si può adottare un approccio che manipoli uno __stack__ con la stessa logica di un PDA sfruttando eventuali __costrutti dei linguaggi di programmazione__ che lo facciano per noi.
 
-I linguaggi di programmazione che supportano chiamate
-ricorsive di funzioni gestiscono già implicitamente uno stack, possiamo sfruttarlo!
+I linguaggi di programmazione che supportano chiamate ricorsive di funzioni gestiscono già implicitamente uno stack, possiamo sfruttarlo!
 
 - ogni chiamata di funzione implica l'allocazione sullo stack di un record di attivazione (fase di accumulo).
-- quando la funzione termina, il record di attivazione viene
-automaticamente deallocato (fase di verifica/decremento).
+- quando la funzione termina, il record di attivazione viene automaticamente deallocato (fase di verifica/decremento).
 - ergo, basta mettere i dati da manipolare nelle variabili locali e negli argomenti della funzione, gestendo tutto con furbizia.
 
 __Idea__:
@@ -16,8 +14,7 @@ __Idea__:
 Il risultato è la tecnica nota come...
 
 ## ANALISI RICORSIVA DISCENDENTE (Top-Down Recursive-Descent Parsing)
-
-- si introduce __una funzione per ogni metasimbolo__ della grammatica e la si chiama ogni volta che si incontra quel metasimbolo.
+- si introduce __una funzione per ogni metasimbolo__ della grammatica e la si invoca ogni volta che si incontra quel metasimbolo.
 - ogni funzione copre le regole del proprio metasimbolo, ossia riconosce il sotto-linguaggio corrispondente:
     - termina normalmente, o restituisce un segno di successo, se incontra simboli coerenti con le proprie regole
     - abortisce, o restituisce un qualche segno di fallimento, se incontra simboli che non corrispondono alle proprie regole.
@@ -33,6 +30,7 @@ Applicare l'analisi ricorsiva discendente è un processo meccanico semplice, ma 
 
 Si costruisce a questo scopo una TABELLA DI PARSING
 - simile alla tabella delle transizioni di un RSF
+    - stavolta si considera il simbolo corrente e la produzione corrente
 - ma indica la prossima produzione da applicare
 Il motore del parser (parsing engine) svolgerà le singole azioni consultando la tabella di parsing.
 
@@ -42,9 +40,9 @@ FLASH: per creare un linguaggio uso il compilatore del linguaggio stesso per def
 
 ## Limiti dell'analisi ricorsiva discendente
 L’analisi ricorsiva discendente non è sempre applicabile. L'approccio funziona solo se non ci sono mai "dubbi" su quale regola
-applicare in una qualsiasi situazione.  -> determinismo
+applicare in una qualsiasi situazione (__determinismo__). 
 
-    Ciò suggerisce di identificare una classe ristretta di grammatiche context-free, che garantisca il determinismo dell’analisi sintattica discendente.
+    Ciò suggerisce di identificare una classe ristretta di grammatiche context-free, che garantisca il determinismo dell’analisi sintattica discendente (grammatiche LL(k)).
 
 ### Come rendere deterministica l'analisi ricorsiva discendente?
 Bisogna mettersi nelle condizioni di poter dedurre la mossa giusta dalle informazioni "disponibili", senza dover mai tirare a indovinare.
@@ -57,7 +55,7 @@ Cosa si intende per "informazioni disponibili"?
 
 ## GRAMMATICHE LL(k)
 Si definiscono grammatiche LL(k) quelle che sono __analizzabili in modo deterministico__:
-- procedendo Left to right
+- procedendo Left to right (nella lettura dell'input)
 - applicando la Left-most derivation (derivazione canonica sinistra)
 - guardando avanti di al più k simboli
 
@@ -66,6 +64,16 @@ Rivestono particolare interesse le GRAMMATICHE LL(1). quelle in cui basta guarda
     In sostanza, se una grammatica è LL(k), è sempre possibile scegliere con certezza la produzione da usare per procedere, guardando avanti al più di k simboli sull'input.
 
 ![alt text](esempio_grammatica_LL(1).png)
+
+### Se una grammatica è LL(1)
+- Le parti destre delle produzioni di uno stesso meta-simbolo iniziano tutte con un simbolo terminale __diverso__.
+- È quindi sufficiente guardare avanti di un carattere per scegliere con certezza la produzione con cui proseguire l'analisi
+- Se non esistono produzioni compatibili con quell'input, ERRORE
+
+### Determinismo e parsing table
+Capire se una grammatica è deterministica o meno è semplice  costruendo la relativa tabella di parsing. 
+- considerando in lettura un simbolo alla volta, ossia, considerando la grammatica come LL(1)
+- basta verificare che ogni cella contenga una sola produzione e quindi non che non ci sia mai dubbio su quale sia la prossima mossa da fare.
 
 __NB__: Serve un contratto chiaro su chi legge l'input e quando lo fa.
 - IPOTESI: ogni funzione trova nella variabile globale ch il prossimo
@@ -78,5 +86,6 @@ carattere da analizzare, già letto ma non ancora analizzato
 Questione di fondo: la frase in input deve essere completa? Ossia, non ci deve essere nient'altro dopo?
 - allora, ch al ritorno di S() deve contenere EOF o EOLN o altro terminatore
 
-O può essere solo una parte? Nel qual caso può esserci altro dopo, che però non ci interessa
-- allora, ch al ritorno di S() può contenere qualunque cosa (significa che probabilmente S() non vede davvero tutto il linguaggio…)
+O può essere solo una parte? Nel qual caso può esserci altro dopo, che però __non ci interessa__
+- allora, ch al ritorno di S() può contenere __qualunque cosa__ 
+    - significa che probabilmente S() non vede davvero __tutto__ il linguaggio, ma solo una parte di sua competenza. Ciò che segue è probabilmente analizzato da qualcun altro, a cui quindi non bisogna imporre decisioni affrettate.

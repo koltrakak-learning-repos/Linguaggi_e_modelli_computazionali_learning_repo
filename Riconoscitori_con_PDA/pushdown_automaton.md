@@ -1,4 +1,3 @@
-
 #### LIMITI DEI RICONOSCITORI A STATI FINITI
 Un RSF __non può riconoscere un linguaggio di Tipo 2__. Un RSF ha infatti un limite __intrinseco, strutturale e prefissato__, alla propria capacità di memorizzazione (il numero di stati è congelato al momento di definizione della macchina).
 
