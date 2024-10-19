@@ -30,6 +30,15 @@ Una possibile soluzione è eliminare la stringa vuota, agendo per sostituzione
     - questo però risulta in una grammatica più complicata
     - e non si riesce a capire immediatamente se una grammatica è LL(1) o meno
 
+#### Grammatiche sostanzialmente LL(1)
+Quando una grammatica ha regole non deterministiche del tipo:
+
+    A → a A | a 
+
+essa viene detta: "sostanzialmente LL(1)" dato che una produzione di questo tipo si può riscrivere in maniera deterministica con una raccoglimento:
+
+    A → a X
+    X → a X | epsilon
 
 ### C’è una via più rapida per capire se una grammatica è LL(1), senza dover eliminare le epsilon-rules?
 Sì, mettendo in conto a priori l’effetto delle eventuali epsilon-rules
