@@ -72,6 +72,7 @@ public class App {
         FRASE = scanner.nextLine();
 
         CUR_CHAR = nextchar();
+
         /*
         Qui nessuno verifica cosa ci sia in ch al
         ritorno di S() → si accettano anche frasi con
@@ -81,5 +82,8 @@ public class App {
             System.out.println("success!");
         else
             System.out.println("failure");
+
+        // qua abbiamo gia il prossimo carattere pronto da dare al prossimo pezzo del riconoscitore
+        //System.out.println(CUR_CHAR);
     }
 }
