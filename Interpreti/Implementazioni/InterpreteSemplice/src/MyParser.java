@@ -37,6 +37,32 @@ public class MyParser {
         return t1; // next token nullo -> end input
     }
 
+    /* ASSOCIATIVO A DESTRA (non ho bisogno di trasformare la ricorsione in iterazione!!!)*/
+    // public int parseExp() {
+    //     int t1 = parseTerm();
+    
+    //     if (currentToken != null) {
+    //         if (currentToken.equals("+")) {
+    //             currentToken = scanner.getNextToken();
+
+    //             int t2 = parseExp();  
+    //             System.out.print("\tValuto " + t1 + " + " + t2 + " = ");
+    //             t1 = t1 + t2;
+    //             System.out.println(t1);
+    //         } 
+    //         else if (currentToken.equals("-")) {
+    //             currentToken = scanner.getNextToken();
+
+    //             int t2 = parseExp();  // Chiamata ricorsiva per ottenere associatività a destra
+    //             System.out.print("\tValuto " + t1 + " - " + t2 + " = ");
+    //             t1 = t1 - t2;
+    //             System.out.println(t1);
+    //         }
+    //     }
+    
+    //     return t1; // restituisce t1 alla fine
+    // }
+
     public int parseTerm() {
         int f1 = parseFactor();
 
@@ -66,6 +92,32 @@ public class MyParser {
 
         return f1; // next token nullo -> end input
     }
+
+    /* ASSOCIATIVO A DESTRA */
+    // public int parseTerm() {
+    //     int f1 = parseFactor();
+    
+    //     if (currentToken != null) {
+    //         if (currentToken.equals("*")) {
+    //             currentToken = scanner.getNextToken();
+
+    //             int f2 = parseTerm();  // Chiamata ricorsiva per ottenere associatività a destra
+    //             System.out.print("\tValuto " + f1 + " * " + f2 + " = ");
+    //             f1 = f1 * f2;
+    //             System.out.println(f1);
+    //         } 
+    //         else if (currentToken.equals(":")) {
+    //             currentToken = scanner.getNextToken();
+
+    //             int f2 = parseTerm();  // Chiamata ricorsiva per ottenere associatività a destra
+    //             System.out.print("\tValuto " + f1 + " / " + f2 + " = ");
+    //             f1 = f1 / f2;
+    //             System.out.println(f1);
+    //         }
+    //     }
+    
+    //     return f1; // restituisce f1 alla fine
+    // }
 
     public int parseFactor() {
         if (currentToken.equals("(")) {
