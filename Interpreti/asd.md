@@ -1,0 +1,60 @@
+// al posto dell'if ricorsivo, con l'associatività a destra posso sempre usare un while con l'accortezza di accumulare a destra.
+// fallo con le potenze, come esercizio.
+
+L'interprete prodotto fino ad adesso è fin troppo hard-coded, se cambia anche un solo tipo devo rifare tutto. Potrebbe essere più intelligente estrarre le parti invarianti da quelle dipendenti dal caso d'uso.
+
+Idea il parser salva i risultati della sua valutazione in un formato intermedio (albero) che sarà poi processato da vari interpreti diversi.
+
+## Alberi sintattici astratti
+Si potrebbe usare l’albero di derivazione, ma in generale esso darebbe luogo a una rappresentazione ridondante che mi alloca tanto spazio in memoria inutilmente.
+
+se l'albero degenera in una lista, i nodi intermedi non mi servono in quanto non offrono un contributo effettivo. Se i nodi intermedi avessero delle diramazione quest'ultimi allora offrirebbero dei reali contributi aggregando i due sotto alberi in un unico risultato.
+
+NB: quei nodi intermedi corrispondono effettivamente ad una chiamata di funzione necessaria per la corretta derivazione della frase, ma salvare questo tipo di nodi non è necessario.
+
+Definiamo abstract syntax tree ...
+
+...
+
+vogliamo rendere l'albero binario (__CHIEDI PERCHé__), al posto di salvare exp dico immediatamente che tipo di exp sei (+; -)
+
+...
+ricorda: le parentesi pilotano l'albero di derivazione; adesso però osserviamo che non serve salvarle nell'AST (anche se F ha più di un figlio) in quanto una roba tra parentesi ha lo stesso valore di quella roba senza parentesi.
+
+### Estendiamo il parser facendogli produrre un AST
+...
+
+### Sintassi astratta
+non è la sintassi vera usata dal parser ma serve a descrivere l'AST. Questo è __l'output del parser__, l'input è la sintassi a strati mostrata prima.
+
+In questo caso il problema dell'ambiguità non si pone in quanto chi scrive conosce quello che sta scrivendo non deve capire una cosa che sta ricevendo (lettura)
+
+### Architettura globale di un interprete
+...
+il vantaggio di usare AST è che se vogliamo, ad esempio, cambiare dominio di valutazione, basta scrivere un nuovo valutatore del AST e non riscrivere l'intero interprete da capo.
+
+### Valutazione degli alberi
+notazione prefissa  = visita pre-order
+notazione postfissa = visita post-order
+
+notazione infissa   = visita in-order ; questo tipo di visita non rende evidente l'ordine delle operazioni
+
+...
+
+la notazione postfissa, che sembra quella più brutta, è in realta quella più naturale per una macchina che prima di eseguire una operazione ha bisogno dei dati su cui quella operazione va fatta.
+
+    piccolo discorso epico pre pausa: Nel costruire il nostro processore virtuale (valutatore) piuttosto che appoggiarsi ad un numero finito di registri e gestire le complicazioni dovute a questo, meglio usare una macchina a stack dato che non ci interessa il costo di accesso alla memoria (processore VIRTUALE). Questo è esattaente come funzionano la JVM e CLR. **mic drop**
+
+OSS: la grammatica a strati e la ricorsione sinistra, opportunamente tradotto nel parser, ha dentro di se i concetti di associativita e priorità come abbiamo gia vista. Per questo motivo l'AST prodotto ha gia dentro nella sua struttura questi concetti. In altre parole, se una espressione viene valutata con una associatività diversa, l'AST prodotto avrè collegati i nodi al suo interno i nodi collegati in modo altrettanto diverso. A questo punto la macchina esecutrice (valutatore) non si deve più preoccupare di questi concetti e può fare una valutazione sequenziale con una visita post-order dell'albero.
+
+...
+
+__CHIEDI PER LE SLIDE SULLA JVM__ 
+
+...
+
+### esperimenti con parsing emu
+...
+
+## VALUTATORI
+implementano la funzione di interpretazione. Mangiano l'AST
