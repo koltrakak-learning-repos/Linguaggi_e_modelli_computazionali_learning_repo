@@ -3,12 +3,18 @@
 
 L'interprete prodotto fino ad adesso è fin troppo hard-coded, se cambia anche un solo tipo devo rifare tutto. Potrebbe essere più intelligente estrarre le parti invarianti da quelle dipendenti dal caso d'uso.
 
-Idea il parser salva i risultati della sua valutazione in un formato intermedio (albero) che sarà poi processato da vari interpreti diversi.
+Idea il parser salva i risultati della sua valutazione in un formato intermedio (albero) che sarà poi processato da vari interpreti (valutatori) distinti.
 
 ## Alberi sintattici astratti
-Si potrebbe usare l’albero di derivazione, ma in generale esso darebbe luogo a una rappresentazione ridondante che mi alloca tanto spazio in memoria inutilmente.
+Se la valutazione non è immediata, il parser rappresenta le frasi sintatticamente corrette tramite una opportuna __rappresentazione interna__, solitamente ad albero.
 
-se l'albero degenera in una lista, i nodi intermedi non mi servono in quanto non offrono un contributo effettivo. Se i nodi intermedi avessero delle diramazione quest'ultimi allora offrirebbero dei reali contributi aggregando i due sotto alberi in un unico risultato.
+Si potrebbe usare l’albero di derivazione, ma in generale esso darebbe luogo a una rappresentazione ridondante che mi alloca tanto spazio in memoria inutilmente.
+- l'albero di derivazione illustra tutti i singoli passi di derivazione, ma molti di essi servono solo durante la costruzione dell'albero, per ottenere "proprio quell'albero" e non un altro.
+- inoltre, un albero con molti nodi e livelli è complesso da visitare (la visita è ricorsiva), determinando quindi inutili inefficienze.
+
+Conviene adottare un albero più compatto, che contenga solo i nodi indispensabili e possibilmente sia pure binario. Tale albero è detto Abstract Parse Tree (APT) o Abstract Syntax Tree (AST).
+
+idea: se su sottoalbero appartenente all'albero di derivazione degenera in una lista, i nodi intermedi non mi servono in quanto non offrono un contributo effettivo. Se i nodi intermedi avessero delle diramazione quest'ultimi allora offrirebbero dei reali contributi aggregando i due sotto alberi in un unico risultato.
 
 NB: quei nodi intermedi corrispondono effettivamente ad una chiamata di funzione necessaria per la corretta derivazione della frase, ma salvare questo tipo di nodi non è necessario.
 
@@ -25,9 +31,11 @@ ricorda: le parentesi pilotano l'albero di derivazione; adesso però osserviamo 
 ...
 
 ### Sintassi astratta
-non è la sintassi vera usata dal parser ma serve a descrivere l'AST. Questo è __l'output del parser__, l'input è la sintassi a strati mostrata prima.
+non è la sintassi vera usata dal parser ma serve a descrivere l'AST. Questo è __l'output del parser__, l'input è la sintassi a strati mostrata prima. In questo caso il problema dell'ambiguità non si pone in quanto chi scrive conosce quello che sta scrivendo non deve capire una cosa che sta ricevendo (lettura).
 
-In questo caso il problema dell'ambiguità non si pone in quanto chi scrive conosce quello che sta scrivendo non deve capire una cosa che sta ricevendo (lettura)
+La sintassi astratta non è unica:
+- Poiché descrive una possibile rappresentazione interna, varia al variare di quest’ultima
+- __NB__: Sintassi astratte diverse descrivono sistemi software diversi
 
 ### Architettura globale di un interprete
 ...
