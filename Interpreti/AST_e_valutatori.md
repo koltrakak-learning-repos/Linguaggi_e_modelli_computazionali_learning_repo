@@ -1,6 +1,3 @@
-// al posto dell'if ricorsivo, con l'associatività a destra posso sempre usare un while con l'accortezza di accumulare a destra.
-// fallo con le potenze, come esercizio.
-
 L'interprete prodotto fino ad adesso è fin troppo hard-coded, se cambia anche un solo tipo devo rifare tutto. Potrebbe essere più intelligente estrarre le parti invarianti da quelle dipendenti dal caso d'uso.
 
 Idea il parser salva i risultati della sua valutazione in un formato intermedio (albero) che sarà poi processato da vari interpreti (valutatori) distinti.
@@ -22,7 +19,7 @@ Definiamo abstract syntax tree ...
 
 ...
 
-vogliamo rendere l'albero binario (__CHIEDI PERCHé__), al posto di salvare exp dico immediatamente che tipo di exp sei (+; -)
+vogliamo rendere l'albero binario, al posto di salvare exp dico immediatamente che tipo di exp sei (+; -)
 
 ...
 ricorda: le parentesi pilotano l'albero di derivazione; adesso però osserviamo che non serve salvarle nell'AST (anche se F ha più di un figlio) in quanto una roba tra parentesi ha lo stesso valore di quella roba senza parentesi.
@@ -41,7 +38,7 @@ La sintassi astratta non è unica:
 ...
 il vantaggio di usare AST è che se vogliamo, ad esempio, cambiare dominio di valutazione, basta scrivere un nuovo valutatore del AST e non riscrivere l'intero interprete da capo.
 
-### Valutazione degli alberi
+## Valutazione degli alberi
 notazione prefissa  = visita pre-order
 notazione postfissa = visita post-order
 
@@ -49,20 +46,18 @@ notazione infissa   = visita in-order ; questo tipo di visita non rende evidente
 
 ...
 
-la notazione postfissa, che sembra quella più brutta, è in realta quella più naturale per una macchina che prima di eseguire una operazione ha bisogno dei dati su cui quella operazione va fatta.
+NB: La notazione postfissa, che sembra quella più brutta, è in realta quella più naturale per una macchina che prima di eseguire una operazione ha bisogno dei dati su cui quella operazione va fatta.
 
     piccolo discorso epico pre pausa: Nel costruire il nostro processore virtuale (valutatore) piuttosto che appoggiarsi ad un numero finito di registri e gestire le complicazioni dovute a questo, meglio usare una macchina a stack dato che non ci interessa il costo di accesso alla memoria (processore VIRTUALE). Questo è esattaente come funzionano la JVM e CLR. **mic drop**
 
 OSS: la grammatica a strati e la ricorsione sinistra, opportunamente tradotto nel parser, ha dentro di se i concetti di associativita e priorità come abbiamo gia vista. Per questo motivo l'AST prodotto ha gia dentro nella sua struttura questi concetti. In altre parole, se una espressione viene valutata con una associatività diversa, l'AST prodotto avrè collegati i nodi al suo interno i nodi collegati in modo altrettanto diverso. A questo punto la macchina esecutrice (valutatore) non si deve più preoccupare di questi concetti e può fare una valutazione sequenziale con una visita post-order dell'albero.
 
-...
 
-__CHIEDI PER LE SLIDE SULLA JVM__ 
+### VALUTATORI
+Più valutatori possono produrre output diversi.
 
-...
+    Il valutatore valuta un AST in un dato dominio, secondo la sua funzione di interpretazione.
 
-### esperimenti con parsing emu
-...
+- deve visitare l'albero applicando in ogni nodo la semantica prevista per quel tipo di nodo
+- deve discriminare che tipo di nodo sta visitando
 
-## VALUTATORI
-implementano la funzione di interpretazione. Mangiano l'AST

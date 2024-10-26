@@ -122,7 +122,5 @@ Queste regole sintattiche:
 - non presentano più ricorsione esplicita
 - descrivono un processo computazionale __iterativo__, implementabile anche senza far uso di ricorsione.
 
-__Risultato__: la grammatica così ottenuta è analizzabile con
-tecnica ricorsiva discendente, senza rischiare l'esplosione
-dello stack -> LL(1)
+__Risultato__: la grammatica così ottenuta è analizzabile con tecnica ricorsiva discendente, senza rischiare l'esplosione dello stack -> LL(1)
 - leggi le slide per capire meglio il perchè. 
