@@ -52,7 +52,6 @@ NB: La notazione postfissa, che sembra quella più brutta, è in realta quella p
 
 OSS: la grammatica a strati e la ricorsione sinistra, opportunamente tradotto nel parser, ha dentro di se i concetti di associativita e priorità come abbiamo gia vista. Per questo motivo l'AST prodotto ha gia dentro nella sua struttura questi concetti. In altre parole, se una espressione viene valutata con una associatività diversa, l'AST prodotto avrè collegati i nodi al suo interno i nodi collegati in modo altrettanto diverso. A questo punto la macchina esecutrice (valutatore) non si deve più preoccupare di questi concetti e può fare una valutazione sequenziale con una visita post-order dell'albero.
 
-
 ### VALUTATORI
 Più valutatori possono produrre output diversi.
 
@@ -61,3 +60,25 @@ Più valutatori possono produrre output diversi.
 - deve visitare l'albero applicando in ogni nodo la semantica prevista per quel tipo di nodo
 - deve discriminare che tipo di nodo sta visitando
 
+### IL VISITOR COME INTERPRETE
+Il visitor realizza la logica di interpretazione in modo coerente all'approccio a oggetti
+- cattura UNA logica di interpretazione
+    - si scrivono tanti visitor quante le interpretazioni richieste possibile organizzarle in una TASSONOMIA
+- la logica di interpretazione è concentrata in UN unico luogo, ma non ha più la forma di una "old style function": è suddivisa, all'interno del visitor, in tante implementazioni del metodo visit quante sono le classi della tassonomia (overloading)
+
+Il visitor incorpora la logica di visita
+- metodi visit (uno per ogni tipo di espressione)
+L'espressione accetta la visita del visitor
+- metodo accept
+
+Trucco: lo fa rimpallando l'azione sul visitor stesso, passandogli se stessa come oggetto da visitare
+- "accetto la tua visita" = "ti ordino di visitarmi"
+- Tecnica di Double Dispatch
+
+### Double dispatch
+- Si attiva la valutazione chiedendo all'espressione di accettare la visita di un certo visitor 
+    - expression.accept(visitor)
+- L'espressione serve le richiesta rimpallando l'azione sul visitor e passando se stessa come oggetto da visitare, ossia invocando:
+    - visitor.visit(this)
+- In questo "BOTTA & RISPOSTA" __la risoluzione dell'overloading__ seleziona automaticamente la visit appropriata senza bisogno di instanceof 
+    - cast dinamico
