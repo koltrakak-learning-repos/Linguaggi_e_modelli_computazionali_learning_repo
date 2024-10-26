@@ -1,6 +1,3 @@
-// import java.io.PrintWriter;
-// import java.io.File;
-
 import visitor.*;
 import exp.*;
 
@@ -38,9 +35,5 @@ public class App {
         Exp ast4 = parser.parseExp();
         ast4.accept(v2);
         System.out.println(ast4 + " = " + v2.getResult() + "\n");
-
-        // PrintWriter p = new PrintWriter(new File("./Interpreti/Implementazioni/Interprete_AST_con_valutazione/compilato.code"));
-        // ast4.emit(p);
-        // p.close();
     }
 }
