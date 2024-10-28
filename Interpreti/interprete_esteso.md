@@ -70,7 +70,17 @@ Per introdurre l’assegnamento in un linguaggio occorre stabilire:
     - ESPRESSIONE: effettua un’azione e denota anche un valore che costituisce il «risultato» dell’espressione
 - Quest’ultima scelta dipende dal fatto che si voglia o meno supportare l’assegnamento multiplo.
 
+### Espressioni sequenza
+COSA SONO: sequenze di espressioni separate da virgola (,)
+- IPOTESI 1: la prima espressione è sempre un assegnamento
+- IPOTESI 2: il valore complessivo è quello dell'exp più a destra
 
+Sintassi astratta:
 
+    EXP ::= ASSIGN , EXP // SeqExp
+
+__NB__: con questa estensione ci si avvicina sempre più alla sintassi e ai costrutti di un "vero" linguaggio di programmazione, in cui di solito:
+- prima si inizializzano le variabili
+- poi si computa su di esse
 
 #### CHIEDI A DENTI COME MAI EFFETTO COLLATERALE

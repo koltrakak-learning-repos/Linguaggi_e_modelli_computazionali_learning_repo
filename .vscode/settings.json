@@ -1,5 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "Interpreti/Implementazioni/Interprete_AST_con_visitor/src"
+        "Interpreti/Implementazioni/Interprete_esteso/src"
     ]
 }
