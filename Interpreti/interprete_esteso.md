@@ -37,11 +37,14 @@ Con questo approccio si ottiene __trasparenza referenziale__, ovvero ogni simbol
 __NB__: assegnamenti distruttivi non permessi non significa che le variabili diventano costanti! Con una costante si conosce il valore desiderato a priori. Variabili a singolo assegnamento invece, sono "variabili" nel senso che __a runtime possono assumere valori diversi__, l'unica cosa che cambia è che non si contempla la assegnazione distrutttiva. 
 
 ### Environment
-Per esprimere la semantica dell’assegnamento occorre introdurre il concetto di environment inteso come tabella (mappa) a due colonne che mantiene la associazioni simbolo-valore. __L’assegnamento modifica l’environment__ causando un __effetto collaterale__ (__boh, chiedi a denti qual'è l'effetto principale dell'assegnamento allora__).
+Per esprimere la semantica dell’assegnamento occorre introdurre il concetto di environment inteso come tabella (mappa) a due colonne che mantiene la associazioni simbolo-valore. __L’assegnamento modifica l’environment__ causando un __effetto collaterale__.
 
-    Il mondo prima dell'assegnamento è quello dopo sono diversi!
+    L'effetto principale di un assegnamento è quello di restituire il risultato dell'assegnamento. Il side effect è la modifica dell'environment. Il mondo prima dell'assegnamento è quello dopo sono diversi!
 
-NB: Se il linguaggio è a singolo assegnamento non si può modificare una riga dell'environment gia settata (restituzione di un errore). Nei linguaggi imperativi invece questo è possibile. 
+Per capire come mai si chiama collaterale pensa ad x++. Questa espressione inizialemnte ritorna x ma se chiamata una seconda volta ritorna x+1. Ma come ho chiamato la stessa espressione due volte ed ho ottenuto due valori diversi??
+- effetto collaterale = modifica dell'environment
+
+NB: Se il linguaggio è a singolo assegnamento non si può modificare una riga dell'environment gia settata (restituzione di un errore). Nei linguaggi imperativi invece questo è possibile.
 
 ### Environment multipli
 L’environment è spesso suddiviso in sotto-ambienti, di norma collegati al tempo di vita delle strutture run-time
@@ -82,5 +85,3 @@ Sintassi astratta:
 __NB__: con questa estensione ci si avvicina sempre più alla sintassi e ai costrutti di un "vero" linguaggio di programmazione, in cui di solito:
 - prima si inizializzano le variabili
 - poi si computa su di esse
-
-#### CHIEDI A DENTI COME MAI EFFETTO COLLATERALE
