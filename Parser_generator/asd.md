@@ -6,5 +6,10 @@ Linguaggi studiati per risolvere problemi in una specifica nicchia. Un linguaggi
 
 ### ANTLR (ANother Tool for Language Recognition)
 ...
+Interessante l'utilizzo di una tecnica di parsing LL(*)
+
+- L'originale algoritmo Adaptive LL(*) va oltre il puro LL(k)
+    - accetta ricorsione sinistra diretta (ristrutturata internamente)
+    - molto efficiente, prestazioni adattative nel runtime
 
 ### roba
