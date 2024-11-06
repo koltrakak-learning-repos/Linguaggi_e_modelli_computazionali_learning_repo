@@ -39,8 +39,7 @@ Il motore del parser (parsing engine) svolgerà le singole azioni consultando la
 FLASH: per creare un linguaggio uso il compilatore del linguaggio stesso per definire una sua nuova versioni espansa
 
 ## Limiti dell'analisi ricorsiva discendente
-L’analisi ricorsiva discendente non è sempre applicabile. L'approccio funziona solo se non ci sono mai "dubbi" su quale regola
-applicare in una qualsiasi situazione (__determinismo__). 
+L’analisi ricorsiva discendente non è sempre applicabile. L'approccio funziona solo se non ci sono mai "dubbi" su quale regola applicare in una qualsiasi situazione (__determinismo__). 
 
     Ciò suggerisce di identificare una classe ristretta di grammatiche context-free, che garantisca il determinismo dell’analisi sintattica discendente (grammatiche LL(k)).
 
