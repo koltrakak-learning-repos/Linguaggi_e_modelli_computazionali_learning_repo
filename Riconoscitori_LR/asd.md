@@ -82,3 +82,7 @@ __produzione unica__ AND non abbia __archi di uscita etichettati da terminali__.
 
 ### Teorema:
 una grammatica LR(0) non è mai ambigua.
+
+...
+
+
