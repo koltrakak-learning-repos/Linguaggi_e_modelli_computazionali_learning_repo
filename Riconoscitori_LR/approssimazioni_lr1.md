@@ -26,4 +26,3 @@ LR(1) separa troppo chirurgicamente e produce mille stati che se anche accorpati
 ### DOMANDE DA FARE
 1) perchè c'è bisogno di LR? è solo una alternativa? 
 2) la distinzione non è tra grammatiche deterministiche e non deterministiche? che cosa centra l'ambiguità?
-3) usare l'engine prolog non è un overkill? 
