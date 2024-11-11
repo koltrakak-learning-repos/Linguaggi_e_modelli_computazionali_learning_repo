@@ -16,3 +16,5 @@ La differenza è sottile, un programma potrebbe essere considerato una frase lun
 risultato finale "che ci si aspetta". Un compilatore produce un passaggio intermedio (ad esempio codice assembly). La differenza tuttavia, è nell'occhio di chi osserva, se ci si apetta dell'assembly, anche un compilatore potrebbe essere considerato un interprete. 
 
 ### Come devo pensare alla Compilazione JIT??
+
+### Che relazione c'è tra quanto elencato sopre e la velocità di un linguaggio di "programmazione"?
