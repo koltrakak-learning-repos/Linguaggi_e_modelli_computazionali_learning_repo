@@ -20,6 +20,6 @@ un interprete la cui funzione di valutazione compila la frase?
 
 si distingue tra compilatori e interpreti, questi ultimi possono essere interpreti puri o interpreti che fanno compilazione JIT
 
-NB: esiste anche la intermediate representaion (i.e. bytecode java) che a sua volta può essere interpretata in modo puro o in maniera JIT
+NB: esiste anche la intermediate representation (i.e. bytecode java) che a sua volta può essere interpretata in modo puro o in maniera JIT
 
-### Che relazione c'è tra quanto elencato sopre e la velocità di un linguaggio di "programmazione"?
+### Che relazione c'è tra quanto elencato sopre e la "velocità" di un linguaggio di programmazione?
