@@ -1,5 +1,4 @@
 ### INTERPRETAZIONE, COMPILAZIONE e COMPILAZIONE JIT
-
 Abbiamo visto che un interprete:
 - accetta una frase alla volta
 - produce l'AST
@@ -23,3 +22,10 @@ si distingue tra compilatori e interpreti, questi ultimi possono essere interpre
 NB: esiste anche la intermediate representation (i.e. bytecode java) che a sua volta può essere interpretata in modo puro o in maniera JIT
 
 ### Che relazione c'è tra quanto elencato sopre e la "velocità" di un linguaggio di programmazione?
+Un interpreta utilizza funzionalità del linguaggio con cui è stato scritto per valutare le frasi del programma interpretato.
+- semantica fornita mediante mattoncini che so già cosa vogliono dire
+- doppio livello di astrazione rispetto al linguaggio macchina -> lento?
+
+Compilazione JIT ?
+
+Compilazione ?
