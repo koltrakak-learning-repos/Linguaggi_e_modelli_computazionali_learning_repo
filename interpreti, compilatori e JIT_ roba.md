@@ -6,8 +6,9 @@ Abbiamo visto che un interprete:
 
 Un compilatore invece
 - accetta un intero programma (più frasi)
-- Produce vari AST (**?**)
-- valuta  gli l'AST in ordine per riscrivere la frase di partenza in una (o più) frasi in un altro linguaggio (più semplice).
+- Produce l'AST
+    - che stavolta sarà composto da vari sotto-AST
+- verranno poi valutati i vari sotto-AST in ordine per riscrivere la frase di partenza in una (o più) frasi in un altro linguaggio (più semplice).
     - da fare eseguire direttamente alla macchina
     - oppure da far sottoporre ad altri passaggi di interpretazione/compilazione
 
@@ -25,7 +26,3 @@ NB: esiste anche la intermediate representation (i.e. bytecode java) che a sua v
 Un interpreta utilizza funzionalità del linguaggio con cui è stato scritto per valutare le frasi del programma interpretato.
 - semantica fornita mediante mattoncini che so già cosa vogliono dire
 - doppio livello di astrazione rispetto al linguaggio macchina -> lento?
-
-Compilazione JIT ?
-
-Compilazione ?
