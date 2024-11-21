@@ -1,0 +1,45 @@
+Ogni linguaggio che introduca funzioni deve prevedere un modello computazionale per la loro **valutazione**.
+
+Tale modello deve stabilire:
+- QUANDO si valutano i parametri
+- COSA si passa alla funzione
+- COME si attiva la funzione (si cede il controllo ?)
+
+...
+
+### Modello applicativo (o call by value)
+Modello applicativo potrebbe essere inefficiente in alcuni casi
+- una invocazione di funzione ha bisogno di valutare/calcolare tutti gli argomenti anche se al suo interno non vengono non utilizzati
+    - se la valutazione di uno degli argomenti NON utilizzati fa scoppiare tutto sono scoppiato per niente 
+
+...
+
+Una critica potrebbe essere la facilità di debugging, un modello lazy potrebbe produrre errori che non saltano sempre fuori e non saltano fuori nel punto dell'errore
+
+### Modello call by name
+passa gli argomenti cosi come sono senza valutazione 
+
+si passano delle entità valutabili (ad es. espressioni) e non dei semplici valori
+- se si utilizza il parametro 100 volte -> 100 valutazioni (inefficienza che però chiaramente si cura con caching)
+
+Il vero punto è che qua di valuta solo quello che serve, e quindi questo modello salva più funzioni rispetto al modello applicativo
+
+#### perchè non usarlo sempre?
+richiede chiaramente più risorse a runtime
+
+Motivo principale: richiede una macchina virtuale capace di lazy evaluation, che per quanto bello ha una utilità limitata nella maggior parte dei contesti
+
+
+
+### Come si implementa la Call-by Name
+a parole brevi con le funzioni come FCE.
+
+
+...
+
+
+Il caso interessante è quello di Scala in cui il lato del chiamante non si rende nemmeno conto di star passando delle funzioni.
+    - Il linguaggio ti viene in contro
+Questo permette, ad esempio, al codice dell'utente di non cambiare anche se il lato del chiamato cambia se il parametro è valutato con call by name/value
+
+Anche se cambia l'universo mondo, il salto di espressivitò dovuto al fatto che il linguaggio ti venga in contro, permette di nascondere dettagli implementativi che interessano solo il lato del chiamato.
