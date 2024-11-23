@@ -19,14 +19,19 @@ In presenza di variabili libere e del concetto di chiusura. la maniera classica 
 
 ...
 
-__NB__: si sarebbe potuto anche effettuare un passaggio per copia ma a quel punto eventuali modifiche deglia argomenti da altre funzioni che hanno un riferimento non vengono viste.
+__NB__: si sarebbe potuto anche effettuare un passaggio per copia ma a quel punto eventuali modifiche degli argomenti da altre funzioni che hanno un riferimento non vengono viste.
 
 ### Chiusura lessicale e chiusura dinamica
-caso lessicale:
+Occorre stabilire un criterio sul __come e dove cercare una definizione per le variabili libere da chiudere__. In presenza di funzioni innestate, si apre una questione:
+- da un lato, il testo del programma contiene fisicamente una catena di ambienti di definizione innestati (catena lessicale)
+- dall'altro, l'attivazione delle funzioni crea a run-time una catena di ambienti attivi (catena dinamica) che riflette l'ordine delle chiamate
+Le due catene sono in generale diverse, quindi bisogna scegliere quale seguire
+
+Caso lessicale:
 - più predicibile; alla definizione della chiusura so chiaramente qual'è la variabile puntata
 - compatibile con la costruzione di librerie
 
-caso dinamico: 
+Caso dinamico: 
 - per dare valore alle variabili libere aspetto di vedere chi mi chiama
 - il risultato della chiamata a funzione dipende da chi mi chiama
 - incompatibile con la costruzione delle librerie

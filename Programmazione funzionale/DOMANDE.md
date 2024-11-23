@@ -19,3 +19,15 @@ int main() {    -> nuova funzione -> il visitor che valuta le funzioni crea un n
         int c = 12  -> visitor che valuta i blocchi aggiunge una entry in un suo stack che però contiene anche riferimenti alla variabili della funzione
     }
 }
+
+function ff() {
+  var a = 13;
+    var f = () => a+10
+    
+    return f
+}
+
+• Intenzionalmente, non esiste un analogo in kotlin
+• esiste però la possibilità di valutare proprietà in modo lazy,
+intendendo che vengano valutate al primo utilizzo: ma non è la
+stessa cosa, né ha la stessa potenza espressiva
