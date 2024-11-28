@@ -41,9 +41,9 @@ Abbiamo solo funzioni ad un argomento (mattone elementare) ma non siamo limitati
 
 Possiamo definire una funzione che chiude una funzione di ordine inferiore che mangia il secondo argomento che a sua volta può chiudere un'altra funzione per il terzo argomento ecc...
 
-Chiaramente è più comodo appiattire i livelli e avere le funzioni a più argomenti, ma il fondamento è questo.
+**Chiaramente è più comodo appiattire i livelli e avere le funzioni a più argomenti, ma il fondamento è questo ed espresso in questo modo e più comodo fare dimostrazioni matematiche. Ma sopratuto non è che il currying ha dei casi di utilizzo particolari?**
 
-STIAMO PERDENDO QUALCOSA??? CENTRANO QUALCOSA LE FUNZIONI CON UN NUMERO DI ARGOMENTI VARIABILE???
+**STIAMO PERDENDO QUALCOSA??? CENTRANO QUALCOSA LE FUNZIONI CON UN NUMERO DI ARGOMENTI VARIABILE???**
 PERCHè JS ha queste cose???
 
 ...
@@ -67,3 +67,10 @@ debolmente normalizzabile
 ### Strategie di riduzione
 ...
 **IMPORTANTE**: Le famiglie di call by name e call by value, nascono da come si sceglie l'ordine di valutazione di una espressione nel lambda calcolo  
+
+...
+
+
+### TURING-EQUIVALENZA
+
+**OCCHIO**: bisogno poter rappresentare la ricorsione -> problema: le funzioni qui sono anonime!

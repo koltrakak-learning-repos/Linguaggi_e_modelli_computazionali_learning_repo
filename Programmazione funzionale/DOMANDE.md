@@ -28,6 +28,4 @@ function ff() {
 }
 
 • Intenzionalmente, non esiste un analogo in kotlin
-• esiste però la possibilità di valutare proprietà in modo lazy,
-intendendo che vengano valutate al primo utilizzo: ma non è la
-stessa cosa, né ha la stessa potenza espressiva
+• esiste però la possibilità di valutare proprietà in modo lazy, intendendo che vengano valutate al primo utilizzo: ma non è la stessa cosa, né ha la stessa potenza espressiva
