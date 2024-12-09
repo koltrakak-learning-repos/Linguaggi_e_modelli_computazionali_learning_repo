@@ -2,7 +2,7 @@ blah blah...
 
 ### Variabili e Scope
 La dichiarazione di una variabile può essere:
-- implicita (la si usa e basta)         ->  x = 18
+- implicita (la si usa e basta)           ->  x = 18
 - esplicita con la parola chiave *var*    ->  var x = 19
 - esplicita con la parola chiave *let*    ->  let x = 19
 
@@ -21,37 +21,14 @@ blah blah...
 
 1. Rappresentare uno stato privato e nascosto
     - Utile per realizzare factory di oggetti
-    - Utile per realizzare un canale di comunicazione passando degli oggetti
+    - Utile per realizzare un canale di comunicazione mediante oggetti privati della chiusura
 
 2. Realizzare nuove strutture di controllo
+    - la funzione esterna esprime il controllo, mentre quella ricevuta come argomento esprime il "corpo da eseguire"
+
+3. Riprogettare/semplificare API
+    - attraverso metodi parametrici che «ricevono comportamento» come argomento, anziché metodi specializzati
 
 ...
 
-Attenzione però ai riferimenti...
-
-## Modello a prototipi
-
-### Definizione di oggetti
-
-...
-
-con Funzione costruttrice e operatore new (di fatto si chiama la funzione costruttrice con argomento nascosto uguale alla memoria necessaria)
-
-**ATTENZIONE a THIS: Negli esempi è fondamentale**
-
-**Il qualificatore private non è necessario**; basta usare delle chiusure
-
-...
-
-Le classi fissano la struttura
-
-
-## Prototipi di oggetti
-ereditarietà tra oggetti e non tra classi. Qua è tutto più fluido, non ho la (conveniente) rigidità delle classi
-
-I costruttori predispongono un campo \_\_proto\_\_ che popolono con i prototipi degli oggetti che creano
-
-**perchè ricorsione**?
-anche nel prototipo dei literal
-
-![alt text](image.png)
+Attenzione però ai riferimenti (chiusure dentro ad un for) ...
