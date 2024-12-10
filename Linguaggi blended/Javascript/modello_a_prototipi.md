@@ -29,6 +29,9 @@ Eventuali "metodi" (non c'è il concetto di classe e quindi è un nome un po' im
 
 
 ## Costruttori
+
+**OSS**: L'unica differenza tra una funzione normale ed un costruttore è che all'interno di quest'ultimo ci sono delle proprietà riferite con *this*
+
 Un costruttore è una normale funzione, che però:
 - ha per convenzione un nome che inizia per lettera maiuscola
 - è invocata indirettamente, tramite l'operatore **new**
@@ -115,10 +118,40 @@ Chi sono costoro?
 
 In pratica, ogni prototipo progenitore è il **primo oggetto del suo tipo**.
 
+**OSS**: le categorie di oggetti sono **uniformi** -> non esistono tipi primitivi
+
+**OSS_2**: dato che i prototipi forniscono il fondamento su cui si basano le proprietà degli oggetti creati, il campo \_\_proto\_\_ è spesso hidden o non modificabile.
+
+**OSS_3**: il costruttore **Object** non è l'oggetto capostipite, è solo una funzione come l'altra
+
+
+...
+
+I costruttori devono anche riempire il campo \_\_proto\_\_ degli oggetti che costruiscono. Come funziona questo riempimento?
+
+Innanzitutto, **È PROGRAMMABILE!** Praticamente, le funzioni costruttore hanno una proprietà chiamata **_prototype_** che punta all'oggetto prototipo per gli oggetti che crea (il costruttore riempe \_\_proto\_\_ degli oggetti creati con il suo campo *prototype* (di default è un oggetto vuoto) ).
 
 
 
-**perchè ricorsione**?
-anche nel prototipo dei literal
+... Buona progettazione del modello a prototipi, tutto è uniforme e non ci sono eccezioni ...
 
-![alt text](image.png)
+...
+
+**THIS IS CRAZY**: In javascript è possibile modificare **A RUNTIME** i prototipi e quindi modificare che cosa viene ereditato
+
+Due soluzioni:
+- **retroattiva**: si modifica il prototipo puntato dagli oggetti già creati
+- **sostituzione del prototipo di costruzione**: il prototipo puntato dal campo *prototype* del costruttore viene sostituito con uno nuovo.
+
+...
+
+Il messaggio di javascript è che non ti serve necessariamente il concetto di classe! Ti basta l'ereditarietà tra oggetti.
+
+
+
+
+
+
+### CHIEDI PERCHÈ L'OGGETTO P1 BIANCO HA I CAMPI X E Y
+
+### CHIEDI INFO PER L'ESAME e PRENOTATI 
