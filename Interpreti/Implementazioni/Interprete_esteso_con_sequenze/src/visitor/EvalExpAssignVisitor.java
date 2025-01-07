@@ -18,6 +18,7 @@ public class EvalExpAssignVisitor extends EvalExpVisitor implements ExpAssignVis
         // a destra c’è una Exp qualsiasi che però denota sempre un valore intero da mettere nell'environment
         String id = ((LIdentExp)e.left()).getName();
         e.right().accept(this);
+        
         // recuperiamo il valore ottenuto dalla valutazione del visitor e a aggiorniamo l'environment
         value = getEvaluation(); 
         environment.put(id, (Integer)value); 
