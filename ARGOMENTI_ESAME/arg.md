@@ -1,3 +1,8 @@
+1. Teoria della computabilità
+    1. Che cosa significa computabiltà
+    2. Quali sono i problemi risolvibili e quali non lo sono
+        - halt della MdT 
+
 1. Lazyness
     1. Unified memory con allocazione lazy delle pagine nel posto giusto
 
