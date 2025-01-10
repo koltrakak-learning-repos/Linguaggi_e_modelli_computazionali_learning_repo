@@ -127,6 +127,9 @@ Non sempre è necessaria una Macchina di Turing
     
 Il PDA porta ad un modo di lavorare efficente, ma non tutti i problemi si possono risolvere con questo automa. Quelli che ci riescono però guadagnano molto di efficienza. 
 
+
+
+
 ## MACCHINA DI TURING UNIVERSALE
 La macchina di Turing vista fino ad adesso è cablata su uno specifico problema (le tre tabelle vengono definite e congelate alla creazione della macchina). In altri termini, una macchina di Turing definita in questo modo è specifica per un determinato problema.
 

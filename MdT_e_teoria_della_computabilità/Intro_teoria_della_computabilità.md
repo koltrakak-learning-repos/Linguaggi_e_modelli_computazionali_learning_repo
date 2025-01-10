@@ -11,6 +11,10 @@ Irrisolubilità non significa che ho ottengo una risposta sbagliata (a causa di 
 
     Formalizzando meglio, possiamo definire un problema risolubile (dire computabile sarebbe improprio, vedi sotto) come un problema la cui soluzione può essere espressa da una MdT. Analogamente, un problema irrisolubile è un problema la cui soluzione NON può essere espressa con una MdT. 
 
+
+
+
+
 // qua sotto si ripete un po' la stessa cosa in maniera formale
 
 **OCCHIO**: la macchina di Turing computa funzioni (*), non "problemi". Perché tutto torni, occorre quindi un modo per associare a un problema una funzione. 
@@ -36,8 +40,6 @@ Di nuovo, poiché l'arma più potente è la MdT, è logico appoggiare ad essa la
 Purché f NON sia computabile occorre dunque che la MdT non riesca a produrre un risultato in un numero **finito** di passi, ossia che non si fermi anche in UN SOLO CASO.
 
 **CONCLUSIONE**: un problema è risolubile (ovvero risolvibile in tempo finito da una MdT) è un problema la cui funzione caratteristica è computabile da una macchina di turing. 
-
-
 
 
 
