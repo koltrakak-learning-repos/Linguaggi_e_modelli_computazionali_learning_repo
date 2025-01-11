@@ -41,14 +41,43 @@ Chiedersi se esistono dei problemi irrisolubili equivale quindi cercare dei prob
 
 **Problema dell'halt della MdT**:
 
+    Stabilire con una MdT se una seconda MdT T in input, con un generico ingresso X, si ferma oppure no.
 
-// ...
+Questo problema (funzione) può essere perfettamente definito, con un alfabeto **finito** di simboli. MA nel caso generale non è computabile (assurdo)
 
+pezzi della DIM:
+1. **funzione caratteristica del problema**: f_halt(m, x) = {1 se *m* con input *x* si ferma; 0 se *m* con input *x* entra in loop}
+    - se Se *f_halt* è computabile, deve esistere una MdT *T_halt* capace di calcolarla 
+2. Supponiamo che f_halt sia computabile e definiamo una nuova funzione *g_halt* che sfrutta *f_halt* nella sua definizione:
+    - g_halt è funzione soltanto della generica MdT *n* (tutto codificato con dei naturali):
+    - g_halt(n) = {1 se *f_halt(n,n) == 0*; *loop* altrimenti}
+    - in pratica:
+        - g si ferma e risponde 1 se la MdT *n* con ingresso *n* non si ferma
+        - g va in loop se la MdT *n* con ingresso *n* si ferma
+3. Consideriamo tra tutti gli ingressi possibili, *n=n_g*; ovvero proprio il numero che rappresenta la MdT *TG* che computa *g_halt*
+    - stiamo dando come ingresso a TG la sua stessa descrizione, e in questo modo stiamo generando un assurdo
+4. con *n=n_g* Abbiamo il seguente assurdo:
+    - g_halt(n_g) = {1 se f_halt(n_g, n_g) == 0; *loop* se f_halt(n_g, n_g) == 1}
+    - in pratica:
+        - se TG si ferma (perché g_halt(n_g) dà come risultato 1), f_halt dice che TG non si ferma (perché f_halt (ng, ng) vale 0)
+        - se TG non si ferma (perché g_halt(n_g) è indefinita), f_halt dice che TG si ferma (perché fHALT (ng ,ng) vale 1)
+
+5. In pratica abbiamo che *g_halt* con ingresso *n=n_g* genera un assurdo, ma allora siccome gli ingressi sono validi, vuol dire che ad avere qualcosa che non va è la definizione stessa di g_halt; in particolare l'ipotesi iniziale che f_halt esista e sia computabile deve essere falsa.
+
+In conclusione: esistono problemi che non siamo mai in grado di risolvere anche con tutto l'impegno del mondo in quanto neanche la MdT (la macchina più potente) ce la fa.
 
 Nel nostro caso tutta questa trattazione ci è stata utile per arrivare al concetto di insiemi generabili (semidecidibili) e insiemi decidibili (simile al concetto di definibilità e computabilità di una funzione), nel contesto delle frasi appartenenti ad un linguaggio.
 
-Noi siamo stati interessati a capire se: data una stringa, essa appartenga o meno all'insieme delle frasi valide di un **linguaggio**. Questo problema è rilevante in quanto ci permette di distinguere tra i linguaggi analizzabili sintatticamente da un compilatore/interprete (linguaggi decidibili) e quelli che non lo sono 
+Noi siamo stati interessati a capire se: data una stringa, essa appartenga o meno all'insieme delle frasi valide di un **linguaggio**. Questo problema è rilevante in quanto ci permette di distinguere tra i linguaggi analizzabili sintatticamente da un compilatore/interprete (linguaggi decidibili) e quelli che non lo sono. Infatti:
+- I linguaggi di programmazione sono costruiti a partire da un alfabeto **finito**
+- Ogni linguaggio è caratterizzato dall’insieme (tipicamente **infinito**) delle sue frasi lecite
+- Non basta quindi, che tale insieme possa essere generato (semi-decidibilità)
+    - ossia, che si possano generare le frasi “lecite” previste
+- è indispensabile poter decidere se una frase è giusta o sbagliata senza entrare in ciclo infinito
+    - decidibilità
+Se così non fosse, il compilatore o interprete potrebbe non rispondere, entrando in un ciclo infinito, davanti a una frase errata mentre ovviamente noi vogliamo che si fermi e segnali l’errore.
 
+In conclusione, i linguaggi di nostro interesse sono quelli il cui relativo delle frasi forma un insieme decidibile.
 
 
 
