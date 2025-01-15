@@ -1,14 +1,17 @@
-Che cos'è un linguaggio?
-Dice il dizionario: “Un linguaggio è un insieme di parole e di metodi di combinazione delle parole usate e comprese da una comunità di persone.”
-    - insieme FINITO di parole
-    - metodi di COMBINAZIONE di parole
-    - compreso da comunità di persone
-        -> un linguaggio serve a comunicare con ALTRI
-NON BASTA!
-È una definizione poco precisa:
-    − non evita le ambiguità dei linguaggi naturali
-    − non si presta a descrivere processi computazionali meccanizzabili
-    − non aiuta a stabilire proprietà
+### Che cos'è un linguaggio?
+Dice il dizionario:
+    
+    “Un linguaggio è un insieme di parole e di metodi di combinazione delle parole usate e comprese da una comunità di persone.”
+    
+- insieme FINITO di parole
+- metodi di COMBINAZIONE di parole
+- compreso da comunità di persone (un linguaggio serve a comunicare con ALTRI)
+
+NON BASTA! È una definizione poco precisa:
+- non evita le ambiguità dei linguaggi naturali
+- non si presta a descrivere processi computazionali meccanizzabili
+- non aiuta a stabilire proprietà
+
 Occorre una definizione di linguaggio meno evocativa e più precisa.
 
 --- LINGUAGGIO COME SISTEMA FORMALE

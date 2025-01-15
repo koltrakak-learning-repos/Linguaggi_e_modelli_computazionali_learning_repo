@@ -77,7 +77,7 @@ Noi siamo stati interessati a capire se: data una stringa, essa appartenga o men
     - decidibilità
 Se così non fosse, il compilatore o interprete potrebbe non rispondere, entrando in un ciclo infinito, davanti a una frase errata mentre ovviamente noi vogliamo che si fermi e segnali l’errore.
 
-In conclusione, i linguaggi di nostro interesse sono quelli il cui relativo delle frasi forma un insieme decidibile.
+In conclusione, i linguaggi di nostro interesse sono quelli generabili, ovvero quelli per cui si riesce a decidere se una qualsiasi stringa appartenga o meno al linguaggio. I linguaggi sono da evitare in quanto provare a costruire un compilatore/interprete per questa categoria di linguaggi è un causa persa (problema irrisolubile)
 
 
 

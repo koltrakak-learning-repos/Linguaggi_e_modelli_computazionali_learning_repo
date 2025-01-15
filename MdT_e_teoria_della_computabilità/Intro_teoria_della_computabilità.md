@@ -51,7 +51,7 @@ Purché f NON sia computabile occorre dunque che la MdT non riesca a produrre un
 ## FUNZIONI DEFINIBILI vs. FUNZIONI COMPUTABILI
 Vogliamo ora capire se tutte le funzioni siano computabili (magari...) o se esistano invece funzioni definibili ma non computabili(speriamo di no...) rispondendo alla domanda 1 che ci eravamo posti nel file precedente. 
 
-Per rispondere, occorre confrontare òe funzioni che possiamo DEFINIRE con le funzioni che possiamo COMPUTARE con una MdT.
+Per rispondere, occorre confrontare le funzioni che possiamo DEFINIRE con le funzioni che possiamo COMPUTARE con una MdT.
 
 '''[premessa]
 Per semplificare la trattazione, nel seguito considereremo solo funzioni sui numeri naturali f: N → N, in quanto QUALUNQUE informazione può essere rappresentata con un naturale! 
@@ -113,14 +113,14 @@ Per capire come evitare i problemi irrisolubili/indecidibili il prossimo passo �
 Poiché un linguaggio è, come vedremo, un INSIEME di frasi, ci interessa indagare in generale il **problema della generabilità vs. decidibilità di un INSIEME**:
 - L’analisi matematica introduce il concetto di insieme numerabile (i cui elementi possono essere contati)
     - cioè, esiste una funzione di corrispondenza coi naturali
-- A noi questo non basta: vogliamo che tale funzione sia computabile, in modo che l’insieme sia EFFETTIVAMENTE GENERABILE, elemento per elemento, da una MdT
+- A noi questo non basta: vogliamo che tale funzione sia computabile, in modo che l’insieme sia **EFFETTIVAMENTE GENERABILE**, elemento per elemento, da una MdT
 
 ### Insiemi semidecibili (generabili)
 Se la funzione di corrispondenza coi naturali di un insieme è computabile da una MdT, per definizione quell'insieme si dice **SEMIDECIDIBILE (o ricorsivamente enumerabile)**
 
 Dato un insieme semidecidibile, una MdT, computando la funzione di corrispondenza *f* dell'insieme, può **generare** uno ad uno gli elementi dell’insieme. **Insiemi semidecidibili sono quindi effettivamente generabili**, calcolando elemento per elemento la funzione *f*.
 
-**CONCLUSIONE**: Un insieme, per essere generabile, non basta che sia numerabile ma serve anche che sia semidecidibile (ricorsivvamente enumerabile) 
+**CONCLUSIONE**: Affinchè un insieme possa essere effettivamente generabile, non basta che sia numerabile ma serve anche che sia semidecidibile (ricorsivvamente enumerabile) 
 
 ### IL PROBLEMA DI DECIDERE
 **ATTENZIONE:** Il fatto che l’insieme S possa essere costruito NON SIGNIFICA che si possa decidere se un certo elemento APPARTIENE o meno all’insieme.
