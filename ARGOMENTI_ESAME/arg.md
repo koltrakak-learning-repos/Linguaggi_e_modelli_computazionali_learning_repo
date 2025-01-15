@@ -5,7 +5,7 @@ Il concetto di problema risolvibile è strettamente legato al concetto di comput
 
 Una definizione più precisa di computabilità l'abbiamo data attraverso la gerarchia di macchine astratte. L'idea è stata quella di definire macchine via via più "potenti", ovvero in grado di risolvere una gamma di problemi più ampia, fino a quando non si è più riuscito a trovare una macchina più potente dell'ultima trovata.
 
-Una volta trovata la macchina più potente del nostro arsenale possiamo definire una funzione come computabile (e il relativo problema come risolubile) se e solo se **per ogni ingresso** possibile, la macchina trovata è in grado di produrre l'uscita corretta **in tempo finito**.
+Una volta trovata la macchina più potente del nostro arsenale possiamo definire una funzione come computabile (e il relativo problema come risolubile) se e solo se **per ogni ingresso** possibile, la macchina trovata è in grado di produrre l'uscita corretta **in un numero finito di passi** (tempo finito).
 
 In particolare siamo passati da:
 - reti combinatorie
