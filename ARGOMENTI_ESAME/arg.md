@@ -1,4 +1,4 @@
-## 1) Teoria della computabilità
+## 1) Teoria della computabilità e decidibilità degli insiemi (linguaggi)
 Una delle prime domande che ci siamo posti in questo corso è stata: "esistono problemi che un elaboratore NON PUÒ risolvere?"
 
 Il concetto di problema risolvibile è strettamente legato al concetto di computabilità che possiamo definire inizialmente in questo modo: "la computabilità è una caratteristica di un problema che lo rende risolvibile da una macchina". Chiaramente è utile far risolvere i problemi alla macchine perchè così non dobbiamo risolverli noi esseri umani.
@@ -80,12 +80,21 @@ Se così non fosse, il compilatore o interprete potrebbe non rispondere, entrand
 In conclusione, i linguaggi di nostro interesse sono quelli generabili, ovvero quelli per cui si riesce a decidere se una qualsiasi stringa appartenga o meno al linguaggio. I linguaggi sono da evitare in quanto provare a costruire un compilatore/interprete per questa categoria di linguaggi è un causa persa (problema irrisolubile)
 
 
+## 2) Classificazione di Chomsky, grammatiche, ...
+- subito collego parlando di riconoscibilità dei linguaggi
+- poi passo alle grammatiche ed alla classificazione vera e propria
+    - gerarchia
+    - eliminazione della stringa vuota per tipo 2 e tipo 3 per far rispettare la gerarchia
+- poi parlo di grammatiche equivalenti e di tipologie di linguaggio
+- concludo con come trovo la grammatica più semplice per un linguaggio
+    - pumping lemma
 
-2. Non determinismo e backtracking
+
+4. Non determinismo e backtracking
     1. Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
 
-1. Lazyness
+5. Lazyness
     1. Unified memory con allocazione lazy delle pagine nel posto giusto
 
-3. Chiusure
+6. Chiusure
     1. Tra le varie cose, puoi far vedere come esempio finale la realizzazione della struttura di controllo until; sia in js che scala
