@@ -61,7 +61,7 @@ Un compilatore per un linguaggio L, invece:
 ## Come si analizzano le frasi di un linguaggio? Analisi lessicale, sintattica e semantica
 L’analisi lessicale consiste nella **individuazione delle singole parole** (token) di una frase.
 - Un lessico è corretto se ogni parola (token) fa parte del vocabolario.
-- L'analizzatore lessicale (detto scanner o lexer), data una sequenza di caratteri, li aggrega in token di opportune categorie (nomi, parole chiave, simboli di punteggiatura, etc.)
+- L'analizzatore lessicale (detto scanner o lexer), data una sequenza di **caratteri**, li aggrega in **token** di opportune **categorie** (nomi, parole chiave, simboli di punteggiatura, etc.)
 - Se il codice passa la fase di analisi lessicale, si ottiene  una serie di Token validi per il linguaggio (magari anche organizzati per categoria)
 
 L’analisi sintattica consiste nella verifica che la frase (intesa come sequenza di token) rispetti le regole grammaticali del linguaggio. **Una sintassi è corretta se la combinazione dei token è corretta!**(token giusto al posto giusto; e.g. <id> = <exp> e non <exp> = <id>) 
