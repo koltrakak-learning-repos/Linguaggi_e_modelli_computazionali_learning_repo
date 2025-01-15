@@ -1,89 +1,98 @@
+## Definizione Grammatica
 Una Grammatica è una notazione formale con cui esprimere in modo rigoroso la sintassi di un linguaggio. 
-    -> un linguaggio si specifica con una grammatica
+- **un linguaggio** (sottoinsieme della chiusura del suo alfabeto) **si specifica con una grammatica**
 
 Una grammatica è una quadrupla <VT,VN,P,S> dove:
-    • VT è un insieme finito di simboli terminali
-        - elementi dell'alfabeto
-    • VN è un insieme finito di simboli non terminali
-        - I simboli non terminali sono dei meta-simboli che servono a scrivere le regole di produzione
-    • P è un insieme finito di produzioni, ossia di regole di riscrittura a −> b dove a e b sono stringhe: a appartenenti V+, b appartenenti V*
-        – ogni regola esprime una trasformazione lecita che permette di scrivere, nel contesto di una frase data, una stringa b al posto di un’altra stringa a.
-    • S è un particolare simbolo non-terminale detto simbolo iniziale o scopo della grammatica.
+- VT è un insieme finito di simboli terminali (elementi dell'alfabeto)
+- VN è un insieme finito di simboli non terminali
+    - I simboli non terminali sono dei meta-simboli che servono a scrivere le regole di produzione
+- P è un insieme finito di produzioni
+    - regole di riscrittura a −> b dove a e b sono stringhe: a appartenente V+, b appartenente V*
+    - ogni regola esprime una trasformazione lecita che permette di scrivere, nel contesto di una frase data, una stringa b al posto di un’altra stringa a.
+- S è un particolare simbolo non-terminale detto simbolo iniziale o scopo della grammatica.
 
-    NB: Gli insiemi VT e VN devono essere disgiunti: VT intersecato VN = 0. L’unione di VT e VN si dice vocabolario della grammatica.
+**NB**: Gli insiemi VT e VN devono essere disgiunti: VT intersecato VN = 0. L’unione di VT e VN si dice vocabolario della grammatica.
 
---- DEFINIZIONI VARIE
+**Nomenclatura**:
 - FORMA DI FRASE(SENTENTIAL FORM) = frase in divenire
-  una qualsiasi stringa comprendente sia simboli terminali sia meta-simboli, ottenibile dallo scopo applicando una o più regole di produzione.
+    - una qualsiasi stringa comprendente sia simboli terminali sia meta-simboli, ottenibile dallo scopo applicando una o più regole di produzione.
 - FRASE = frase finale
-  Si dice frase una forma di frase comprendente solo simboli terminali.
+    - una forma di frase comprendente solo simboli terminali.
 - SEQUENZA DI DERIVAZIONE (freccia spessa)
-  Si dice sequenza di derivazione la sequenza di passi che producono una forma di frase sigma dallo scopo S.
-  Una sequenza di derivazione può essere:
-    -> diretta (freccia senza niente): una sola applicazione di una regola, un solo passo
-    -> con +: uno o più passi
-    -> con *: zero o più passi
+    - la sequenza di passi che producono una forma di frase sigma dallo scopo S.
+    - una sequenza di derivazione può essere:
+        - diretta (freccia senza niente): una sola applicazione di una regola, un solo passo
+        - con +: uno o più applicazioni di produzioni
+        - con *: zero o più passi
 
---- LINGUAGGI GENERATI DA UNA GRAMMATICA
-Data una grammatica G, si dice perciò Linguaggio L_G generato da G l’insieme delle frasi (s):
-    • derivabili dal simbolo iniziale S
-    • applicando le produzioni P
+### Linguaggi generati da una grammatica
+Data una grammatica G, si definisce il Linguaggio L_G generato da G come l’insieme delle frasi:
+- derivabili dal simbolo iniziale S
+- applicando le produzioni P
 
-NB: quello che conta veramente di una grammatica sono le REGOLE DI PRODUZIONE -> scriveremo solo queste.
-
-GRAMMATICHE EQUIVALENTI
+### Grammatiche equivalenti
 Una grammatica G1 è equivalente a una grammatica G2 se generano lo stesso linguaggio.
-    -> una grammatica potrebbe però essere preferibile a un’altra ad essa equivalente al punto di vista dell’analisi sintattica
+- una grammatica potrebbe però essere preferibile a un’altra ad essa equivalente dal punto di vista dell’analisi sintattica
+- se riesco ad esprimere il mio linguaggio con un tipo 3 è molto meglio rispetto ad una grammatica equivalente di tipo 2 
+
 Purtroppo però, in GENERALE, stabilire se una grammatica è equivalente ad un'altra è un problema indecidibile.
-    -> le faccenda cambia se ci si restringe a tipi particolari di grammatiche, aventi regole di produzione "sufficientemente semplici"
+- le faccenda cambia se ci si restringe a tipi particolari di grammatiche, aventi regole di produzione "sufficientemente semplici"
 
-FONDAMENTALE
+**FONDAMENTALE**:
 Grammatiche di diversa struttura comportano
-    -> linguaggi con diverse proprietà
+- linguaggi con diverse proprietà
+
 e implicano
-    -> automi di diversa “potenza computazionale”
-per riconoscere tali linguaggi.
+- automi di diversa “potenza computazionale” per riconoscere tali linguaggi.
 
-CLASSIFICAZIONE DI CHOMSKY
-Le grammatiche sono classificate in 4 tipi in base alla struttura delle produzioni, in ordine di complessità:
-    • Tipo 0: nessuna restrizione sulle produzioni
-      In particolare, le regole possono specificare riscritture che accorciano la forma di frase corrente.
-        Regole del tipo: G → epsilon
+Per questo motivo è importante scegliere la grammatica equivalente "più economica".
 
-    • Tipo 1: dipendenti dal contesto
-      produzioni vincolate alla forma: "beta" A "delta" → "beta" "alpha" "delta". con alpha != epsilon
-        -> A può essere sostituita da alpha solo nel contesto "beta" A "delta" -> regole chirurgiche
-        -> Le riscritture non ACCORCIANO MAI la forma di frase corrente
-      NB: Una definizione ALTERNATIVA EQUIVALENTE (a parte la generazione della stringa vuota) prevede infatti produzioni della forma alpha → beta con |beta| >= |alpha|
-      NB 2: questo tipo di grammatica prevede anche vicoli ciechi/rami morti, ovvero strade in cui non ci sono più regole applicabili. Questo non succede mai nel Tipo 2 
-            e nel Tipo 3
 
-    • Tipo 2: libere dal contesto (quelle che ci interessano davvero)
-      produzioni vincolate alla forma: A → alpha; (con alpha che può anche essere epsilon)
-      Qui A può sempre essere sostituita da alpha, indipendentemente dal contesto, giacché non esiste più l'idea stessa di contesto.
-        -> regole a grana grossa
-    Follia: si ritorna a poter accorciare le frasi, cosa? Qua me lo posso permettere perchè esiste un teorema che mi permette di tirar via epsilon. 
 
-    • Tipo 3: grammatiche lineari
-      produzioni vincolate alle forme lineari
-        - lineare a destra 
-            A → alpha
-            A → "alpha" B
-        - lineare a sinistra
-            A → alpha
-            A → B "alpha"
-        -> le frasi crescono da una parte sola. 
-        -> non posso costruire frasi che crescono contemporaneamente in più punti
-      NB: IMPORTANTE:  produzioni o tutte lineari a destra, o tutte lineari a sinistra – non mischiate.
-      NB: anche qui alpha può essere epsilon.
+## CLASSIFICAZIONE DI CHOMSKY
+Le grammatiche sono classificate in 4 tipi in base alla struttura delle produzioni. In ordine di complessità decrescente, abbiamo:
 
-RELAZIONE GERARCHICA
+**Tipo 0**: nessuna restrizione sulle produzioni
+- In particolare, le regole possono specificare riscritture che accorciano la forma di frase corrente.
+- Regole del tipo: G → epsilon che fanno svanire un simbolo non terminale
+
+**Tipo 1 | dipendenti dal contesto**: produzioni vincolate alla forma: *"beta" A "delta"* → *"beta" "alpha" "delta"*. **con *alpha* != *epsilon***
+- *A* può essere sostituita da *alpha* solo nel contesto *"beta" A "delta"* 
+    - **regole chirurgiche**
+- Le riscritture non ACCORCIANO MAI la forma di frase corrente
+    -  Una definizione ALTERNATIVA EQUIVALENTE prevede infatti produzioni della forma: *alpha → beta* con |beta| >= |alpha|
+- si può trasformare un metasimbolo per volta (A), lasciando intatto ciò che gli sta intorno
+
+**NB**: questo tipo di grammatica **prevede anche vicoli ciechi/rami morti**, ovvero strade in cui non ci sono più regole applicabili. Questo non succede mai nel Tipo 2 e nel Tipo 3
+
+**Tipo 2 | libere dal contesto**: produzioni vincolate alla forma: *A → alpha*; (con alpha che può anche essere epsilon)
+- Qui *A* può sempre essere sostituita da *alpha*, indipendentemente dal contesto (non esiste più l'idea stessa di contesto).
+    - regole a grana grossa, ogni volta che vedo il metasimbolo sostituisco
+- **NB**: non c'è più il vincolo *alpha* != *epsilon*. **Si ritorna a poter accorciare le frasi**, cosa? Qua me lo posso permettere perchè esiste un teorema che mi permette di tirar via gli *epsilon* ottenendo una grammatica equivalente sempre di tipo 2 (vedi dopo). 
+- **CASO PARTICOLARE**: se *a* ha la forma *u*, oppure *u B v*, la **grammatica si dice lineare**
+
+**Tipo 3 | grammatiche regolari**: produzioni vincolate alle forme lineari destre/sinistre
+- lineare a destra 
+    - *A → alpha*
+    - *A → alpha B*
+- lineare a sinistra
+    - *A → alpha*
+    - *A → B alpha*
+- le frasi crescono da una parte sola. 
+- non posso costruire frasi che crescono contemporaneamente in più punti
+**NB**: IMPORTANTE:  produzioni o tutte lineari a destra, o tutte lineari a sinistra - non mischiate.
+**NB**: anche qui alpha può essere epsilon.
+
+**RELAZIONE GERARCHICA**
 Le grammatiche sono in relazione gerarchica:
-    • una grammatica regolare (Tipo 3) è un caso particolare di grammatica context-free (Tipo 2),
-    • che a sua volta è un caso particolare di grammatica contextdependent (Tipo 1),
-    • che a sua volta è – ovviamente – un caso particolare di grammatica qualsiasi (Tipo 0).
-OSS: poiché le grammatiche di tipo 2 (e quindi di tipo 3) possono generare la stringa vuota epsilon, la relazione di inclusione vale solo se si conviene di 
-ammettere nelle grammatiche tipo 1 anche la produzione S → epsilon
+- una grammatica regolare (Tipo 3) è un caso particolare di grammatica context-free (Tipo 2),
+- che a sua volta è un caso particolare di grammatica contextdependent (Tipo 1),
+- che a sua volta è - ovviamente - un caso particolare di grammatica qualsiasi (Tipo 0).
+
+**OSS**: poiché le grammatiche di tipo 2 (e quindi di tipo 3) possono generare la stringa vuota *epsilon*, la relazione di inclusione vale solo se si conviene di estendere le grammatiche di tipo 1 anche la produzione *S → epsilon*.
+
+
+
 
 C'è però un problema, nella classificazione di Chomsky, Le grammatiche di Tipo 1 non ammettono la stringa vuota sul lato destro delle produzioni. Viceversa, le
 grammatiche di Tipo 2 e 3 la ammettono. Come è possibile che le grammatiche siano in relazione gerarchica tra loro, ma al contempo la stringa vuota non sia ammessa
@@ -104,7 +113,7 @@ OSS: la stringa vuota è utile perchè evita di dover specificare ogni combinazi
      (private static void), (static void), ...; per questo motivo la vogliamo includere nelle grammatiche di tipo >= 2
 
 TEOREMA STRINGA VUOTA 2
-Dato un linguaggio L di tipo 0, 1, 2, o 3 -> I linguaggi L unito {epsilon} e L – {epsilon} sono dello stesso tipo.
+Dato un linguaggio L di tipo 0, 1, 2, o 3 -> I linguaggi L unito {epsilon} e L - {epsilon} sono dello stesso tipo.
     -> in sostanza avere la stringa vuota o meno non cambia la tipologia di un linguaggio
 
 TIPO DI UNA GRAMMATICA E TIPO DI UN LINGUAGGIO
@@ -131,8 +140,8 @@ Il ruolo del self-embedding è introdurre una ricorsione in cui si aggiungono co
 TEOREMA: una grammatica di Tipo 2 che non contenga self-embedding genera un linguaggio REGOLARE.
 
 Più nel dettaglio il self-embedding è una condizione SUFFICIENTE affinche una grammatica sia di tipo 2, ovvero:
-    • Se non c'è self-embedding in nessuna produzione, esiste una grammatica equivalente di Tipo 3, quindi il linguaggio generato è regolare.
-    • Non vale necessariamente il viceversa: una grammatica con self-embedding potrebbe comunque generare un linguaggio regolare, se il self-embedding è
+    - Se non c'è self-embedding in nessuna produzione, esiste una grammatica equivalente di Tipo 3, quindi il linguaggio generato è regolare.
+    - Non vale necessariamente il viceversa: una grammatica con self-embedding potrebbe comunque generare un linguaggio regolare, se il self-embedding è
       "finto" (ovvero, "disattivato" da altre regole)
 
 RICONOSCIBILITÀ DEI LINGUAGGI
@@ -143,9 +152,9 @@ Al contrario, i linguaggi generati da grammatiche di Tipo 1 (e quindi di Tipo 2 
     -> L'efficienza del processo di riconoscimento, però, è un'altra faccenda…
 
 Per ottenere un traduttore efficiente occorre adottare linguaggi generati da (classi speciali di) grammatiche di TIPO 2 (quelle di nostro interesse)
-    • Tutti i linguaggi di programmazione sono infatti context free
-    • Il riconoscitore prende il nome di PARSER
-    • Per ottenere particolare efficienza in sotto-parti di uso estremamente frequente, si adottano spesso per esse linguaggi generati da grammatiche di Tipo 3
+    - Tutti i linguaggi di programmazione sono infatti context free
+    - Il riconoscitore prende il nome di PARSER
+    - Per ottenere particolare efficienza in sotto-parti di uso estremamente frequente, si adottano spesso per esse linguaggi generati da grammatiche di Tipo 3
         - identificatori & numeri
         - Il riconoscitore prende il nome di SCANNER (o lexer)
 
@@ -158,17 +167,17 @@ Tipo 3 (regolari)           Automa a Stati Finiti (ASF)
 
 --- BNF & EBNF
 Simile alla notazione delle grammatiche utilizzato fino ad adesso
-    • per le regole di produzione ::= al posto di ->
-    • per i metasimboli <...> al posto di lettera maiuscola
+    - per le regole di produzione ::= al posto di ->
+    - per i metasimboli <...> al posto di lettera maiuscola
 
 inoltre, con la versione estesa
-    • X ::= [a]B per indicare una ripetizione da 0 a 1 volta  (opzionale)
+    - X ::= [a]B per indicare una ripetizione da 0 a 1 volta  (opzionale)
         -> BNF equivalente: X ::= B | aB
-    • X ::= {a}^nB per indicare una ripetizione da 0 a n volta 
+    - X ::= {a}^nB per indicare una ripetizione da 0 a n volta 
         -> BNF equivalente: X ::= B | aB | …| a^nB
-    • X ::= {a}B   per indicare una ripetizione da 0 a un numero indefinito di volte
+    - X ::= {a}B   per indicare una ripetizione da 0 a un numero indefinito di volte
         -> BNF equivalente -> X ::= B | aX -> ricorsiva a destra
-    • X ::= (a | b) D | c   per raccoglimenti
+    - X ::= (a | b) D | c   per raccoglimenti
         -> BNF equivalente -> X ::= a D | b D | c
 
 --- ALBERI DI DERIVAZIONE e AMBIGUITà di una GRAMMATICA
@@ -184,9 +193,9 @@ invece hanno piu difficolta...
 
 DERIVAZIONI CANONICHE
 Derivazione “left-most” (deriv. canonica sinistra)
-    • A partire dallo scopo della grammatica, si riscrive sempre il simbolo non-terminale più a sinistra.
+    - A partire dallo scopo della grammatica, si riscrive sempre il simbolo non-terminale più a sinistra.
 Derivazione “right-most (deriv. canonica destra)
-    • A partire dallo scopo della grammatica, si riscrive sempre il simbolo non-terminale più a destra.
+    - A partire dallo scopo della grammatica, si riscrive sempre il simbolo non-terminale più a destra.
 
 AMBIGUITA
 Una grammatica è ambigua se esiste almeno una frase del relativo linguaggio che si riesce ad ottenere in più modi applicando in modi diversi le regole della grammatica
@@ -200,22 +209,22 @@ NB: non centra il verso di derivazione!
 
 L'ambiguità è il male! Incasina le macchine incrementando l'ordine di complessità degli algoritmi riconoscitori. Possiamo accorgerci se una grammatica è ambigua?
 Purtroppo, stabilire se una grammatica di Tipo 2 sia ambigua è un problema indecidibile
-    – però, in pratica, un certo numero di derivazioni è spesso sufficiente per "convincersi" della (non per dimostrare la) ambiguità di G
+    - però, in pratica, un certo numero di derivazioni è spesso sufficiente per "convincersi" della (non per dimostrare la) ambiguità di G
 
 NB: Se una grammatica è ambigua, spesso se ne può trovare un'altra equivalente che non lo sia (ma non sempre).
 
 --- FORME NORMALI
 Un linguaggio di tipo 2 non vuoto può essere sempre generato da una grammatica di tipo 2 in cui:
-    • ogni simbolo, terminale o non terminale, compare nella derivazione di qualche frase di L
+    - ogni simbolo, terminale o non terminale, compare nella derivazione di qualche frase di L
         -> ossia, non esistono simboli o meta-simboli inutili
-    • non ci sono produzioni della forma A → B con A,B appartenenti VN
+    - non ci sono produzioni della forma A → B con A,B appartenenti VN
         -> ossia non esistono produzioni che “cambiano solo nome” a un meta-simbolo
-    • se il linguaggio non comprende la stringa vuota allora non ci sono produzioni della forma A → epsilon.
+    - se il linguaggio non comprende la stringa vuota allora non ci sono produzioni della forma A → epsilon.
 
 In particolare si può fare in modo che tutte le produzioni abbiano una forma ben precisa:
-    • forma normale di Chomsky                              -> weak
+    - forma normale di Chomsky                              -> weak
       produzioni della forma A → BC | a;    con A,B,C appartenenti VN, a appartenente VT unito epsilon
-    • forma normale di Greibach (per linguaggi privi di epsilon)  -> goated  
+    - forma normale di Greibach (per linguaggi privi di epsilon)  -> goated  
       produzioni della forma A → a"alpha";  con A appartenente VN, a appartenente VT, alpha appartenente VN*
 NB: La forma normale di Greibach facilita, come si vedrà, la costruzione di riconoscitori; è quella che ci interressa
 
@@ -267,8 +276,8 @@ Ma in primo luogo, posso capire la tipologia del linguaggio ancora prima di defi
     
 PUMPING LEMMA
 Il pumping lemma dà una condizione NECESSARIA, ma non sufficiente, perché un linguaggio sia di Tipo 2 (o 3)
-    – può quindi essere usato per dimostrare "in negativo" che un linguaggio non è di Tipo 2 (o di Tipo 3)…
-    – ... ma purtroppo non per affermarlo "in positivo
+    - può quindi essere usato per dimostrare "in negativo" che un linguaggio non è di Tipo 2 (o di Tipo 3)…
+    - ... ma purtroppo non per affermarlo "in positivo
 
 idea: in un linguaggio infinito, ogni stringa sufficientemente lunga deve avere una parte che si ripete (regola ricorsiva). ergo, essa può essere "pompata"
 un qualunque numero di volte ottenendo sempre altre stringhe del linguaggio.
