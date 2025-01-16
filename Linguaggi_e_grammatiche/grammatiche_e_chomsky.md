@@ -144,7 +144,7 @@ La caratterisca che distingue il tipo 2 dal tipo 3 è il **self embedding**.
 **OSS**: Nel Tipo 2, i meta-simboli possono trovarsi in mezzo alla forma di frase; nel Tipo 3, no
 
 ### SELF EMBEDDING
-Una grammatica contiene self-embedding (anche non diretto) quando una o più produzioni hanno la forma: A =>* alpha1 A alpha2 (STESSO metasimbolo in mezzo alla frase).
+Una grammatica contiene self-embedding (anche non diretto) quando una o più produzioni hanno la forma: A =>* alpha1 A alpha2 (STESSO metasimbolo in mezzo alla frase) *con alpha1,alpha2 apparteneti a V+*
 
 **IMPORTANTE**: Il ruolo del self-embedding è introdurre una ricorsione in cui si aggiungono contemporaneamente simboli a sinistra e a destra, garantendo di procedere "di pari passo". È essenziale per definire linguaggi le cui frasi devono contenere **simboli bilanciati, come ad esempio le parentesi**.
 
@@ -160,7 +160,7 @@ Più nel dettaglio il **self-embedding è una condizione sufficiente** affinche 
 
 
 ## RICONOSCIBILITÀ DEI LINGUAGGI
-Riprendendo l'ultimo argomento fatto in teoria della computabilità, Abbiamo che i linguaggi generati da grammatiche di Tipo 0 possono, **in generale**, non essere riconoscibili (decidibili)
+Riprendendo l'ultimo argomento fatto in teoria della computabilità, abbiamo che: i linguaggi generati da grammatiche di Tipo 0 possono, **in generale**, non essere riconoscibili (decidibili)!
 - Non è garantita l'esistenza di una MdT capace di decidere se una frase appartiene o meno al linguaggio
     - non è possibile generare (per ogni linguaggio di tipo 0) l'insieme complementare a quello delle frasi valide del linguaggio
 
@@ -168,10 +168,12 @@ Al contrario, i linguaggi generati da grammatiche di Tipo 1 (e quindi di Tipo 2 
 - Esiste **sempre** una MdT capace di decidere se una frase appartiene o meno al linguaggio
 - L'efficienza del processo di riconoscimento, però, è un'altra faccenda…
 
-Per ottenere un traduttore efficiente occorre adottare linguaggi generati da (classi speciali di) grammatiche di tipo 2 (quelle di nostro interesse)
+Per ottenere un riconoscitore efficiente occorre adottare linguaggi generati da (classi speciali di) grammatiche di tipo 2 (quelle di nostro interesse)
 - Tutti i linguaggi di programmazione sono infatti context free
 
-Per ottenere particolare efficienza in sotto-parti di uso estremamente frequente (numeri e identificatori di variabili), si adottano spesso per esse linguaggi generati da grammatiche di Tipo 3
+Per ottenere particolare efficienza in sotto-parti di uso estremamente frequente (numeri, identificatori, keywords, operatori; tutto ciò che diventa un token), si adottano spesso per esse linguaggi generati da grammatiche di Tipo 3
+- l'efficienza si ottiene a causa della natura semplice della grammatica, basta mantenere lo stato corrente e leggere sequenzialmente.
+- il riconoscimento di grammatiche di tipo 2 invece richiede ricorsione, uno stack, backtracking (se la grammatica è ambigua(?))
 
 Chi riconosce i diversi tipi di linguaggi?
 GRAMMATICHE                 AUTOMI RICONOSCITORI
@@ -195,129 +197,3 @@ Tipo 3 (regolari) ->        Automa a Stati Finiti (ASF)
 
 
 
-
---- BNF & EBNF
-Simile alla notazione delle grammatiche utilizzato fino ad adesso
-    - per le regole di produzione ::= al posto di ->
-    - per i metasimboli <...> al posto di lettera maiuscola
-
-inoltre, con la versione estesa
-    - X ::= [a]B per indicare una ripetizione da 0 a 1 volta  (opzionale)
-        -> BNF equivalente: X ::= B | aB
-    - X ::= {a}^nB per indicare una ripetizione da 0 a n volta 
-        -> BNF equivalente: X ::= B | aB | …| a^nB
-    - X ::= {a}B   per indicare una ripetizione da 0 a un numero indefinito di volte
-        -> BNF equivalente -> X ::= B | aX -> ricorsiva a destra
-    - X ::= (a | b) D | c   per raccoglimenti
-        -> BNF equivalente -> X ::= a D | b D | c
-
---- ALBERI DI DERIVAZIONE e AMBIGUITà di una GRAMMATICA
-Per le sole grammatiche di Tipo 2 si introduce il concetto di albero di derivazione. Una notazione ad albero per esprimere come
-una frase è stata derivata da una grammatica di almeno tipo 2.
-
-NB: notazione esclusiva a tipo 2, perchè queste grammatiche ammettono solo un padre a sinistra. L'albero di derivazione non
-può esistere per grammatiche di Tipo 1 e 0 perché in esse il lato sinistro delle produzioni ha più di un simbolo e dunque i nodi
-figli avrebbero più di un padre (ergo non si otterrebbe più un albero, ma un generico grafo) 
-
-Questi alberi sono facilmente producibili dagli umani in quanto ci si può far guidare dalla frase e dal ragionamento, le macchine
-invece hanno piu difficolta...
-
-DERIVAZIONI CANONICHE
-Derivazione “left-most” (deriv. canonica sinistra)
-    - A partire dallo scopo della grammatica, si riscrive sempre il simbolo non-terminale più a sinistra.
-Derivazione “right-most (deriv. canonica destra)
-    - A partire dallo scopo della grammatica, si riscrive sempre il simbolo non-terminale più a destra.
-
-AMBIGUITA
-Una grammatica è ambigua se esiste almeno una frase del relativo linguaggio che si riesce ad ottenere in più modi applicando in modi diversi le regole della grammatica
-    -> almeno due alberi di derivazione distinti portano alla stessa frase
-es:
-    A ::= A + A
-    A ::= a
-La frase "a+a+a" è ambigua!
-
-NB: non centra il verso di derivazione!  
-
-L'ambiguità è il male! Incasina le macchine incrementando l'ordine di complessità degli algoritmi riconoscitori. Possiamo accorgerci se una grammatica è ambigua?
-Purtroppo, stabilire se una grammatica di Tipo 2 sia ambigua è un problema indecidibile
-    - però, in pratica, un certo numero di derivazioni è spesso sufficiente per "convincersi" della (non per dimostrare la) ambiguità di G
-
-NB: Se una grammatica è ambigua, spesso se ne può trovare un'altra equivalente che non lo sia (ma non sempre).
-
---- FORME NORMALI
-Un linguaggio di tipo 2 non vuoto può essere sempre generato da una grammatica di tipo 2 in cui:
-    - ogni simbolo, terminale o non terminale, compare nella derivazione di qualche frase di L
-        -> ossia, non esistono simboli o meta-simboli inutili
-    - non ci sono produzioni della forma A → B con A,B appartenenti VN
-        -> ossia non esistono produzioni che “cambiano solo nome” a un meta-simbolo
-    - se il linguaggio non comprende la stringa vuota allora non ci sono produzioni della forma A → epsilon.
-
-In particolare si può fare in modo che tutte le produzioni abbiano una forma ben precisa:
-    - forma normale di Chomsky                              -> weak
-      produzioni della forma A → BC | a;    con A,B,C appartenenti VN, a appartenente VT unito epsilon
-    - forma normale di Greibach (per linguaggi privi di epsilon)  -> goated  
-      produzioni della forma A → a"alpha";  con A appartenente VN, a appartenente VT, alpha appartenente VN*
-NB: La forma normale di Greibach facilita, come si vedrà, la costruzione di riconoscitori; è quella che ci interressa
-
-TRASFORMAZIONI
-Per facilitare la costruzione dei riconoscitori, è spesso rilevante poter trasformare la struttura delle regole di produzione per renderle più adatte allo scopo. Queste
-trasformazioni sono utili per arrivare alla forma di Greibach per le regole di una grammatica.
-
-In particolare
-    - Sostituzione 
-    - Raccoglimento a fattore comune
-        -> fondamentale, se non si raccoglie si tira a caso e ti puoi sfracellare -> ambiguità
-        -> la soluzione è guadagnare tempo, intanto ti occupi del primo simbolo. Nei passi successivi avrai in ingresso nuovi simboli e saprà decidere senza andare a caso.
-            -> è un problema di non determinismo: adesso con le informazioni che hai non sai prendere un scelta certa. Soluzione: aspetta e recupera nuove informazioni
-               per fare una scelta certa.
-    - Eliminazine della ricorsione sinistra
-        -> sempre possibile, ma cambia l'ordine di derivazione dato che cambia le regole della grammatica. A volte non ce lo si può permettere di farlo
-            -> ha conseguenze
-
-IL PROBLEMA DELLA RICORSIONE SINISTRA
-Perchè è desiderabile eliminare la ricorsione sinistra?
-
-    X → X a c | p
-
-La ricorsione sinistra nasconde l’iniziale delle frasi prodotte, che si può determinare solo guardando altre regole. Nell’esempio sopra, tutte le frasi
-iniziano per p, ma questo non si vede dalla regola ricorsiva. Non è così nella ricorsione destra, che invece evidenzia proprio l’iniziale delle produzioni:
-    X → p | p Z
-    Z → a c | a c Z
-
-La buona notizia è che, tecnicamente, si può sempre sostituire la ricorsione sinistra con una destra (vedi sopra). La cattiva notizia è che spesso non ci potremo
-permettere il lusso di farlo, a causa delle conseguenze.
-
-    //algoritmo di eliminazione skip, guardatelo sulla slide 91
-
-Perché, dunque, potremmo non voler eliminare la ricorsione sinistra? Sostituendo la ricorsione sinistra con una destra, si generano le stesse frasi, ma con
-regole diverse.
-    -> Ergo, se interessa solo il risultato finale «ai morsetti», rimpiazzare la ricorsione sinistra con una destra è lecito e privo di conseguenze
-    -> se, invece, interessa anche come ci si è arrivati (ossia, la sequenza di derivazione), allora il rimpiazzo non è lecito perché cambiando le
-       regole cambia anche la sequenza di derivazione.
-In un puro riconoscitore, che deve solo dire «sì o no», eliminare la ricorsione sinistra è fattibile senza conseguenze. In un vero parser, che deve anche dare
-significato alle frasi (lecite), regole diverse tipicamente implicano significato diverso per alcune frasi, con ciò alterando il liguaggio.
-    -> guarda esempio operazioni matematiche slide 93
-
---- PUMPING LEMMA, COME CAPIRE SE UN LINGUAGGIO è DI TIPO 2/3 o MENO? 
-Capire se un linguaggio è di Tipo 2 (o di Tipo 3) "solo guardandolo" in generale non è banale. Se hai la grammatica è facile. Tuttavia di solito si parte dal
-LINGUAGGIO desiderato, non dalla grammatica; successivamente si prova a definire una grammatica che lo genera.
-
-A questo punto molte domande -> la grammatica è semplice/corretta/ambigua?
-Ma in primo luogo, posso capire la tipologia del linguaggio ancora prima di definire la grammatica?
-    
-PUMPING LEMMA
-Il pumping lemma dà una condizione NECESSARIA, ma non sufficiente, perché un linguaggio sia di Tipo 2 (o 3)
-    - può quindi essere usato per dimostrare "in negativo" che un linguaggio non è di Tipo 2 (o di Tipo 3)…
-    - ... ma purtroppo non per affermarlo "in positivo
-
-idea: in un linguaggio infinito, ogni stringa sufficientemente lunga deve avere una parte che si ripete (regola ricorsiva). ergo, essa può essere "pompata"
-un qualunque numero di volte ottenendo sempre altre stringhe del linguaggio.
-
-La formulazione è leggermente diversa a seconda che si tratti di linguaggi di Tipo 2 o 3, ma la sostanza non cambia.
-    - nei linguaggi di tipo 2, la stringa ha questa forma: z = uvwxy; con v e x sottoparti pompabili    -> u(v^i)w(x^i)y    appartenente al linguaggio
-    - nei linguaggi di tipo 3, la stringa ha questa forma: z = xyw; con v sottoparte pompabile          -> x(y^i)W          appartenente al linguaggio
-
-pumping lemma per tipo 2: due cose crescono insieme
-pumping lemma per tipo 3: c'è una crescita o solo dietro o solo davanti
-
--> DOMANDA DI DENTI come si fa a trovare la grammatica adatta per un linguaggio? Una prima analisi è possibile applicando il pumping lemma. Possiamo capire se il linguaggio desiderato NON è di tipo 2 o 3.

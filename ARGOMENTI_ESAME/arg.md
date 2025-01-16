@@ -88,7 +88,7 @@ In conclusione, i linguaggi di nostro interesse sono quelli generabili, ovvero q
 - poi parlo di grammatiche equivalenti e di tipologie di linguaggio
 - concludo con come trovo la grammatica più semplice per un linguaggio
     - pumping lemma
-
+        - vedi se parlarne solo in maniera intuitiva o con qualche esempio (e.g. https://www.youtube.com/watch?v=qtnNyUlO6vU&list=WL&index=1)
 
 4. Non determinismo e backtracking
     1. Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
