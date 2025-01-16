@@ -36,8 +36,7 @@ Grammatica = **formalismo costruttivo**, esprime le regole per capire COME deriv
 Espressioni regolari = **formalismo descrittivo**, esprime quali frasi si ottengono (COSA), ma non COME si arriva ad esse 
 - L = { a* b }
 
-Grammatiche ed espressioni regolari sono quindi due rappresentazioni diverse della stessa realtà
-- Formalismi ortogonali, usandoli entrambi abbiamo sia **come** una frase può venire derivata, sia **cosa** (quali frasi) si può derivare.
+Formalismi ortogonali, usandoli entrambi abbiamo sia **come** una frase può venire derivata, sia **cosa** (quali frasi) si può derivare.
 
 Si puo passare da un formalismo all'altro?
 

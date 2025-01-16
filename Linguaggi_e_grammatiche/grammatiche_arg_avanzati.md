@@ -75,7 +75,7 @@ Per facilitare la costruzione dei riconoscitori, è spesso rilevante poter trasf
 Alcune trasformazioni particolarmente importanti sono:
 - **Sostituzione** 
 - **Raccoglimento a fattore comune**
-    - Fondamentale! Se non si raccoglie si tira a caso e ti puoi sfracellare 
+    - Fondamentale! Se non si raccoglie devi scegliere una alternativa a caso e ti puoi sbagliare 
         - ambiguità...
     - La soluzione è guadagnare tempo; intanto ti occupi del primo simbolo, nei passi successivi avrai in ingresso nuovi simboli e saprai decidere senza andare a caso.
         - è un problema di **non determinismo**: adesso con le informazioni che hai non sai prendere un scelta certa...
