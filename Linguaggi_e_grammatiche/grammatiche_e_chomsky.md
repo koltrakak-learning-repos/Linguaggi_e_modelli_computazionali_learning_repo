@@ -40,8 +40,7 @@ Purtroppo però, in GENERALE, stabilire se una grammatica è equivalente ad un'a
 
 **Equivalenza del risultato prodotto ma non nel costo di produzione**: Grammatiche di diversa struttura comportano linguaggi con diverse proprietà e implicano automi di diversa “potenza computazionale” per riconoscere tali linguaggi. Per questo motivo è importante scegliere la grammatica equivalente "più economica" per descrivere il linguaggio desiderato.
 
-
-
+**domanda spontanea**: come faccio a trovare la grammatica più economica? Nel caso delle grammatiche regolari posso passare alla rappresentazione con ASF, minimizzare quest'ultimo e tornare indietro. Lo vedremo dopo.
 
 
 ## CLASSIFICAZIONE DI CHOMSKY
