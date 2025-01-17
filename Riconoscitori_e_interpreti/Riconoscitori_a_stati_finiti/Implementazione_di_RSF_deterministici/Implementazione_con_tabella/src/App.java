@@ -8,10 +8,10 @@ public class App {
         char alfabeto[] = {'a', 'b'};
 
         Stato tabellaTransizioni[/* stato */][/* char input */] = {
-            {Stato.S1,Stato.SE},    // SI
-            {Stato.S1,Stato.SF},    // S1
-            {Stato.SE,Stato.SE},    // SF
-            {Stato.SE,Stato.SE},    // SE
+            {Stato.S1, Stato.SE},    // SI
+            {Stato.S1, Stato.SF},    // S1
+            {Stato.SE, Stato.SE},    // SF
+            {Stato.SE, Stato.SE},    // SE
         };
         
         Stato curStato = Stato.SI;

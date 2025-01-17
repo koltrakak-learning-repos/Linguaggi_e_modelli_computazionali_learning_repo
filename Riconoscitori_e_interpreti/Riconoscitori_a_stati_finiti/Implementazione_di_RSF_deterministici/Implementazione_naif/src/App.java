@@ -4,6 +4,7 @@ public class App {
     enum Stato {SI, S1, SF};
     public static void main() {
         Scanner scanner = new Scanner(System.in);
+        
         Stato stato = Stato.SI;
         int curPos = 0;
         boolean termina = false;
