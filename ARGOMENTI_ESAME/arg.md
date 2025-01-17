@@ -1,11 +1,11 @@
 ## 1) Teoria della computabilità e decidibilità degli insiemi (linguaggi)
-Una delle prime domande che ci siamo posti in questo corso è stata: "esistono problemi che un elaboratore NON PUÒ risolvere?"
+Una delle prime domande che ci siamo posti in questo corso è stata: "**esistono problemi che un elaboratore NON PUÒ risolvere?**"
 
-Il concetto di problema risolvibile è strettamente legato al concetto di computabilità che possiamo definire inizialmente in questo modo: "la computabilità è una caratteristica di un problema che lo rende risolvibile da una macchina". Chiaramente è utile far risolvere i problemi alla macchine perchè così non dobbiamo risolverli noi esseri umani.
+Il concetto di problema risolvibile è strettamente legato al concetto di computabilità che possiamo definire inizialmente in questo modo: "**la computabilità è una caratteristica di un problema che lo rende risolvibile da una macchina in un tempo finito**". Chiaramente è utile far risolvere i problemi alla macchine perchè così non dobbiamo risolverli noi esseri umani.
 
-Una definizione più precisa di computabilità l'abbiamo data attraverso la gerarchia di macchine astratte. L'idea è stata quella di definire macchine via via più "potenti", ovvero in grado di risolvere una gamma di problemi più ampia, fino a quando non si è più riuscito a trovare una macchina più potente dell'ultima trovata.
+Abbiamo data una definizione più precisa di computabilità attraverso la gerarchia di macchine astratte. L'idea è stata quella di definire macchine via via più "potenti", ovvero in grado di risolvere una gamma di problemi più ampia, fino a quando non si è più riuscito a trovare una macchina più potente dell'ultima trovata.
 
-Una volta trovata la macchina più potente del nostro arsenale possiamo definire una funzione come computabile (e il relativo problema come risolubile) se e solo se **per ogni ingresso** possibile, la macchina trovata è in grado di produrre l'uscita corretta **in un numero finito di passi** (tempo finito).
+Una volta trovata la macchina più potente del nostro arsenale, possiamo definire una funzione come computabile (e il relativo problema come risolubile) se e solo se **per ogni ingresso** possibile, la macchina trovata è in grado di produrre l'uscita corretta, **in un numero finito di passi** (tempo finito). Se neanche la macchina più potente che abbiamo a disposizione riesce in questa impresa, allora il problema non è risolubile e la relativa funzione si dice non computabile.
 
 In particolare siamo passati da:
 - reti combinatorie
@@ -27,7 +27,7 @@ In particolare siamo passati da:
 
 Arrivati alla MdT ci siamo fermati in quanto essa è la macchina pià potente che l'essere umano è riuscito a trovare fino ad oggi. Questo non lo dico io ma lo afferma la **Tesi di Church-Turing**: "Non esiste alcun formalismo capace di risolvere una classe di problemi più ampia di quella risolta dalla Macchina di Turing". La macchina di Turing stabilisce quindi un limite per quanto riguarda che cosa puoi chiedere di risolvere ad una macchina (fino ad oggi).
 
-**CONCLUSIONE**: un problema è risolubile (ovvero risolvibile in tempo finito da una MdT) è un problema la cui funzione caratteristica è computabile da una macchina di turing. 
+**CONCLUSIONE**: un problema è risolubile (ovvero risolvibile in tempo finito da una MdT) è un problema la cui funzione caratteristica è computabile da una macchina di turing. Computabilità significa quindi calcolabilità di un output dato un input da parte di una MdT (in tempo finito).
 
 **Concentrandoci ora sui problemi irrisolubili.** Esistono? Se si, sarebbe desiderabile capire quali sono in modo da poterli evitare.
 
@@ -37,7 +37,9 @@ La tesi di Church-Turing ci dice che se neanche la macchina di Turing riesce a r
 - NON c'è modo di distinguere una macchina inlooppata da una macchina che ci sta mettendo tanto tempo.
 - a volte l'irrisolubilità di un problema si manifesta in base ai dati d'ingresso. I problemi vengono etichettati come irrisolubili anche se si riescono a risolvere in 99 casi su 100 (Bisogna poter contare sulla macchina). 
 
-Chiedersi se esistono dei problemi irrisolubili equivale quindi cercare dei problemi per cui, alemeno con un ingresso, la macchina di Turing va in loop. La risposta a questa domanda è si!
+Abbiamo appurato che le funzioni definibili e le funzioni computabili hanno la stessa cardinalità. A questo punto, chiedersi se esistono dei problemi irrisolubili equivale a cercare almeno un problema definibile che però risulta non computabile, anche per un solo ingresso.
+
+Se trovassimo quindi un problema definibile ma per cui la macchina di Turing va in loop, dimostreremmo che i due insiemi non coincidono e che quindi esistono dei problemi irrisolubili da una MdT. Esistono dei problemi di questo tipo? La risposta a questa domanda è si!
 
 **Problema dell'halt della MdT**:
 
@@ -54,6 +56,7 @@ pezzi della DIM:
     - in pratica:
         - g si ferma e risponde 1 se la MdT *n* con ingresso *n* non si ferma
         - g va in loop se la MdT *n* con ingresso *n* si ferma
+        - __fa il contrario di quello che dice la funzione *f_halt()*__
 3. Consideriamo tra tutti gli ingressi possibili, *n=n_g*; ovvero proprio il numero che rappresenta la MdT *TG* che computa *g_halt*
     - stiamo dando come ingresso a TG la sua stessa descrizione, e in questo modo stiamo generando un assurdo
 4. con *n=n_g* Abbiamo il seguente assurdo:
@@ -77,21 +80,117 @@ Noi siamo stati interessati a capire se: data una stringa, essa appartenga o men
     - decidibilità
 Se così non fosse, il compilatore o interprete potrebbe non rispondere, entrando in un ciclo infinito, davanti a una frase errata mentre ovviamente noi vogliamo che si fermi e segnali l’errore.
 
-In conclusione, i linguaggi di nostro interesse sono quelli generabili, ovvero quelli per cui si riesce a decidere se una qualsiasi stringa appartenga o meno al linguaggio. I linguaggi sono da evitare in quanto provare a costruire un compilatore/interprete per questa categoria di linguaggi è un causa persa (problema irrisolubile)
+In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero quelli per cui si riesce a decidere se una qualsiasi stringa appartenga o meno al linguaggio e per cui bisogna poter saper generare anche l'insieme complementare a quello delle frasi appartenenti al linguaggio. I linguaggi non decidibili sono da evitare in quanto provare a costruire un compilatore/interprete per questa categoria di linguaggi è un causa persa (problema irrisolubile)
+
+
 
 
 ## 2) Classificazione di Chomsky, grammatiche, ...
-- subito collego parlando di riconoscibilità dei linguaggi
-- poi passo alle grammatiche ed alla classificazione vera e propria
-    - gerarchia
-    - eliminazione della stringa vuota per tipo 2 e tipo 3 per far rispettare la gerarchia
-- poi parlo di grammatiche equivalenti e di tipologie di linguaggio
-- concludo con come trovo la grammatica più semplice per un linguaggio
-    - pumping lemma
-        - vedi se parlarne solo in maniera intuitiva o con qualche esempio (e.g. https://www.youtube.com/watch?v=qtnNyUlO6vU&list=WL&index=1)
+Abbiamo detto che i linguaggi di nostro interesse in quanto riconoscibili da un interprete/compilatore, sono quelli decidibili... ok, ma che forma hanno quest'ultimi?
 
-4. Non determinismo e backtracking
-    1. Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
+Introduciamo il concetto di grammatica e la classificazione di Chomsky.
+
+Una grammatica è una notazione formale che ci permette di descrivere la sintassi di un linguaggio e come se ne possono derivare le frasi.
+- Una grammatica è definita dalla quadrupla <alfabeto VT, alfabeto VN, S, Prod>
+- Le grammatiche sono utili in quanto un linguaggio è spesso infinito e quindi non se ne possono elencare tutte le frasi .
+
+Le grammatiche sono poi classificate in ciò che prende il nome di classificazione di Chomsky. Questa categorizzazione distingue vari tipi di grammatica in base alla struttura delle produzioni (che influenza direttamente le caratteristiche dei linguaggi producibili). Abbiamo in ordine di complessità decrescente:
+**Tipo 0**: nessuna restrizione sulle produzioni
+- In particolare, le regole possono specificare riscritture che **accorciano la forma di frase** corrente.
+    - Regole del tipo: *G → epsilon* che fanno svanire un simbolo non terminale
+
+**Tipo 1 | dipendenti dal contesto**: produzioni vincolate alla forma: *"beta" A "delta"* → *"beta" "alpha" "delta"*. **con *alpha* != *epsilon***
+- A non terminale, lettere greche appartenenti V* tranne alpha che deve essere != epsilon
+- *A* può essere sostituita da *alpha* solo nel contesto *"beta" A "delta"* 
+    - **regole chirurgiche**
+- Le riscritture **non ACCORCIANO MAI la forma di frase** corrente (*alpha != epsilon*)
+- Le produzioni ammettono più di un metasimbolo a sinistra, ed ammettono anche lo scambio di due caratteri (seppure con più passaggi teoricamente)
+- **NB**: questo tipo di grammatica **prevede anche vicoli ciechi/rami morti**, ovvero strade in cui non ci sono più regole applicabili. Questo non succede mai nel Tipo 2 e nel Tipo 3
+
+**Tipo 2 | libere dal contesto**: produzioni vincolate alla forma: *A → alpha*; (con alpha che può anche essere epsilon)
+- A non terminale, alpha appartente a V*
+- Qui *A* può sempre essere sostituita da *alpha*, indipendentemente dal contesto (non esiste più l'idea stessa di contesto).
+    - **regole a grana grossa, ogni volta che vedo il metasimbolo sostituisco**
+- ho sempre e solo un metasimbolo A a sinistra, *alpha* può contenere più metasimboli in qualsiasi posizione
+- **NB**: non c'è più il vincolo *alpha* != *epsilon*. **Si ritorna a poter accorciare le frasi**( a prima vista). 
+    - In realtà, esiste un teorema che mi permette di **tirar via gli *epsilon* ottenendo una grammatica equivalente sempre di tipo 2** (vedi dopo). 
+- **CASO PARTICOLARE**: se *alpha* ha la forma di *u*, oppure *u B v*, con *u* e *v* appartenenti a _VT*_ (solo sequenze di terminali), la **grammatica si dice lineare**
+
+**Tipo 3 | grammatiche regolari**: produzioni vincolate alle forme lineari destre/sinistre
+- lineare a destra 
+    - *A → delta*
+    - *A → delta B*
+- lineare a sinistra
+    - *A → delta*
+    - *A → B delta*
+- le frasi crescono da una parte sola. 
+    - è possibile avere un singolo metasimbolo a destra o a sinistra (*delta* è composta da terminali) 
+- non posso costruire frasi che crescono contemporaneamente in più punti
+**NB**: IMPORTANTE:  produzioni o tutte lineari a destra, o tutte lineari a sinistra - non mischiate.
+**NB**: anche qui alpha può essere epsilon ma anche qui esiste una grammatica equivalente con al più *S -> epsilon*.
+
+Abbiamo poi che queste grammatiche rispettano una relazione gerarchica, in cui la più generale è quella di tipo 0 e la più specifica è qulla di tipo 3
+- una grammatica di tipo 3 è quindi anche di tipo 2/1/0
+- una grammatica di tipo 2 è quindi anche di tipo 1/0
+- ecc...
+
+**NB**: per questo il teorema riguardo le epsilon-rules è importante, fa rimanere valida questa relazione.
+- **Come ottenere la grammatica equivalente senza *epsilon-rules*?** Data una grammatica G che contiene epsilon-rules, per generare una grammatica equivalente G', senza epsilon rules, **basta fare delle sostituzioni e semplificazioni**.
+
+Torniamo ora alla domanda iniziale, volevamo capire **che forma hanno i linguaggi caratterizzati da un insieme delle frasi valide decidibile**. Essi sono proprio i linguaggi di tipo 1/2/3, i linguaggi di tipo 0 potrebbero (non è detto) invece essere non riconoscibili. 
+
+Abbiamo quindi che per i linguaggi di tipo 0, non è garantita l'esistenza di una MdT capace di decidere se una frase appartiene o meno al linguaggio (decidibilità dell'insieme); per gli altri tipi di linguaggio invece questo è garantito e per questo motivo sono tutti riconoscibili.
+
+Tuttavia, linguaggi di tipo più semplice, sono riconoscibili pagando un costo computazionale più basso, ed utilizzando una macchine più semplici rispetto alla MdT. Abbiamo che:
+- tipo 1 -> MdT
+- tipo 2 -> PDA
+- tipo 3 -> ASF
+
+In paricolare i linguaggi di programmazione sono di tipo 2, e alcune sottoparti di quest'ultimi molto comuni (numeri, identificatori, keywords) sono di tipo 3 e quindi riconoscibili con particolare efficienza. Questi sono i due tipi di linguaggio che abbiamo imparato a riconoscere durante il corso.
+
+A questo punto nasce il seguente problema: "dato un linguaggio e trovata una grammatica che lo descrive, mi piacerebbe sapere se la grammatica che ho trovato è quella più "economica" per il mio linguaggio, ovvero quella di tipo più basso". 
+
+Infatti, una grammatica G1 potrebbe essere equivalente a una grammatica G2 se generano lo stesso linguaggio.
+- tuttavia, una potrebbe però essere preferibile all’altra ad essa equivalente del costo del riconoscimento 
+- se riesco ad esprimere il mio linguaggio con un tipo 3 è molto meglio rispetto ad una grammatica equivalente di tipo 2 (ASF costa di meno rispetto ad un PDA)
+
+Capire se un **linguaggio** (non grammatica) è di Tipo 2 (o di Tipo 3) "solo guardandolo" in generale non è banale.
+- Se hai la grammatica è facile, basta controllare il numero e la posizione dei metasimboli.
+- Tuttavia, **di solito si parte dal LINGUAGGIO desiderato, non dalla grammatica** e solo successivamente si prova a definire una grammatica che lo genera.
+
+**Come faccio quindi a capire dato un linguaggio e una grammatica esista o meno una grammatica più semplice, e quindi meno costosa?**
+Per i soli linguaggi di tipo 2 e 3 (quelli di nostro interesse) un aiuto è dato dal **pumping lemma**!
+
+Il pumping lemma dà una **condizione NECESSARIA, ma non sufficiente, perché un LINGUAGGIO (non grammatica) sia di Tipo 2** (o 3)
+- Essendo solo una condizione necessaria, può essere usato per dimostrare "in negativo" che un linguaggio non è di Tipo 2 (o non è di Tipo 3)
+- ... ma purtroppo non per affermarlo "in positivo"
+    - se pumping lemma: false -> linguaggio non è di tipo 2 (o 3)
+    - se pumping lemma: true  -> linguaggio potrebbe essere di tipo 2 (o 3), ma non è detto
+
+**Idea**: In un linguaggio infinito, ogni stringa **sufficientemente lunga** deve avere una parte che si ripete (regola ricorsiva). Ergo, essa può essere "pompata" un qualunque numero di volte **ottenendo sempre altre stringhe del linguaggio**!
+- nei linguaggi di tipo due la parte pompabili è "bilaterale" in quanto caratteristica fondamentale di questo tipo di linguaggi è il **self embedding** (un non terminale paninato tra due terminali)
+- nei linguaggi di tipo uno la parte pompabili sarà "monolatera" in quanto le ricorsive possono far crescere una stringa o solo a destra o solo a sinistra
+
+Abbiamo quindi che una stringa abbastanza lunga di un linguaggio di tipo 2 può essere suddivisa in 5 parti: "abcde" con:
+- *a* ed *e* che rapresentano il prefisso e suffisso della parte centrale pompabile
+- *b* e *d* rappresentano la parte pompabile bilateralmente in cui i due lati crescono insieme
+- *c* rappresentano la parte paninata mediante self-embedding (e.g. espressione dentro parentesi)
+- (tutte queste parti possono essere composte da più caratteri)  
+
+Se pompando *b* e *d* un numero *i* volte (ab^icd^ie) la stringa che si ottiene non appartiene al linguaggio, allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 2 (e quindi neanche di tipo 3).
+
+Analogamente, una stringa abbastanza lunga di tipo 3 può essere suddivisa in 3 parti: "abc" con:
+- *a* ed *c* che rapresentano il prefisso e suffisso della parte centrale pompabile
+- *b* che rappresenta la parte pompabile unilateralmente
+
+Se pompando *b* un numero *i* volte (ab^ic) la stringa che si ottiene non appartiene al linguaggio, allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 3.
+
+**NOTA**: nota magari prova anche a scrivere mano a mano un esempio di grammatica in cui mostri le parti che formano il prefisso e suffisso, ed anche la parte pompabili data da una regola ricorsiva 
+
+
+3) Parsing LL(1)
+    - Non determinismo e backtracking
+        - Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
 
 5. Lazyness
     1. Unified memory con allocazione lazy delle pagine nel posto giusto
