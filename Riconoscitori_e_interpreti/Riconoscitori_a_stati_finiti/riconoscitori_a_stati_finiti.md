@@ -111,10 +111,48 @@ Esistono anche degli RSF in cui gli stati iniziali e finali hanno una **doppia n
 ### Problemi nella costruzione dell'RSF
 Non sempre però le cose vanno lisce nella traduzione da grammatica ad RSF:
 
-L’analisi **bottom-up** può non essere immediata in presenza di **più stati finali che corrisponderebbero a scopi multipli** (dove cerco di ridurre?), o in presenza di archi entranti nello stato iniziale (stato iniziale di transito, una regola aggiuntiva normale)
+L’analisi **bottom-up** può non essere immediata in presenza di **più stati finali che corrisponderebbero a scopi multipli** (dove cerco di ridurre?), o in presenza di archi entranti nello stato iniziale (stato iniziale di transito)
 - per uscire dal dilemma, è utile esprimere il linguaggio riconosciuto o generato come **UNIONE di due linguaggi**
     - ciascuno denotato da una sua propria grammatica che prende come scopo uno dei vari stati finali.
     - **considero uno scopo alla volta e poi unisco**
 - **Attenzione**: rimappando la grammatica ottenuta in questo modo in un automa, esso risulterà diverso dall'automa di partenza e potrebbe risultare **non-deterministico**.
 
-L’analisi **top-down** richiede attenzione se vi sono archi uscenti da stati finali (stato finale di transito, una regola aggiuntiva normale)
+L’analisi **top-down** richiede attenzione se vi sono archi uscenti da stati finali (stato finale di transito). Il problema si può eliminare aggiungendo uno stato aggiuntivo che rappresenta lo stato di transito (stessa cosa anche per l'analisi bottom-up)
+
+
+
+## Non determinismo
+Certe **grammatiche** possono portare a un **automa non deterministico**, cioè nella cui tabella di transizioni compaiono più stati futuri per una stessa configurazione.
+- almeno in uno stato, con lo stesso ingresso, ci sono due o più alternativo come stato di arrivo.
+
+Un automa riconoscitore non deterministico dev’essere intrinsecamente dotato della capacità di scegliere in quale stato portarsi, quando ha più alternative (altrimenti potrebbe non terminare mai il riconoscimento).
+
+Se il linguaggio supporta il non determinismo, implementare il riconoscitore è semplice
+- prolog come linguaggio che supporta il non determinismo
+    - ogni produzione diventa una regola
+    - la macchina virtuale del linguaggio è in grado di "tentare una strada" e tornare indietro nel caso si riveli sbagliata, provando via via tutte le possibili alternative (backtracking automatico).
+
+Un riconoscitore non-deterministico
+- è meno efficiente di un riconoscitore deterministico (in quanto deve tentare molteplici alternative)
+- deve disporre di strutture dati interne (stack) per «ricordare la strada fatta» e poterla disfare se necessario per esplorarne un'altra
+
+**Come può essere costruito un RSF non deterministico se il linguaggio non supporta il non-determinismo?**
+In un linguaggio imperativo, occorre costruirsi a mano tutte le strutture per "ricordare la strada" e mettere in piedi il "motore" per gestirle… cioè ricostruirsi la stessa capacità che il motore Prolog ha già innata...
+
+**Oppure si può trasformare l'automa non deterministico in uno deterministico eliminando il problema alla radice!**
+
+### Da AUTOMI NON DETERMINISTICI ad AUTOMI DETERMINISTICI
+Nel tipo 3 il non determinismo non ci piace, ma per fortuna **è sempre possibile trovare un automa deterministico equivalente alla sua versione non deterministica**.
+
+**TEOREMA DEL MARTELLO**
+```
+un automa non deterministico può sempre essere ricondotto a un automa deterministico equivalente. (successivamente minimizzabile)
+```
+
+procedimento: ... boh, idc!
+
+**NB**: è estremamente probabile che l'automa ottenuto dopo l'applicazione del teorema del martello non sia minimo. Non è un problema, è minimizzabile tramite un ulteriore procedimento noto.
+
+**OSS**: nell'esempio delle slide, il non determinismo era causato da un ciclo posto troppo in anticipo rispetto allo stato finale. Il ciclo causava il bivio modena-modena che ci faceva decidere troppo presto che strada prendere nel riconoscimento:
+- ci siamo liberati del non determinismo spostando un ciclo da uno stato a quello dopo
+- ricorda: il non determinismo è sempre causato dal dover decidere troppo presto -> soluzione: guadagnare tempo
