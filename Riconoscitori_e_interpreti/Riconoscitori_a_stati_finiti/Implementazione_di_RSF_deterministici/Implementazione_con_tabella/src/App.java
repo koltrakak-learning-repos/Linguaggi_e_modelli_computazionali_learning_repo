@@ -5,8 +5,8 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        // per rendere il riconoscitore programmabile basta passare queste due variabili come input
         char alfabeto[] = {'a', 'b'};
-
         Stato tabellaTransizioni[/* stato */][/* char input */] = {
             {Stato.S1, Stato.SE},    // SI
             {Stato.S1, Stato.SF},    // S1
