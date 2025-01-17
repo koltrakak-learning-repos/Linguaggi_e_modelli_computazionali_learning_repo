@@ -90,11 +90,11 @@ Viceversa, **dallo stesso RSF si possono recuperare due grammatiche**:
 
 **In conclusione**, dato un automa riconoscitore, se ne possono trarre:
 - una grammatica regolare a destra, interpretandolo top-down
-    - **approccio a generazione**, si cerca di produrre la frase
+    - **approccio a generazione**, si cerca di produrre la frase a partire dallo scopo (== uno stato iniziale)
     - per ogni regola del tipo *X → x Y*; l’automa, con ingresso x, si porta dallo stato X allo stato Y
     - per ogni regola del tipo *X → x*; l’automa, con ingresso x, si porta dallo stato X allo stato finale F
 - una grammatica regolare a sinistra, interpretandolo bottom-up
-    - **approccio a riduzione**, dalla frase si cerca di raggiungere lo scopo
+    - **approccio a riduzione**, **dalla FRASE si cerca di raggiungere lo scopo** (== uno stato finale siccome stiamo andando a ritroso)
     - per ogni regola del tipo *X → Y x* l’automa, con ingresso x, **riduce lo stato Y allo stato X**
     - per ogni regola del tipo *X → x* l’automa, con ingresso x, riduce lo stato iniziale I allo stato X.
 
@@ -108,16 +108,13 @@ Esistono anche degli RSF in cui gli stati iniziali e finali hanno una **doppia n
     - Ma sono anche dei normali stati, analoghi a tutti gli altri, in cui si transita
 - Nella grammatica ci saranno anche produzioni che comprendono gli stati iniziali/finali di transito (ma non quelli iniziali/finali per davvero)
 
+### Problemi nella costruzione dell'RSF
+Non sempre però le cose vanno lisce nella traduzione da grammatica ad RSF:
 
+L’analisi **bottom-up** può non essere immediata in presenza di **più stati finali che corrisponderebbero a scopi multipli** (dove cerco di ridurre?), o in presenza di archi entranti nello stato iniziale (stato iniziale di transito, una regola aggiuntiva normale)
+- per uscire dal dilemma, è utile esprimere il linguaggio riconosciuto o generato come **UNIONE di due linguaggi**
+    - ciascuno denotato da una sua propria grammatica che prende come scopo uno dei vari stati finali.
+    - **considero uno scopo alla volta e poi unisco**
+- **Attenzione**: rimappando la grammatica ottenuta in questo modo in un automa, esso risulterà diverso dall'automa di partenza e potrebbe risultare **non-deterministico**.
 
-
-
-
-NB_2: Non sempre però le cose vanno lisce:
-    - l’analisi bottom-up può non essere immediata in presenza di più stati finali, che corrisponderebbero a scopi multipli, o in
-      presenza di archi entranti nello stato iniziale
-    - l’analisi top-down richiede attenzione se vi sono archi uscenti da stati finali.
-
-Nel primo caso, per uscire dal dilemma, è utile esprimere il linguaggio riconosciuto o generato come UNIONE di due linguaggi, ciascuno
-denotato da una sua propria grammatica che prende come scopo uno dei vari stati finali.
-Attenzione: rimappando una grammatica ottenuta in questo modo in un automa, esso potrebbe risultare non-deterministico.
+L’analisi **top-down** richiede attenzione se vi sono archi uscenti da stati finali (stato finale di transito, una regola aggiuntiva normale)
