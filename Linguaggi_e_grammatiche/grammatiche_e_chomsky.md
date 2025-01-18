@@ -167,7 +167,7 @@ Al contrario, i linguaggi generati da grammatiche di Tipo 1 (e quindi di Tipo 2 
 - Esiste **sempre** una MdT capace di decidere se una frase appartiene o meno al linguaggio
 - L'efficienza del processo di riconoscimento, però, è un'altra faccenda…
 
-Per ottenere un riconoscitore efficiente occorre adottare linguaggi generati da (classi speciali di) grammatiche di tipo 2 (quelle di nostro interesse)
+Per ottenere un riconoscitore efficiente occorre adottare linguaggi generati da classi speciali (deterministiche) di grammatiche di tipo 2 (quelle di nostro interesse)
 - Tutti i linguaggi di programmazione sono infatti context free
 
 Per ottenere particolare efficienza in sotto-parti di uso estremamente frequente (numeri, identificatori, keywords, operatori; tutto ciò che diventa un token), si adottano spesso per esse linguaggi generati da grammatiche di Tipo 3
