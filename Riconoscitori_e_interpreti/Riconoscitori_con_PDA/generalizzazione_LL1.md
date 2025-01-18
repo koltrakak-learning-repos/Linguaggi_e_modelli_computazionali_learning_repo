@@ -133,6 +133,8 @@ Definiamo quindi il **director symbol set** come **l'unione di questi due insiem
 ### Il problema della ricorsione sinistra
 ![alt text](immagini/problema_ricorsione_sinistra.png)
 
+Abbiamo quindi che **grammatiche con ricorsione sinistra, non sono compatibili con analisi LL**. 
+
 Ricorda: la ricorsione sinistra può in teoria sempre essere sostituita con una ricorsione destra ottenendo un linguaggio equivalente, tuttavia questa trasformazione cambia l'ordine di derivazione e questo **influenza l'analisi sematica** (ricorda sempre il caso dell'associatività delle operazioni).
 
 ## Riconoscibilità efficiente dei linguaggi context-free | Se la grammatica non è LL(1) che cosa si fa?
@@ -147,28 +149,33 @@ Varie strategie:
 **Ma tutto ciò potrebbe non bastare!**
 
 ```
-Non tutti i linguaggi context-free possiedono una grammatica LL(k)
+Non tutti i linguaggi context-free possiedono una grammatica LL(k). Esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k
 ```
-
-Esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k
 
 Inoltre, in generale **non si può sapere se per un linguaggio esista una grammatica LL(1)**: 
+- Al contrario, ovviamente, stabilire se una grammatica sia LL(1) è un problema decidibile. Basta usare i Director Symbols che sono computabili
 
 ```
-stabilire se un linguaggio sia LL(1) è un problema INDECIDIBILE
+Stabilire se un linguaggio sia LL(1) è un problema INDECIDIBILE
 ```
-- Al contrario, ovviamente, stabilire se una grammatica sia LL(1) è un problema decidibile – basta usare i Director Symbols che sono computabili
 
-Dang, siamo alle corde. Dato un linguaggio il pumping lemma ci dice ... possiamo poi essere sicuri che sia di tipo 2 controllando il self embedding. Tuttavia per una riconoscibilità con costo lineare bisogna che ... ma 
-
-come fare?
-
-__Esistono tecniche più potenti dell'analisi LL!__
+Dang, siamo alle corde. 
+- Abbiamo una grammatica che non è LL(1) che ci piacerebbe poter trasformare in tale in modo da riconoscere i linguaggio con le tecniche appena viste
+- Tuttavia, abbiamo appena visto che esistono linguaggi che, seppur deterministici, non sono mai LL(k).
+- Potremmo quindi fare della fatica inutile nel cercare di trasformare la grammatica in questa forma che potrebbe non essere mai raggiungibile.
+ 
+Come fare? __Esistono tecniche più potenti dell'analisi LL!__
 
 Le **grammatiche LR(k)** consentono l’analisi deterministica delle frasi Left to right, con **Right-most derivation**, usando k simboli di lookahead.
 - L'analisi LR è meno naturale dell'analisi LL ma è superiore dal punto di vista teorico: «arriva dove l’LL non arriva»
 - Infatti, vi sono linguaggi context-free deterministici (vedi linguaggi con ricorsione sinistra)
     - NON analizzabili in modo deterministico con tecniche LL...
-    - ma riconoscibili in modo deterministico con tecniche LR! 
+    - ma **riconoscibili in modo deterministico con tecniche LR! **
 
-Le vedremo più avanti ☺
+**Abbiamo quindi che lo strumento più potente che abbiamo a disposizione è l'analisi LR**. Data una grammatica che descrive il mio linguaggio deterministico, nel caso in cui essa non sia LL(1), posso provare a lasciarla così senza alcuna trasformazione, e provare ad analizzarla con la tecnica LR che è quella che mi permette di riconoscere (con tempo lineare) il più grande insieme di linguaggi deterministici.
+
+Ad esempio, nei casi in cui io abbia una grammatica con ricorsione sinistra non eliminabile
+- LL(1) non è applicabile
+- LR(1) la riconosce senza problemi
+
+La vedremo più avanti ☺
