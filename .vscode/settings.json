@@ -1,5 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "Riconoscitori_e_interpreti/Riconoscitori_con_PDA/Implementazioni_PDA_deterministici/Implementazione_semplice/src"
+        "Riconoscitori_e_interpreti/Riconoscitori_con_PDA/Implementazioni_PDA_deterministici/Implementazione_con_convenzione_opposta/src"
     ]
 }
