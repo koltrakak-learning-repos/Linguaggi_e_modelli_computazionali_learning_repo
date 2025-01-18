@@ -123,11 +123,13 @@ Per riconoscere il GENERICO linguaggio di tipo 2 è necessario un PDA __non-dete
 Che forma deve avere una grammatica di un linguaggio per poter essere riconosciuta da un PDA deterministico?
 ```
 
-Sicuramente non deve succedere quanto detto sopra, ovvero che l’automa, in un dato stato Q0, con simbolo in cima allo stack Z e ingresso x, possa:
+Sicuramente NON deve succedere quanto detto sopra; ovvero che l’automa, in un dato stato Q0, con simbolo in cima allo stack Z e ingresso x, possa:
 - portarsi in più stati futuri, oppure ...
 - ... optare se leggere o non leggere il simbolo di ingresso x a causa della presenza di una mossa spontanea 
 
 Dovremo capire come __tradurre questi vincoli sulla grammatica__, in modo da sapere quali regole scrivere (e quali non scrivere) per assicurarsi che il risultato sia un linguaggio context-free deterministico.
+
+(anticipazione: sono le grammatiche LL(k) e più in generale LR(k))
 
 ### Proprietà linguaggi deterministici (vabbè...)
 - Mix fra linguaggi deterministici

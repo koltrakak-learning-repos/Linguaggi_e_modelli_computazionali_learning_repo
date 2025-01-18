@@ -51,53 +51,69 @@ Il motore del parser (parsing engine) svolgerà le singole azioni consultando la
 
 
 
-## Limiti dell'analisi ricorsiva discendente
-L’analisi ricorsiva discendente non è sempre applicabile. L'approccio funziona solo se non ci sono mai "dubbi" su quale regola applicare in una qualsiasi situazione (__determinismo__). 
+## LIMITI DELL'ANALISI RICORSIVA DISCENDENTE
+L’analisi ricorsiva discendente non è sempre applicabile. **L'approccio funziona solo se non ci sono mai "dubbi" su quale regola applicare in una qualsiasi situazione (determinismo)**. 
 
-    Ciò suggerisce di identificare una classe ristretta di grammatiche context-free, che garantisca il determinismo dell’analisi sintattica discendente (grammatiche LL(k)).
+Ciò suggerisce di identificare una classe ristretta di grammatiche context-free, che garantisca il determinismo dell’analisi sintattica discendente (grammatiche LL(k)).
+
+**Ok ma cosa significa in pratica questo? Che forma hanno questo tipo di grammatiche deterministiche?**
+
+Ci eravamo posti una domanda simile prima chiedendoci che forma deve avere la grammatica di un linguaggio riconoscibile da una PDA deterministico. È quindi equivalente chiedersi quali siano le grammatiche context-free in cui è applicabile l'analisi ricorsiva discendente e quali siano le grammatiche context-free riconoscibili da un PDA deterministico (prevedibile, d'altro l'analisi ricorsiva discendente è un algoritmo che simula la gestione dello stack di un PDA)
 
 ### Come rendere deterministica l'analisi ricorsiva discendente?
-Bisogna mettersi nelle condizioni di poter dedurre la mossa giusta dalle informazioni "disponibili", senza dover mai tirare a indovinare.
+Bisogna mettersi nelle condizioni di poter dedurre la mossa giusta dalle **informazioni disponibili**, senza dover mai tirare a indovinare.
 
 Cosa si intende per "informazioni disponibili"?
 -  sicuramente, le regole che abbiamo usato fin lì e soprattutto i simboli di input che abbiamo letto e consumato fin lì
-    - IL PASSATO
-- spesso, però, la mera conoscenza del passato non basta, si ipotizza perciò di poter __"vedere avanti" di k simboli__ (solitamente 1), ossia di poter "sbirciare" l'input ancora da leggere
-    - __UN OCCHIO SUL FUTURO PROSSIMO__
+    - **IL PASSATO**
+- spesso, però, la mera conoscenza del passato non basta, **si ipotizza perciò di poter "vedere avanti" di k simboli** (solitamente 1), ossia di poter "sbirciare" l'input ancora da leggere
+    - **UN OCCHIO SUL FUTURO PROSSIMO**
+
+```
+È questa la caratteristica fondamentale delle grammatiche analizzabili deterministicamente mediante analisi ricorsiva discendente. La possibilità di vedere in avanti di k simboli (terminali) 
+```
+
+Il concetto viene formalizzato meglio dalla definizione sotto
 
 ## GRAMMATICHE LL(k)
-Si definiscono grammatiche LL(k) quelle che sono __analizzabili in modo deterministico__:
-- procedendo Left to right (nella lettura dell'input)
-- applicando la Left-most derivation (derivazione canonica sinistra)
-- guardando avanti di al più k simboli
+**Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
+- procedendo Left to right nella lettura dell'input
+- applicando la Left-most derivation (sequenzializzazione nel riconoscimento dei sottolinguaggi)
+    - costruisce prima il sottoalbero di derivazione più a sinistra
+- **guardando avanti di al più k simboli**
 
-Rivestono particolare interesse le GRAMMATICHE LL(1). quelle in cui basta guardare avanti di un solo simbolo per poter operare in modo deterministico.
+Rivestono particolare interesse le **GRAMMATICHE LL(1)**. quelle in cui basta guardare avanti di un solo simbolo per poter operare in modo deterministico.
 
-    In sostanza, se una grammatica è LL(k), è sempre possibile scegliere con certezza la produzione da usare per procedere, guardando avanti al più di k simboli sull'input.
+In sostanza, se una grammatica è LL(k), è sempre possibile scegliere con certezza la produzione da usare per procedere, guardando avanti al più di k simboli sull'input in quanto quei k simboli mi distinguono quale regola di produzione applicare/invocare. 
 
-![alt text](esempio_grammatica_LL(1).png)
+// metti questo come esempio negli argomenti di esame
+**OSS**: Un altro modo di pensarla è dato che sto utilizzando un approccio top-down e sto quindi cercando di costruire la mia frase finale a partire dallo scopo, per riuscire nell'impresa è necessario per me:
+- poter vedere per che cosa iniziano le produzioni
+- che regole diverse inizino con simboli terminali diversi in modo da poter scegliere in maniera deterministica quale regola applicare
+- scegliere quale regola applicare in base alla posizione del mio cursore sulla stringa di input che sto cercando di riprodurre
+
+![alt text](immagini/esempio_grammatica_LL(1).png)
 
 ### Se una grammatica è LL(1)
-- Le parti destre delle produzioni di uno stesso meta-simbolo iniziano tutte con un simbolo terminale __diverso__.
+- Le parti destre delle produzioni di uno stesso meta-simbolo iniziano tutte con un simbolo terminale __DISTINTO__.
 - È quindi sufficiente guardare avanti di un carattere per scegliere con certezza la produzione con cui proseguire l'analisi
 - Se non esistono produzioni compatibili con quell'input, ERRORE
 
 ### Determinismo e parsing table
-Capire se una grammatica è deterministica o meno è semplice  costruendo la relativa tabella di parsing. 
+Capire se una grammatica è deterministica o meno è semplice costruendo la relativa tabella di parsing. 
 - considerando in lettura un simbolo alla volta, ossia, considerando la grammatica come LL(1)
 - basta verificare che ogni cella contenga una sola produzione e quindi non che non ci sia mai dubbio su quale sia la prossima mossa da fare.
 
 __NB__: Serve un contratto chiaro su chi legge l'input e quando lo fa.
-- IPOTESI: ogni funzione trova nella variabile globale ch il prossimo
-carattere da analizzare, già letto ma non ancora analizzato
-- Ergo, ogni funzione, prima di ritornare, effettua una lettura da input a beneficio di chi verrà dopo di lei
--  il main effettua la prima lettura prima di invocare la funzione di top-level
-- tocca al main stabilire cosa fare quando la funzione di top-level ritorna: si pretende che ch==EOF/EOLN, o va bene qualunque carattere?
+- **IPOTESI**: ogni funzione trova nella variabile globale *ch* il prossimo carattere da analizzare, già letto ma non ancora analizzato
+- Ergo, ogni funzione, prima di invocarne un'altra, e prima di ritornare, effettua una lettura da input a beneficio di chi verrà dopo di lei
+- il main effettua la prima lettura prima di invocare la funzione di top-level
+- **NB**: tocca al main stabilire cosa fare quando la funzione di top-level ritorna: si pretende che ch==EOF/EOLN, o va bene qualunque carattere?
 
 ### Il ruolo del main al ritorno della funzione di top-level
 Questione di fondo: la frase in input deve essere completa? Ossia, non ci deve essere nient'altro dopo?
-- allora, ch al ritorno di S() deve contenere EOF o EOLN o altro terminatore
+- allora, *ch* al ritorno di S() deve contenere EOF o EOLN o altro terminatore
 
-O può essere solo una parte? Nel qual caso può esserci altro dopo, che però __non ci interessa__
-- allora, ch al ritorno di S() può contenere __qualunque cosa__ 
+O può essere solo una parte di una frase più lunga? Nel qual caso può esserci altro dopo, che però __non ci interessa__
+- allora, *ch* al ritorno di S() può contenere __qualunque cosa__ 
     - significa che probabilmente S() non vede davvero __tutto__ il linguaggio, ma solo una parte di sua competenza. Ciò che segue è probabilmente analizzato da qualcun altro, a cui quindi non bisogna imporre decisioni affrettate.

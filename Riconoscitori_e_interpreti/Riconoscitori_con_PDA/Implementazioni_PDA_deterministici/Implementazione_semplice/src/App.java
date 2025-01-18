@@ -27,8 +27,9 @@ public class App {
     private static char nextchar() {
         char nextchar = '\0';
         try {
+            
             if (FRASE.length() == CUR_POS) {
-                //ho già analizzato l'ultimo carattere
+                // ho già analizzato l'ultimo carattere e quindi inserisco a mano un fine stringa
                 nextchar = '\0';
             }
             else {
