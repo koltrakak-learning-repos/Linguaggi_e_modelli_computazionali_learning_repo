@@ -115,19 +115,25 @@ Per riconoscere il GENERICO linguaggio di tipo 2 è necessario un PDA __non-dete
 - in molti casi di interesse è sufficiente un PDA deterministico (linguaggi belli e di interesse)
     - inoltre, in questo caso il costo del riconoscimento scende ad una complessità lineare in quanto non c'è bisogno di valutare strade diverse e di fare backtracking.
 
-### DOMANDA FONDAMENTALE
-Che forma deve avere una grammatica di un linguaggio per poter essere riconosciuta da un PDA deterministico?
 
-Sicuramente non deve succedere quanto detto sopra, ovvero che l’automa, in un dato stato Q0 , con simbolo in cima allo stack Z e ingresso x, possa:
+
+
+### DOMANDA FONDAMENTALE (qua ci devi tornare)
+```
+Che forma deve avere una grammatica di un linguaggio per poter essere riconosciuta da un PDA deterministico?
+```
+
+Sicuramente non deve succedere quanto detto sopra, ovvero che l’automa, in un dato stato Q0, con simbolo in cima allo stack Z e ingresso x, possa:
 - portarsi in più stati futuri, oppure ...
 - ... optare se leggere o non leggere il simbolo di ingresso x a causa della presenza di una mossa spontanea 
 
-Dovremo capire come __tradurre questi vincoli sulla grammatica__, in modo da sapere quali regole scrivere (e quali non scrivere) per assicurarsi che il risultato sia un linguaggio (context-free) deterministico.
+Dovremo capire come __tradurre questi vincoli sulla grammatica__, in modo da sapere quali regole scrivere (e quali non scrivere) per assicurarsi che il risultato sia un linguaggio context-free deterministico.
 
-#### Proprietà linguaggi deterministici
+### Proprietà linguaggi deterministici (vabbè...)
 - Mix fra linguaggi deterministici
     - __L'unione, l'intersezione e il concatenamento__ di due linguaggi deterministici __non__ dà necessariamente luogo a un linguaggio __deterministico__.
     - Il __complemento__ di un linguaggio deterministico invece __è deterministico__ (ovvio…).
+
 - Mix fra linguaggi deterministici e regolari
     - Aggiungere ad un linguaggio deterministico dei pezzi di un linguaggio regolare lo lascia deterministico!
     - Se L è un linguaggio deterministico e R un linguaggio regolare, __il linguaggio quoziente L/R__ (ossia l'insieme delle stringhe di L private di un suffisso regolare) è __deterministico__.

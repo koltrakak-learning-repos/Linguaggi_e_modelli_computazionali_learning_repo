@@ -10,8 +10,19 @@ public class App {
     //global vars
     private static Scanner scanner = new Scanner(System.in);
     private static String FRASE;
+
     private static char CUR_CHAR;
     private static int CUR_POS = 0;
+
+    public static void printStackTrace() {
+        // Ottiene lo stack corrente
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        
+        System.out.println("Stato dello stack:");
+        for (StackTraceElement element : stackTrace) {
+            System.out.println("\t" + element.getMethodName());
+        }
+    }
 
     private static char nextchar() {
         char nextchar = '\0';
@@ -38,28 +49,40 @@ public class App {
 
         switch(CUR_CHAR){
             case 'c': 
-                System.out.println("\ttrovato c");
-
+                System.out.println("-> trovato c\n");
+                printStackTrace();
+                // preparo comunque l'input per il livello superiore
+                // ma anche per un eventuale altro stadio di parsing nel caso
+                // avessi dovuto solo riconoscere una singola 'c'
                 CUR_CHAR = nextchar();
                 result = true;
                 break;
+
+            // questi due casi fanno la stessa cosa
             case '0':
             case '1': 
-                System.out.println("\tleggo " + CUR_CHAR);
+                System.out.println("->leggo " + CUR_CHAR);
+                printStackTrace();
                 first = CUR_CHAR; /* push */
 
                 CUR_CHAR = nextchar();  //per il prossimo livello
 
                 if (S() && CUR_CHAR==first) { /* pop */
-                    System.out.println("\tConfronto " + CUR_CHAR + " con " + first);
+                    System.out.println("->Confronto " + CUR_CHAR + " con " + first);
+                    printStackTrace();
+
                     CUR_CHAR = nextchar();
                     result = true;
                 }
                 else {
+                    System.out.println("->Confronto " + CUR_CHAR + " con " + first);
+                    printStackTrace();
                     result = false;
                 }
                 break;
             default:
+                System.out.println("-> carattere non appartenente all'alfabeto {0, 1, c}");
+                printStackTrace();
                 result = false;
                 break;
         }

@@ -15,12 +15,20 @@ Il risultato è la tecnica nota come...
 
 ## ANALISI RICORSIVA DISCENDENTE (Top-Down Recursive-Descent Parsing)
 - si introduce __una funzione per ogni metasimbolo__ della grammatica e la si invoca ogni volta che si incontra quel metasimbolo.
-- ogni funzione copre le regole del proprio metasimbolo, ossia riconosce il sotto-linguaggio corrispondente:
+- ogni funzione copre le regole del proprio metasimbolo, ossia **riconosce il sotto-linguaggio corrispondente**:
     - termina normalmente, o restituisce un segno di successo, se incontra simboli coerenti con le proprie regole
     - abortisce, o restituisce un qualche segno di fallimento, se incontra simboli che non corrispondono alle proprie regole.
+    - **NB**: la parte destra della produzione di un metasimbolo può avere più alternative, **per riconoscere la regola giusta da applicare** (che mi permette di fare la successiva chiamata ricorsiva corretta) **devo considerare i primi caratteri per farmi guidare nella scelta**. Questo ha delle conseguenze:
+        - la grammatica deve essere deterministica
+        - la grammatica deve essere in forma normale di Greibach in modo da avere nelle regole dei terminali all'inizio che posso confrontare con il mio input corrente. 
 
-### Takeway dall'esempio
-- è quasi sempre più comodo che, ad ogni livello, il carattere letto venga passato dal livello superiore piuttosto che fare leggere ad ogni livello il proprio carattere.
+- Notare le parole chiave:
+    - top-down: si scende dallo scopo alla frase finale da parsare (approccio a generazione piuttosto che a riduzione)
+    - ricorsiva: ogni metasimbolo, per riconoscere il suo sottolinguaggio, presuppone che quello dei metasimboli appartenenti alla sua regola di produzione sia già stato riconosciuto ricorsivamente
+    - (L'analisi LR invece sarà opposta)
+
+### Takeway dall'esempio: L = { word c word^R } 
+- è quasi sempre più comodo che, ad ogni livello, il carattere letto dall'input venga passato dal livello superiore piuttosto che fare leggere ad ogni livello il proprio carattere.
 - il "main", invocherà la funzione scopo s().
 
 ### PARSING TABLE
@@ -28,15 +36,20 @@ Applicare l'analisi ricorsiva discendente è un processo meccanico semplice, ma 
 
     Può essere opportuno SEPARARE il motore (invariante rispetto alle regole) dalle regole della specifica grammatica
 
-Si costruisce a questo scopo una TABELLA DI PARSING
+Si costruisce a questo scopo una **TABELLA DI PARSING**
 - simile alla tabella delle transizioni di un RSF
-    - stavolta si considera il simbolo corrente e la produzione corrente
-- ma indica la prossima produzione da applicare
+    - invece di considerare la transizione da: *input e stato corrente -> stato futuro*
+    - si considera la transazione da: *input e regola di produzione corrente*
+- indica la prossima produzione da applicare
+
 Il motore del parser (parsing engine) svolgerà le singole azioni consultando la tabella di parsing.
 
-![esempi_tabelle_di_parsing_per_PDA_deterministici](esempi_tabelle_di_parsing_per_PDA_deterministici.png)
+![esempi_tabelle_di_parsing_per_PDA_deterministici](immagini/esempi_tabelle_di_parsing_per_PDA_deterministici.png)
 
-FLASH: per creare un linguaggio uso il compilatore del linguaggio stesso per definire una sua nuova versioni espansa
+...FLASH: per creare un linguaggio uso il compilatore del linguaggio stesso per definire una sua nuova versioni espansa
+
+
+
 
 ## Limiti dell'analisi ricorsiva discendente
 L’analisi ricorsiva discendente non è sempre applicabile. L'approccio funziona solo se non ci sono mai "dubbi" su quale regola applicare in una qualsiasi situazione (__determinismo__). 
