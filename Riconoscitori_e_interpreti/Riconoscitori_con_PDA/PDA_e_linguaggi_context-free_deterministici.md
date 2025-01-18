@@ -129,7 +129,7 @@ Sicuramente NON deve succedere quanto detto sopra; ovvero che l’automa, in un 
 
 Dovremo capire come __tradurre questi vincoli sulla grammatica__, in modo da sapere quali regole scrivere (e quali non scrivere) per assicurarsi che il risultato sia un linguaggio context-free deterministico.
 
-(anticipazione: sono le grammatiche LL(k) e più in generale LR(k))
+(anticipazione: sono le grammatiche LL(k), e più in generale, LR(k))
 
 ### Proprietà linguaggi deterministici (vabbè...)
 - Mix fra linguaggi deterministici
