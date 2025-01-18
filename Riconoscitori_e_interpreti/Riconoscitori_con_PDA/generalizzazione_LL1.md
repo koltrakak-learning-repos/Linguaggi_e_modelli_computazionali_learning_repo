@@ -175,7 +175,7 @@ Le **grammatiche LR(k)** consentono l’analisi deterministica delle frasi Left 
 **Abbiamo quindi che lo strumento più potente che abbiamo a disposizione è l'analisi LR**. Data una grammatica che descrive il mio linguaggio deterministico, nel caso in cui essa non sia LL(1), posso provare a lasciarla così senza alcuna trasformazione, e provare ad analizzarla con la tecnica LR che è quella che mi permette di riconoscere (con tempo lineare) il più grande insieme di linguaggi deterministici.
 
 Ad esempio, nei casi in cui io abbia una grammatica con ricorsione sinistra non eliminabile
-- LL(1) non è applicabile
+- LL(1) non è applicabile (... or is it?)
 - LR(1) la riconosce senza problemi
 
 La vedremo più avanti ☺
