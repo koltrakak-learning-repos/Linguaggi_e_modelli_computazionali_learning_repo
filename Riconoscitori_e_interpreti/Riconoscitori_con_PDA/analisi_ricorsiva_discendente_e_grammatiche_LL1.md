@@ -106,7 +106,8 @@ Capire se una grammatica è deterministica o meno è semplice costruendo la rela
 
 __NB__: Serve un contratto chiaro su chi legge l'input e quando lo fa.
 - **IPOTESI**: ogni funzione trova nella variabile globale *ch* il prossimo carattere da analizzare, già letto ma non ancora analizzato
-- Ergo, ogni funzione, prima di invocarne un'altra, e prima di ritornare, effettua una lettura da input a beneficio di chi verrà dopo di lei
+- Ergo, ogni funzione,(la maggior parte delle volte) prima di invocarne un'altra, e prima di ritornare, effettua una lettura da input a beneficio di chi verrà dopo di lei
+    - questo non è sempre vero prima di una invocazione. In produzioni del tipo A -> BC è chiaro che A prima di invocare B non ha nessun carattere da consumare e quindi passa il suo. Se la grammatica è in forma normale di Greibach allora è vero
 - il main effettua la prima lettura prima di invocare la funzione di top-level
 - **NB**: tocca al main stabilire cosa fare quando la funzione di top-level ritorna: si pretende che ch==EOF/EOLN, o va bene qualunque carattere?
 
