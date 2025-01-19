@@ -54,7 +54,7 @@ Una possibile soluzione è eliminare la stringa vuota, agendo per sostituzione (
 Grammatiche come questa vengono definite **sostanzialmente LL(1)**:
 
 S → A B | B
-**A → a A | a**;    conflitto!
+**A → a A | a**;    **conflitto!**
 B → b B | c
 
 questo perchè possono essere riscritte in questo modo con una nuova **produzione di raccoglimento**:
@@ -64,7 +64,7 @@ A → a X
 X → a X | epsilon;  
 B → b B | c
 
-X è annullabile! Questo però non causa problemi in quanto non è mai un simbolo iniziale e quindi non può mai nascondere una iniziale appartenente ad un altro metasimbolo. **La grammatica perciò è comunque LL(1)!** 
+**X è annullabile!** Questo però **non causa problemi in quanto non è mai un simbolo iniziale** e quindi non può mai nascondere una iniziale appartenente ad un altro metasimbolo. **La grammatica perciò è comunque LL(1)!** 
 
 Un altro esempio di grammatica sostanzialmente LL(1) è:
 
@@ -105,7 +105,8 @@ IL PUNTO:
 Gli starter set sono una definizione troppo semplicistica che mi obbliga a complicare la grammatica eliminando le epsilon rules. C'è bisogno di una definizione aggiuntiva.
 
 Per tenere conto delle epsilon-rules bisogna considerare anche i simboli che possono seguire quelli annullabili 
-- **insieme FOLLOW**
+
+**insieme FOLLOW**: FOLLOW(A) = tutti i terminali che possono seguire A (se A annullabile) **in qualsiasi produzione**
 
 Possiamo integrare quest'ultimo con lo starter-symbol-set in un nuovo insieme caratterizzante:
 - identico allo Starter-Symbols-set quando non c'è la stringa vuota..
