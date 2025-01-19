@@ -40,7 +40,7 @@ Una grammatica è ambigua se esiste almeno una frase (del relativo linguaggio) c
 
 La frase "a+a+a" è ambigua!
 
-**FONDAMENTALE**: L'ambiguità è il male! Incasina le macchine incrementando l'ordine di complessità degli algoritmi riconoscitori. Questo perchè grammatica ambigue per definizione ammettono molteplici alberi di derivazione di una stessa frase e il riconoscitore li deve calcolare tutti e trovare il più adatto (quello che si mappa meglio al significato della frase, pensa alla associatività delle operazioni e a come si traduce in AST diversi per associatività diverse e conseguente diverso risultato)
+**FONDAMENTALE**: L'ambiguità è il male! Incasina le macchine incrementando l'ordine di complessità degli algoritmi riconoscitori. Questo perchè grammatica ambigue per definizione ammettono molteplici alberi di derivazione di una stessa frase e il riconoscitore li deve calcolare tutti e trovare **il più adatto alla semantica del linguaggio** (quello che si mappa meglio al significato della frase, pensa alla associatività delle operazioni e a come si traduce in AST diversi per associatività diverse e conseguente diverso risultato)
 
 **Possiamo accorgerci se una grammatica è ambigua?** Purtroppo, stabilire se una grammatica di Tipo 2 sia ambigua è un **problema indecidibile**
 - però, in pratica, un certo numero di derivazioni è spesso sufficiente per "convincersi" della (non per dimostrare la) ambiguità di G
