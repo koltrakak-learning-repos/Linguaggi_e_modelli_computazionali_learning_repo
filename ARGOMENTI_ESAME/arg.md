@@ -264,6 +264,7 @@ Notare le parole chiave:
 le parti destre di produzioni relative ad uno stesso metasimbolo, incomincino tutte con un simbolo terminale distinto l'una dalle altre.
 ```
 Questa condizione mi permette di riconoscere la produzione giusta da applicare, e quindi che funzione invocare, in **maniera deterministica**.
+- Puoi fare vedere come esempio-aggiuntivo l'algoritmo di recursive descent non deterministico di questo video: https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
 
 Definiamo quindi una prima categoria di grammatica che descrive un linguaggio deterministico: le grammatiche LL(k). **Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
 - procedendo Left to right nella lettura dell'input
@@ -283,7 +284,7 @@ Con Lookahead-set(A->alpha) definito come l'**unione** degli insiemi:
 
 **OSS**: questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio (grammatica diversa == derivazione diversa == AST diverso; ricorda sempre ricorsione sinistra)
 
-La necessità di poter vedere le iniziali delle produzioni di una grammatica è una condizione stringente. È infatti dimostrabile che:
+La necessità di poter vedere le iniziali delle produzioni di una grammatica è una **condizione stringente**. È infatti dimostrabile che:
 **esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k**. Quindi con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici. **La copertura maggiore c'è la da l'analisi LR(k)** in cui si ha un approccio opposto e più potente:
 - approccio a riduzione in cui dalla frase si cerca di arrivare allo scopo
 
@@ -291,12 +292,7 @@ es ricorsione sinistra:
 - con LL(1) le produzioni ricorsive a sinistra, della forma *A ::= A alpha | a*, **danno sempre luogo a starter symbol set identici per le due alternative** e quindi non è possibile l'analisi ricorsiva discendente
 - LR(1) analizzerebbe tranquillamente questa grammatica invece.
 
-
-
-# 4) Non determinismo vs Ambiguità
-- Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
-- Puoi anche fare vedere la grammatica del dangling else come esempio di grammatica deterministica (praticamente LL(1)) ma ambigua 
-
+Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri argomenti...
 
 
 
