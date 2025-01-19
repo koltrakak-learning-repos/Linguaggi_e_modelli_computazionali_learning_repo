@@ -284,7 +284,7 @@ Con Lookahead-set(A->alpha) definito come l'**unione** degli insiemi:
 **OSS**: questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio (grammatica diversa == derivazione diversa == AST diverso; ricorda sempre ricorsione sinistra)
 
 La necessità di poter vedere le iniziali delle produzioni di una grammatica è una condizione stringente. È infatti dimostrabile che:
-**esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k**. Quindi con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici. La copertura maggiore c'è la da l'analisi LR(k) in cui si ha un approccio opposto
+**esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k**. Quindi con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici. **La copertura maggiore c'è la da l'analisi LR(k)** in cui si ha un approccio opposto e più potente:
 - approccio a riduzione in cui dalla frase si cerca di arrivare allo scopo
 
 es ricorsione sinistra:
