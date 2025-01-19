@@ -30,7 +30,7 @@ gli starter symbols set relativi alle riscritture di uno STESSO metasimbolo devo
 __NB__: la condizione diventa anche __sufficiente__ se nessun metasimbolo, **usato come iniziale all'interno di una riscrittura**, genera la stringa vuota (vedi dopo).
 
 **Riassumendo**: la nuova definizione di grammatica LL(1) è una grammatica in cui tutte le riscritture relative ad uno stesso metasimbolo hanno starter-symbol-sets distinti, e deve valere una delle seguenti: 
-- nessun metasimbolo genera la stringa vuota
+- nessun metasimbolo genera la stringa vuota se è il primo di una riscrittura
 - oppure, si considera l'iniziale del non terminale successivo a quello che si è annullato (vedi dopo)
 
 

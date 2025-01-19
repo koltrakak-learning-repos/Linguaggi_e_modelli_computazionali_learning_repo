@@ -85,7 +85,13 @@ In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero qu
 
 
 
-## 2) Classificazione di Chomsky, grammatiche, ...
+
+
+
+
+
+
+## 2) Grammatiche, Classificazione di Chomsky e riconoscibilità dei linguaggi
 Abbiamo detto che i linguaggi di nostro interesse in quanto riconoscibili da un interprete/compilatore, sono quelli decidibili... ok, ma che forma hanno quest'ultimi?
 
 Introduciamo il concetto di grammatica e la classificazione di Chomsky.
@@ -146,7 +152,7 @@ Tuttavia, linguaggi di tipo più semplice, sono riconoscibili pagando un costo c
 - tipo 2 -> PDA
 - tipo 3 -> ASF
 
-In paricolare i linguaggi di programmazione sono di tipo 2, e alcune sottoparti di quest'ultimi molto comuni (numeri, identificatori, keywords) sono di tipo 3 e quindi riconoscibili con particolare efficienza. Questi sono i due tipi di linguaggio che abbiamo imparato a riconoscere durante il corso.
+In particolare i linguaggi di programmazione sono di tipo 2, e alcune sottoparti di quest'ultimi molto comuni (numeri, identificatori, keywords) sono di tipo 3 e quindi riconoscibili con particolare efficienza. Questi sono i due tipi di linguaggio che abbiamo imparato a riconoscere durante il corso.
 
 A questo punto nasce il seguente problema: "dato un linguaggio e trovata una grammatica che lo descrive, mi piacerebbe sapere se la grammatica che ho trovato è quella più "economica" per il mio linguaggio, ovvero quella di tipo più basso". 
 
@@ -185,12 +191,121 @@ Analogamente, una stringa abbastanza lunga di tipo 3 può essere suddivisa in 3 
 
 Se pompando *b* un numero *i* volte (ab^ic) la stringa che si ottiene non appartiene al linguaggio, allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 3.
 
-**NOTA**: nota magari prova anche a scrivere mano a mano un esempio di grammatica in cui mostri le parti che formano il prefisso e suffisso, ed anche la parte pompabili data da una regola ricorsiva 
+Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
+- L1 = {a^n b^n c^n } non è di Tipo 2 (quindi è almeno di Tipo 1)
+- L2 = {a^p , p primo } non è di Tipo 3 (quindi è almeno di Tipo 2 ma in realtà neanche quello)
+- L3 = { (^n a )^n } non è di tipo 3 (si sbilanciano le parentesi) ma sembra essere di tipo 2
+
+**NOTA**: nota magari prova anche a scrivere mano a mano un esempio di grammatica di tipo 2/3 in cui mostri le parti che formano il prefisso e suffisso, ed anche la parte pompabili data da una regola ricorsiva 
 
 
-3) Parsing LL(1)
-    - Non determinismo e backtracking
-        - Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
+
+
+
+
+
+
+
+
+
+## 3) Analisi Ricorsiva discendente e Grammatiche LL(1)
+- PDA deterministici e non deterministici
+- Analisi ricorsiva discendente
+    - Approccio generativo top-down
+    - Quando è applicabile 
+        - forma normale di Greibach
+        - più in generale quando i lookahead set di riscritture distinte di uno stesso metasimbolo sono diversi
+        - se questa condizione non è vera devo fare backtracking e non ho più un costo di riconoscimento lineare
+    - Grammatiche LL(1) e Determinismo
+
+Abbiamo detto che i linguaggi che ci interessano sono quelli di tipo 2 e tipo 3 in quanto sono quelli utilizzati effettivamente nei linguaggi di programmazione data la "economicità" del loro riconoscimento. Ora discutiamo di come avviene il riconoscimento effettivo.
+
+In particolare, vorrei parlare del solo riconoscimento dei linguaggio di tipo due in quanto quelli regolari sono riconoscibili in maniera molto semplice. Basta passare alla forma su ASF (che è minimizzabile e in cui si può eliminare il non determismo) e considerare la tabella delle transizioni di stato ad ogni carattere letto.
+
+Il riconoscimento dei linguaggi di tipo 2 invece è un po' più complicato (d'altronde richiede un PDA che memorizza le sequenze non limitabili a priori). In particolare la parte problematica è che **anche i PDA possono essere non deterministici**, e questo non determismo porta ad un incremento nella complessità computazionale del riconoscimento (N^3, N^2 se non ambigua... comunque sovra-lineare).
+- Dato uno stato Q0, con simbolo in cima allo stack Z e ingresso x, un PDA non det. può:
+    - portarsi in più stati futuri
+        - *sfn(Q0, x, Z) = { (Q1,Z1), (Q2,Z2), … (Qk, Zk) }*
+    - oppure, optare se leggere o non leggere il simbolo di ingresso x a causa della presenza di una mossa spontanea 
+        - sono definite entrambe: *sfn(Q0, x, Z)* e *sfn(Qi, epsilon, Z)*
+
+I linguaggi deterministici (riconoscibili mediante un PDA deterministico) invece, sono riconoscibili con costo lineare rispetto alla lunghezza della stringa da riconoscere. **È desiderabile quindi utilizzare sempre un PDA deterministico** per il riconoscimento dei linguaggi di tipo 2
+
+Purtroppo, non esiste un equivalente del teorema del martello per i PDA, inoltre:
+```
+La classe dei linguaggi riconosciuti da un PDA non-deterministico coincide con la classe dei linguaggi context-free. Qualunque linguaggio context free può sempre essere riconosciuto da un opportuno PDA non-determistico. 
+```
+Ma è anche dimostrato che **esistono anche dei linguaggi context-free che possono essere riconosciuti solamente tramite un PDA non-deterministico**. Siamo quindi costretti a scegliere se accettare il costo computazionale elevato di un PDA non det., oppure restringere l'insieme dei linguaggi che vogliamo riconoscere a quello dei deterministici. Delle due, noi abbiamo scelto la seconda in quanto i linguaggi non det. abbiamo detto che sono per loro natura "brutti" e di poco interesse pratico.
+
+
+
+
+A questo punto è naturale chiedersi:
+```
+Che forma deve avere una grammatica di un linguaggio deterministico?
+```
+Detta subito, sono le grammatiche LL(k), e più in generale, LR(k). Ma procediamo per passi.
+
+Nel corso il primo algoritmo che abbiamo studiato per il riconoscimento di linguaggi di tipo 2 deterministici è **l'analisi ricorsiva discendente**!
+- si introduce __una funzione per ogni metasimbolo__ della grammatica e la si invoca ogni volta che si incontra quel metasimbolo.
+- ogni funzione copre le regole del proprio metasimbolo, ossia **riconosce il sotto-linguaggio corrispondente**:
+    - termina normalmente, o restituisce un segno di successo, se incontra simboli coerenti con le proprie regole
+    - abortisce, o restituisce un qualche segno di fallimento, se incontra simboli che non corrispondono alle proprie regole.
+
+**es**: mostra pseudocodice parentesi bilanciate S -> ( S ) | c
+
+Notare le parole chiave:
+- **discendente/top-down**: si scende dallo scopo alla frase finale da parsare (approccio a generazione piuttosto che a riduzione)
+- **ricorsiva**: ogni metasimbolo, per riconoscere il suo sottolinguaggio, presuppone che quello dei metasimboli appartenenti alla sua regola di produzione sia già stato riconosciuto ricorsivamente
+- (L'analisi LR invece sarà opposta)
+
+**NB**: **questo algoritmo non funziona con ogni tipologia di grammatica**. Anche nell'esempio semplice appena mostrato, vi è una assunzione di base: per poter applicare analisi ricorsiva discendente è necessario che:
+```
+le parti destre di produzioni relative ad uno stesso metasimbolo, incomincino tutte con un simbolo terminale distinto l'una dalle altre.
+```
+Questa condizione mi permette di riconoscere la produzione giusta da applicare, e quindi che funzione invocare, in **maniera deterministica**.
+
+Definiamo quindi una prima categoria di grammatica che descrive un linguaggio deterministico: le grammatiche LL(k). **Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
+- procedendo Left to right nella lettura dell'input
+- applicando la Left-most derivation (sequenzializzazione nel riconoscimento dei sottolinguaggi)
+    - costruisce prima il sottoalbero di derivazione più a sinistra
+- **guardando avanti nell'input di al più k simboli** per discriminare quale produzione applicare
+
+In realtà è possibile generalizzare l'idea di simbolo iniziale in quanto, quest'ultimi potrebbero essere nascosti da:
+- **metasimboli**, che vanno quindi sviluppati in una o più riscritture per capire il simbolo terminale iniziale
+- **parti annullabili**, se un metasimbolo è riscrivibile come epsilon, tutti i simboli (terminali e non) che venivano dopo di lui, e che quindi pensavano di non essere iniziali, si ritrovano ad essere delle valide iniziali per la riscrittura e quindi vanno considerate
+
+Una definizione più generale di grammatica LL(1) è quindi una grammatica in cui: **i lookahead set delle rescritture relative allo stesso metasimbolo sono distinti**.
+
+Con Lookahead-set(A->alpha) definito come l'**unione** degli insiemi:
+- FIRST(Alpha): l’insieme dei simboli terminali iniziali che si riescono a trovare applicando * produzioni ad alpha.
+- FOLLOW(A):    l'insieme dei simboli terminali tutti che possono seguire A (se A annullabile) **in qualsiasi produzione**
+
+**OSS**: questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio (grammatica diversa == derivazione diversa == AST diverso; ricorda sempre ricorsione sinistra)
+
+La necessità di poter vedere le iniziali delle produzioni di una grammatica è una condizione stringente. È infatti dimostrabile che:
+**esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k**. Quindi con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici. La copertura maggiore c'è la da l'analisi LR(k) in cui si ha un approccio opposto
+- approccio a riduzione in cui dalla frase si cerca di arrivare allo scopo
+
+es ricorsione sinistra:
+- con LL(1) le produzioni ricorsive a sinistra, della forma *A ::= A alpha | a*, **danno sempre luogo a starter symbol set identici per le due alternative** e quindi non è possibile l'analisi ricorsiva discendente
+- LR(1) analizzerebbe tranquillamente questa grammatica invece.
+
+
+
+# 4) Non determinismo vs Ambiguità
+- Puoi fare vedere come esempio particolare l'algoritmo di recursive descent di questo video che non è LL(1): https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
+- Puoi anche fare vedere la grammatica del dangling else come esempio di grammatica deterministica (praticamente LL(1)) ma ambigua 
+
+
+
+
+
+
+
+
+
+
 
 5. Lazyness
     1. Unified memory con allocazione lazy delle pagine nel posto giusto

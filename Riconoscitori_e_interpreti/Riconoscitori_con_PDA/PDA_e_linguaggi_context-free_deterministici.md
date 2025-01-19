@@ -118,7 +118,7 @@ Per riconoscere il GENERICO linguaggio di tipo 2 è necessario un PDA __non-dete
 
 
 
-### DOMANDA FONDAMENTALE (qua ci devi tornare)
+### DOMANDA FONDAMENTALE
 ```
 Che forma deve avere una grammatica di un linguaggio per poter essere riconosciuta da un PDA deterministico?
 ```

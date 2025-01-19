@@ -172,7 +172,7 @@ Per ottenere un riconoscitore efficiente occorre adottare linguaggi generati da 
 
 Per ottenere particolare efficienza in sotto-parti di uso estremamente frequente (numeri, identificatori, keywords, operatori; tutto ciò che diventa un token), si adottano spesso per esse linguaggi generati da grammatiche di Tipo 3
 - l'efficienza si ottiene a causa della natura semplice della grammatica, basta mantenere lo stato corrente e leggere sequenzialmente.
-- il riconoscimento di grammatiche di tipo 2 invece richiede ricorsione, uno stack, backtracking (se la grammatica è ambigua(?))
+- il riconoscimento di grammatiche di tipo 2 invece richiede ricorsione, uno stack, backtracking (se la grammatica è ambigua/non deterministica)
 
 Chi riconosce i diversi tipi di linguaggi?
 GRAMMATICHE                 AUTOMI RICONOSCITORI
@@ -180,19 +180,3 @@ Tipo 0 ->                   Se L(G) è decidibile, serve una Macchina di Turing
 Tipo 1 ->                   Macchina di Turing 
 Tipo 2 (context-free) ->    Push-Down Automaton (PDA) (cioè ASF + stack)
 Tipo 3 (regolari) ->        Automa a Stati Finiti (ASF)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
