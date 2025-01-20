@@ -225,7 +225,7 @@ Un modo è definire una __funzione di interpretazione__:
 - CODOMINIO: l'insieme dei possibili significati, ossia l'insieme degli oggetti che si vogliono far corrispondere a tali frasi
 
 __Come definire tale funzione?__
-- se il linguaggio è finito, basta una tabella (stringhe -> significati)
+- se il **linguaggio è finito basta una mappa** (stringhe -> significati)
 - altrimenti, serve una funzione definita in modo __ricorsivo__
 
 **Semantica denotazionale**
@@ -247,3 +247,10 @@ seguire pari pari la sintassi!
 ![alt text](immagini/semantica_termine.png)
 
 **OSS**: per dare significato ad un nuovo simbolo devo utilizzare il significato di simboli che gia conosco
+
+**OSS**: con le stesse regole sintattiche posso avere **più funzioni di interpretazione** e quindi più semantica per una stessa frase.
+- funzione di interpretazione di calcolo, ecc...
+- funzione di interpretazione per sintesi vocale
+- funzione di interpretazione per colori 
+
+La mappa diventa una tabella vera e propria.
