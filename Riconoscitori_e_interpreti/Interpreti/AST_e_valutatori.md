@@ -1,13 +1,15 @@
-L'interprete prodotto fino ad adesso è fin troppo hard-coded, se cambia anche un solo tipo devo rifare tutto. Potrebbe essere più intelligente estrarre le parti invarianti da quelle dipendenti dal caso d'uso.
-
-**Idea**: il parser salva i risultati della sua valutazione in un formato intermedio (albero) che sarà poi processato da vari interpreti (valutatori) distinti.
-
 ## Alberi sintattici astratti
 La grammatica descrive la struttura effettiva delle frasi, ossia la **sintassi concreta** del linguaggio.
 - Tale grammatica è studiata in modo che il linguaggio risulti non solo ben definito, ma anche **chiaro per chi legge**
 - A tal fine **la sintassi concreta include spesso elementi non strettamente necessari** (punteggiatura, parole chiave, ..), ma utili per migliorare la chiarezza e la leggibilità delle frasi.
 
-Se la valutazione non è immediata, il parser preferisce rappresentare le frasi sintatticamente corrette tramite una opportuna __rappresentazione interna__, solitamente ad albero.
+Se la valutazione non è immediata, **il parser preferisce rappresentare le frasi sintatticamente corrette tramite una opportuna rappresentazione interna**, solitamente ad albero.
+
+**Perchè?** 
+- **Estendibilità**
+    - Un interprete che valuta immediatamente è fin troppo hard-coded, se cambia anche un solo tipo devo rifare tutto. 
+    - Potrebbe essere più intelligente estrarre in un AST le parti che descrivono le relazioni tra le entità descritte dalla grammatica (invarianti) da quelle dipendenti dal caso d'uso (valori dentro a dominio e immagine della funzione di interpretazioni).
+    - il parser salva i risultati della sua valutazione in un formato intermedio (albero) che sarà **poi processato da vari valutatori distinti**, uno per funzione di interpretazione desiderata.
 
 Si potrebbe usare l’**albero di derivazione**, ma in generale esso darebbe luogo a una rappresentazione **ridondante** che mi alloca tanto spazio in memoria inutilmente.
 - l'albero di derivazione illustra tutti i singoli passi di derivazione, ma molti di essi servono solo durante la costruzione dell'albero, "per ottenere proprio quell'albero" e non un altro.
@@ -65,31 +67,57 @@ Ambigua! Ma non è un problema
 
 
 
-### Architettura globale di un interprete
-...
-il vantaggio di usare AST è che se vogliamo, ad esempio, cambiare dominio di valutazione, basta scrivere un nuovo valutatore del AST e non riscrivere l'intero interprete da capo.
+## Valutazione degli AST
+**Ricorda**: il vantaggio di usare AST è che se, ad esempio, è necessario cambiare dominio della valutazione, basta scrivere un nuovo valutatore del AST e non riscrivere l'intero parser da capo.
 
-## Valutazione degli alberi
-notazione prefissa  = visita pre-order
-notazione postfissa = visita post-order
+**Come si valuta un AST?**
+Come qualsiasi altro albero:
+- **Pre-order**: radice, figli (da sinistra a destra)
+- **Post-order**: figli (da sinistra a destra), radice
+- **In-order**: figlio sinistro, radice, figlio destro
+    - Attenzione: la in-order saltella fra i livelli!
 
-notazione infissa   = visita in-order ; questo tipo di visita non rende evidente l'ordine delle operazioni
+Occorre capire cosa producono i diversi tipi di visita:
+- Pre-order:
+    - operatore, 1° operando, 2° operando
+    - notazione prefissa
+- Post-order:
+    - 1° operando, 2° operando, operatore
+    - notazione postfissa
+- In-order:
+    - 1° operando, operatore, 2° operando
+    - notazione infissa
 
-...
+**NB**: la notazione **infissa non rende evidenti l'ordine con cui vengono eseguite le operazioni** (bisogna conoscere le convenzioni su priorità e associatività). Al contrario, la notazione pre/post-fissa eliminano questa necessità.
 
-NB: La notazione postfissa, che sembra quella più brutta, è in realta quella più naturale per una macchina che prima di eseguire una operazione ha bisogno dei dati su cui quella operazione va fatta.
+**NB**: La notazione postfissa, che sembra quella più brutta, è in realta quella più naturale per una macchina che **prima di eseguire una operazione ha bisogno dei dati** su cui quella operazione va fatta. **Infatti, i nostri valutatori utilizzeranno una visita in post-order**.
 
-    piccolo discorso epico pre pausa: Nel costruire il nostro processore virtuale (valutatore) piuttosto che appoggiarsi ad un numero finito di registri e gestire le complicazioni dovute a questo, meglio usare una macchina a stack dato che non ci interessa il costo di accesso alla memoria (processore VIRTUALE). Questo è esattaente come funzionano la JVM e CLR. **mic drop**
+**OSS**: come abbiamo gia visto, la grammatica a strati e la ricorsione sinistra (opportunamente tradotte nel parser) hanno già dentro di se i concetti di associativita e priorità. Per questo motivo l'AST prodotto tiene già conto nella sua struttura di questi concetti.
 
-OSS: la grammatica a strati e la ricorsione sinistra, opportunamente tradotto nel parser, ha dentro di se i concetti di associativita e priorità come abbiamo gia vista. Per questo motivo l'AST prodotto ha gia dentro nella sua struttura questi concetti. In altre parole, se una espressione viene valutata con una associatività diversa, l'AST prodotto avrè collegati i nodi al suo interno i nodi collegati in modo altrettanto diverso. A questo punto la macchina esecutrice (valutatore) non si deve più preoccupare di questi concetti e può fare una valutazione sequenziale con una visita post-order dell'albero.
+In altre parole, se una espressione viene valutata con una determinata associatività, l'AST prodotto avrà collegato i nodi al suo interno in maniera tale da tenere conto di questa associatività (in particolare operazioni da eseguire prima sono più in basso nell'ast). **A questo punto la macchina esecutrice (valutatore) non si deve più preoccupare di questi concetti e può fare una valutazione con una visita post-order dell'albero.**
 
-## VALUTATORI
+### compilatori, VM e bytecode
+È chiaro che il codice prodotto da compilatore per un processore reale deve utilizzare il più possibile i registri quando può, ma questo causa complicazioni:
+- se i registri non bastano?
+- come associare registri e operandi?
+
+È molto più comodo utilizzare una **macchina virtuale** e un valutatore che mi produce del bytecode per quest'ultima. In particolare la nostra macchina virtuale può essere un **macchina a stack** e allora le cose diventano semplici dato che non ci interessa il costo di accesso alla memoria (non stiamo controllando una macchina fisica):
+- ogni nodo-valore carica un valore sullo stack (PUSH)
+- ogni nodo-operatore causa il prelievo di due valori dallo stack (POP) e il collocamento sullo stack del risultato (PUSH)
+- alla fine si preleva il risultato dallo stack (POP)
+
+Sarà il compilatore del linguaggio con cui ho scritto la mia VM a doversi preoccupare delle ottimizzazioni per la macchina fisica, io posso ignorarle ed affidarmi agli scrittori dei compilatori.
+
+### VALUTATORI
 Più valutatori possono produrre output diversi.
 
     Il valutatore valuta un AST in un dato dominio, secondo la sua funzione di interpretazione.
 
 - deve visitare l'albero applicando in ogni nodo la semantica prevista per quel tipo di nodo
 - deve discriminare che tipo di nodo sta visitando
+
+
+
 
 ### IL VISITOR COME INTERPRETE
 Il visitor realizza la logica di interpretazione in modo coerente all'approccio a oggetti
