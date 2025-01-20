@@ -220,7 +220,7 @@ Occorre un modo sistematico e formale per stabilire con precisione e senza ambig
 - se il linguaggio è finito, basta un elenco
 - se è infinito, serve una notazione finita (applicabile a infinite frasi)
 
-Un modo è definire una __funzione di interpretazione__:
+Un modo è definire una __funzione di interpretazione__; ovvero, Una funzione che associa ad **una frase** del linguaggio **un significato**:
 - DOMINIO: il linguaggio (insieme delle frasi lecite, ossia le stringhe riconosciute)
 - CODOMINIO: l'insieme dei possibili significati, ossia l'insieme degli oggetti che si vogliono far corrispondere a tali frasi
 

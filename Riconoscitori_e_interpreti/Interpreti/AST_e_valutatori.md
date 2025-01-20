@@ -109,12 +109,16 @@ In altre parole, se una espressione viene valutata con una determinata associati
 Sarà il compilatore del linguaggio con cui ho scritto la mia VM a doversi preoccupare delle ottimizzazioni per la macchina fisica, io posso ignorarle ed affidarmi agli scrittori dei compilatori.
 
 ### VALUTATORI
-Più valutatori possono produrre output diversi.
+Un valutatore **valuta un AST in un dato dominio**, secondo la sua funzione di interpretazione.
+- deve visitare l'albero applicando in ogni nodo **la semantica prevista per quel tipo di nodo**
+- fondamentale per il valutatore **discriminare che tipo di nodo sta visitando**
 
-    Il valutatore valuta un AST in un dato dominio, secondo la sua funzione di interpretazione.
+**possibili implementazioni**:
 
-- deve visitare l'albero applicando in ogni nodo la semantica prevista per quel tipo di nodo
-- deve discriminare che tipo di nodo sta visitando
+
+
+
+
 
 
 
