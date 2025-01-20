@@ -86,6 +86,8 @@ Si può dare una **struttura gerarchica alle espressioni, esprimendo così intri
 
 **Idea**: per dare significato ad una espressione, bisogna dare significato prima ai termini, allo stesso modo, per dar significato ai termini bisogna prima considerare i fattori.
 
+Una grammatica a strati è una grammatica in cui le regole sono organizzate in livelli o strati distinti, ognuno dei quali si occupa di un aspetto specifico della sintassi o della semantica. Gli strati possono essere applicati in sequenza, **come se ogni livello risolvesse un sottoinsieme del problema grammaticale**.
+
 È come avere **tre grammatiche/linguaggi separati**:
 - **Ogni strato considera terminali gli elementi linguistici definiti in altri strati**
     - per lo strato azzurro è come se *term* fosse un simbolo terminale
@@ -97,6 +99,7 @@ Si può dare una **struttura gerarchica alle espressioni, esprimendo così intri
     - L(FACTOR) = num | (EXP)
 
 - **La grammatica non è più ambigua** perché ogni strato può produrre solo certi operatori (??? boh, fidati)
+    - LE GRAMMATICHE A STRATI aiutano ad eliminare ambiguità di una grammatica
 
 - **gli strati superiori aggregano cose dei livelli inferiori** che considerano come simboli terminali
     - somme e sottrazioni (formano EXP) aggregano termini
@@ -115,68 +118,88 @@ Si può dare una **struttura gerarchica alle espressioni, esprimendo così intri
     - Ricorsione DESTRA = associatività operatori A DESTRA
     - Nessuna ricorsione = operatori NON ASSOCIATIVI
 
+...flash: le parentesi pilotano l'albero di derivazione
 
-
-
-
-
-Con una grammatica a strati si riesce ad esprimere al livello di grammatica i concetti di priorità e associatività:
-- il livello più basso è quello con più priorità
-    - da considerare prima
-        - MAX priorità: procurarsi i fattori
-        - MED priorità: aggregare i fattori in termini
-        - MIN prorità: aggregare i termini in espressioni
-    - la fase di risalita nella valutazione parte da li (cima dello stack)
-- dentro ogni strato, la ricorsione (se presente) stabilisce come si aggregano __entità di pari livello__
-    - Ricorsione SINISTRA = associatività operatori A SINISTRA
-    - Ricorsione DESTRA = associatività operatori A DESTRA
-    - Nessuna ricorsione = operatori NON ASSOCIATIVI
-- i livelli blu e gialli hanno una ricorsione sinistra e di conseguenza producono una derivazione sinistra
-    - associatività a sinistra
-
-flash: le parentesi pilotano l'albero di derivazione
-
-__NB__: scrivere grammatiche in questo modo elimina l'ambiguità.
 
 ## Problema ricorsione sinistra
 Abbiamo appena visto che per rappresentare l'associatività a sinistra degli operatori, bisogna introdurre una ricorsione sinistra nella grammatica. La ricorsione sinistra però sappiamo che produce una grammatica che non è LL(1) e quindi incompatibile con l'analisi ricorsiva discendente.
 
 Non possiamo cambiare l'associatività degli operatori, come fare?
  
-## Come rendere la grammatica LL(1)
-Il problema di fondo è che abbiamo bisogno della ricorsione sinistra (che non è mai LL(1)) per rappresentare nella grammatica il concetto di associatività a sinistra degli operatori. Ma è proprio vero che non possiamo fare a meno della ricorsione sinistra (***Vsauce music***)?
+### Come rendere la grammatica LL(1)?
+Il problema di fondo è che **abbiamo bisogno della ricorsione sinistra** (che non è mai LL(1)) per rappresentare nella grammatica il concetto di associatività a sinistra degli operatori. Ma è proprio vero che non possiamo fare a meno della ricorsione sinistra?
 
     IDEA: trasformiamo la ricorsione in un ciclo
 
     OBIETTIVO: trasformare la grammatica con ricorsione sinistra in modo tale da renderla LL(1)
 
-### Primo passo
+**Primo passo**
 Riconsideriamo i sotto-linguaggi generati dai diversi strati:
 
     L(EXP)      = TERM ± TERM ± TERM …
     L(TERM)     = FACTOR */: FACTOR */: FACTOR …
     L(FACTOR)   = num | (EXP)
 
-Osserviamo che i primi due sono regolari, tanto da essere facilmente descrivibili da espressioni regolari:
+Osserviamo che **i primi due sono regolari**, tanto da essere facilmente descrivibili da espressioni regolari:
 
     L(EXP)  = TERM (± TERM)*
     L(TERM) = FACTOR (*/: FACTOR)*
 
 In effetti, le rispettive produzioni erano regolari a sinistra.
 
-### Secondo passo
+**Secondo passo**
 Ricordiamo che la notazione Extended BNF offre un modo per esprimere la ripetizione senza far uso diretto di ricorsioni, tramite la notazione { ... }
 
-Da qui l'idea
-    
-    mappare le espressioni regolari che descrivono i due sotto-linguaggi su regole Extended BNF
-
+Da qui l'idea: mappare le espressioni regolari che descrivono i due sotto-linguaggi su regole Extended BNF:
     EXP     ::=     TERM { ( + | - ) TERM }
     TERM    ::=     FACTOR { ( * | : ) FACTOR }
 
-Queste regole sintattiche:
-- non presentano più ricorsione esplicita
-- descrivono un processo computazionale __iterativo__, implementabile anche senza far uso di ricorsione.
+Al posto di :
+    EXP ::= TERM
+    EXP ::= EXP + TERM
+    EXP ::= EXP - TERM
+    TERM ::= FACTOR
+    TERM ::= TERM * FACTOR
+    TERM ::= TERM : FACTOR
 
-__Risultato__: la grammatica così ottenuta è analizzabile con tecnica ricorsiva discendente, senza rischiare l'esplosione dello stack -> LL(1)
-- leggi le slide per capire meglio il perchè. 
+Queste regole sintattiche:
+- **non presentano più ricorsione** esplicita
+- descrivono un processo computazionale **iterativo**, implementabile anche senza far uso di ricorsione.
+
+__Risultato__: la grammatica così ottenuta è analizzabile con tecnica ricorsiva discendente
+- Infatti, nel caso di EXP:
+    - **all'inizio c'è sicuramente un TERM**
+        - quindi sicuramente c'è da analizzare quello
+    - poi o non c'è niente (stringa vuota o altro terminatore), oppure c'è uno dei due simboli + o – seguito da un altro TERM
+        - starter symbol set distinti 
+        - riesco a scegliere la produzione giusta deterministicamente -> LL(1)
+        - itero il parsing di un operatore e di un secondo termine finchè non consumo tutto l'input (o non trovo qualcosa di competenza di qualcun'altro) 
+    - simile al raccoglimento che si fa con grammatiche sostanzialmente LL(1)
+- Analogamente si procede nel caso di TERM, ecc.
+
+Di fatto il codice risultante è questo:
+
+    public boolean parseExp() {
+        boolean t1 = parseTerm();   // sicuramento devo analizzare un termine
+
+        // successivamente controllo se c'è qualcos'altro da analizzare e se si
+        // analizzo finche non rimane nulla (oppure trovo qualcosa di non pertinente
+        // al mio sotto-linguaggio all'insegna dell'approccio prudente)
+        while (currentToken != null) {      
+            if (currentToken.equals("+")) {
+                currentToken = scanner.getNextToken();
+                boolean t2 = parseTerm();
+                // Accumulo risultato a sinistra, in conformità all'associatività desiderata
+                t1 = t1 && t2;
+            }
+            else if (currentToken.equals("-")) {
+                currentToken = scanner.getNextToken();
+                boolean t2 = parseTerm();
+                t1 = t1 && t2;
+            }
+            else
+                return t1; // next token non fa parte di L(Exp)
+        } 
+        
+        return t1; // next token nullo -> end input
+    }

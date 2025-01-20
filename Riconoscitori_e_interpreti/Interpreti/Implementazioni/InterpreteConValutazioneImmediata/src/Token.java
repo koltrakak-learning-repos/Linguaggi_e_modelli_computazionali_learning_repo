@@ -5,6 +5,8 @@ public class Token {
         this.tk = tk;
     }
 
+    // meglio usare un regexp piuttosto che un'eccezione
+    // oppure ancora meglio, implementare una gerarchia di Token
     public boolean isNumber() {
         try { 
             Integer.parseInt(tk);
