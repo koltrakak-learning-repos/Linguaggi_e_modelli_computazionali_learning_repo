@@ -40,6 +40,8 @@ public class MyParser {
 
                 int t2 = parseTerm();
                 System.out.println("\tparseExp: Valuto "+t1+" + "+t2+" = " + (t1+t2));
+                // ho riconosciuto una frase valida per il sottolinguaggio di questo strato;
+                // applico la semantica
                 t1 = t1 + t2;
             }
             else if( currentToken.equals("-") ) {
@@ -48,6 +50,8 @@ public class MyParser {
 
                 int t2 = parseTerm();
                 System.out.println("\tparseExp: Valuto "+t1+" - "+t2+" = " + (t1-t2));
+                // ho riconosciuto una frase valida per il sottolinguaggio di questo strato;
+                // applico la semantica
                 t1 = t1 - t2;
             }
             else {
@@ -102,7 +106,7 @@ public class MyParser {
                 System.out.println("\tparseTerm: considero *; nextToken = " + currentToken);
 
                 int p2 = parsePow();
-                System.out.println("\tparseTerm: Valuto "+p1+" - "+p2+" = " + (p1*p2));
+                System.out.println("\tparseTerm: Valuto "+p1+" * "+p2+" = " + (p1*p2));
                 p1 = p1 * p2;
             }
             else if( currentToken.equals("/") ) {
@@ -110,7 +114,7 @@ public class MyParser {
                 System.out.println("\tparseTerm: considero /; nextToken = " + currentToken);
 
                 int p2 = parsePow();
-                System.out.println("\tparseTerm: Valuto "+p1+" - "+p2+" = " + (p1/p2));
+                System.out.println("\tparseTerm: Valuto "+p1+" / "+p2+" = " + (p1/p2));
                 p1 = p1 / p2;
             }
             else {

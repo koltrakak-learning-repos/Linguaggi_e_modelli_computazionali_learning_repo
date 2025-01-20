@@ -81,6 +81,9 @@ Sarebbe meglio cablare nella grammatica questi concetti in modo da __facilitare 
 
 Digressione: il meno dei numeri negativi (meno unario) è simbolo con una semantica diversa rispetto al meno delle sottrazioni (meno binario)
 
+
+
+
 ## GRAMMATICHE A STRATI
 Si può dare una **struttura gerarchica alle espressioni, esprimendo così intrinsecamente priorità e associatività degli operatori**, eliminando allo stsso tempo anche l'ambiguità.
 
@@ -98,8 +101,7 @@ Una grammatica a strati è una grammatica in cui le regole sono organizzate in l
     - L(TERM) = FACTOR *: FACTOR *: FACTOR …
     - L(FACTOR) = num | (EXP)
 
-- **La grammatica non è più ambigua** perché ogni strato può produrre solo certi operatori (??? boh, fidati)
-    - LE GRAMMATICHE A STRATI aiutano ad eliminare ambiguità di una grammatica
+- **La grammatica non è più ambigua** perché adesso la ricorsione è solo a sinistra e non da due parti
 
 - **gli strati superiori aggregano cose dei livelli inferiori** che considerano come simboli terminali
     - somme e sottrazioni (formano EXP) aggregano termini
@@ -203,3 +205,45 @@ Di fatto il codice risultante è questo:
         
         return t1; // next token nullo -> end input
     }
+
+
+
+
+
+## Completare il parser con la SEMANTICA
+Fino ad adesso il parser è rimasto un puro riconoscitore, adesso vogliamo anche aggiungere semantica. Ovvero, aggiungere alla funzione di riconoscimento del parser anche una funzione di valutazione.
+- Solo dopo aver riconosciuto la frase (dominio) posso attivare la funzione di valutazione (funzione di interpretazione)
+- Valutare significa attribuire significato alle frasi, quindi serve la specifica della semantica che il parser dovrà applicare
+
+### Ma come si specifica la semantica?
+Occorre un modo sistematico e formale per stabilire con precisione e senza ambiguità il significato di ogni possibile frase del linguaggio
+- se il linguaggio è finito, basta un elenco
+- se è infinito, serve una notazione finita (applicabile a infinite frasi)
+
+Un modo è definire una __funzione di interpretazione__:
+- DOMINIO: il linguaggio (insieme delle frasi lecite, ossia le stringhe riconosciute)
+- CODOMINIO: l'insieme dei possibili significati, ossia l'insieme degli oggetti che si vogliono far corrispondere a tali frasi
+
+__Come definire tale funzione?__
+- se il linguaggio è finito, basta una tabella (stringhe -> significati)
+- altrimenti, serve una funzione definita in modo __ricorsivo__
+
+**Semantica denotazionale**
+```
+Quando la semantica di un linguaggio è espressa tramite una funzione di interpretazione si parla di semantica denotazionale.
+```
+
+**COME DEFINIRLA?**
+seguire pari pari la sintassi!
+- per ogni regola sintattica, una regola semantica
+- non si rischiano dimenticanze, mapping pulito e chiaro da leggere
+- nel nostro caso la sintassi prevede Exp, Term e Factor -> la semantica prevedrà tre funzioni fExp, fTerm e fFactor
+
+#### Semantica espressione
+![alt text](immagini/semantica_espressione.png)
+#### Semantica fattore
+![alt text](immagini/semantica_fattore.png)
+#### Semantica termine
+![alt text](immagini/semantica_termine.png)
+
+**OSS**: per dare significato ad un nuovo simbolo devo utilizzare il significato di simboli che gia conosco
