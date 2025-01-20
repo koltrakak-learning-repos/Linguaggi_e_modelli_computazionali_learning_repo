@@ -219,31 +219,36 @@ public class MyParser {
     public int parseFactor() {
         System.out.println("\tparseFactor: currentToken = " + currentToken);
 
-        if (currentToken.equals("(")) {
-            System.out.println("\tparseFactor: trovata (");
-            currentToken = scanner.getNextToken();
-            int innerExp = parseExp(); // self-embedding
-            System.out.println("\tparseFactor: espressione interna = "+innerExp);
-
-            if (currentToken != null && currentToken.equals(")")) { // mi sta dando fastidio il fatto di poter avere dei token null
-                System.out.println("\tparseFactor: trovata )");
+        // questo if mi serve dato che non posso invocare equals su null
+        if (currentToken != null) {
+            if (currentToken.equals("(")) {
+                System.out.println("\tparseFactor: trovata (");
                 currentToken = scanner.getNextToken();
-                return innerExp; // parentesi irrilevanti
-            } 
-            else {
-                throw new IllegalArgumentException("missing )");
+                int innerExp = parseExp(); // self-embedding
+                System.out.println("\tparseFactor: espressione interna = "+innerExp);
+
+                if (currentToken != null && currentToken.equals(")")) { // mi sta dando fastidio il fatto di poter avere dei token null
+                    System.out.println("\tparseFactor: trovata )");
+                    currentToken = scanner.getNextToken();
+                    return innerExp; // parentesi irrilevanti
+                } 
+                else {
+                    throw new IllegalArgumentException("missing )");
+                }
+            }
+            else if (currentToken.isNumber()) {
+                int value = currentToken.getAsInt();
+                System.out.println("\tparseFactor: valuto "+value);
+
+                currentToken = scanner.getNextToken();
+                return value;
+            }
+            else {// non è un fattore, quindi
+                throw new IllegalArgumentException(currentToken + " not a number");
             }
         }
-        else if (currentToken.isNumber()) {
-            int value = currentToken.getAsInt();
-            System.out.println("\tparseFactor: valuto "+value);
 
-            currentToken = scanner.getNextToken();
-            return value;
-        }
-        else {// non è un fattore, quindi
-            throw new IllegalArgumentException(currentToken + " not a number");
-        }
-        
+        // qua finisco solo se manca un operando
+        throw new IllegalArgumentException("missing operando");
     }
 }
