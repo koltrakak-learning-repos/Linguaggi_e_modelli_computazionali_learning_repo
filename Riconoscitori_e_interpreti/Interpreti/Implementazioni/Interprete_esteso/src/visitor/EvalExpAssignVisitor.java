@@ -25,7 +25,7 @@ public class EvalExpAssignVisitor extends EvalExpVisitor implements ExpAssignVis
 
     public void visit(LIdentExp e) {
         // valutare LIndentExp = restituire la chiave (il nome)
-        value = e.getName();    //non mi sembra che serva a qualcosa
+        value = e.getName();  
     }     
     
     public void visit(RIdentExp e) {

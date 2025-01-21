@@ -11,56 +11,124 @@ public class MyParser {
     }
 
     public Exp parseExp() {
-        Exp termSeq = parseTerm();
+        /*
+         * Per prima cosa controlla se sto processando una espressione di assegnamento
+         * oppure, una normale espressione aritmetica
+         */
+        if (currentToken.isIdentifier()) {
+            String id = currentToken.toString();
+            currentToken = scanner.getNextToken();
 
-        while (currentToken != null) {
-            if( currentToken.equals("+") ) {
-                currentToken = scanner.getNextToken();
-
-                Exp nextTerm = parseTerm();
-                if (nextTerm != null) {
-                    termSeq = new PlusExp(termSeq, nextTerm);
-                    System.out.println("\tcostruisco termSeq: " + termSeq);
-                }
-                else
-                    return null;    // opppure eccezione 
+            if ( !(currentToken.equals("=")) ) {
+                throw new IllegalArgumentException("espressione di assegnamento con LIdent senza \"=\"");
             }
-            else if( currentToken.equals("-") ) {
-                currentToken = scanner.getNextToken();
 
-                Exp nextTerm = parseTerm();
-                if (nextTerm != null) {
-                    termSeq = new MinusExp(termSeq, nextTerm);
-                    System.out.println("\tcostruisco termSeq: " + termSeq);
-                }
-                else
-                    return null;    // opppure eccezione
-            }
-            else if (currentToken.isIdentifier()) {
-                String id = currentToken.toString();
-                currentToken = scanner.getNextToken();
+            currentToken = scanner.getNextToken();
+            Exp rightExp = parseExp();
+            
+            Exp assignExp = new AssignExp(new LIdentExp(id), rightExp);
+            System.out.println("parseExp: costruisco AssignExp: " + assignExp);
 
-                if ( !(currentToken.equals("=")) )
-                    return null;    // oppure eccezione
-
-                currentToken = scanner.getNextToken();
-                Exp rightExp = parseExp();
-                
-                Exp completeAssignExp = new AssignExp(new LIdentExp(id), rightExp);
-                System.out.println("\tcostruisco termSeq: " + completeAssignExp);
-
-                return completeAssignExp;
-            }
-            else {
-                // next token non fa parte di L(Exp)
-                System.out.println("\tparseExp non riconosce: " + currentToken + " perciò ritorna");
-                return termSeq; 
-            }
+            return assignExp;
         } 
+        // parsing di una espressione aritmetica
+        else {
+            Exp termSeq = parseTerm();
 
-        // next token nullo -> end input
-        return termSeq; 
+            while (currentToken != null) {
+                if( currentToken.equals("+") ) {
+                    currentToken = scanner.getNextToken();
+
+                    Exp nextTerm = parseTerm();
+                    if (nextTerm != null) {
+                        termSeq = new PlusExp(termSeq, nextTerm);
+                        System.out.println("parseExp: costruisco termSeq: " + termSeq);
+                    }
+                    else
+                        return null;    // opppure eccezione 
+                }
+                else if( currentToken.equals("-") ) {
+                    currentToken = scanner.getNextToken();
+
+                    Exp nextTerm = parseTerm();
+                    if (nextTerm != null) {
+                        termSeq = new MinusExp(termSeq, nextTerm);
+                        System.out.println("parseExp: costruisco termSeq: " + termSeq);
+                    }
+                    else
+                        return null;    // opppure eccezione
+                }
+                else {
+                    // next token non fa parte di L(Exp)
+                    System.out.println("parseExp: non riconosco \"" + currentToken + "\" perciò ritorna");
+                    return termSeq; 
+                }
+            }
+
+            // next token nullo -> end input
+            return termSeq; 
+        }
     }
+
+    /*
+     * Questa versione è quella delle slide. Funziona, ma è un po incasinata.
+     * In particolare riesce a fare il parsing dei LIdent solamente perchè c'è una catena
+     * di restituzioni di null che arriva fino a parseTerm.
+     * 
+     * Se parsefactor lanciasse eccezione quando si ritrova un token che non sa come gestire
+     * questa implementazione non funzionerebbe
+     */
+    // public Exp parseExp() {
+    //     Exp termSeq = parseTerm();
+
+    //     while (currentToken != null) {
+    //         if( currentToken.equals("+") ) {
+    //             currentToken = scanner.getNextToken();
+
+    //             Exp nextTerm = parseTerm();
+    //             if (nextTerm != null) {
+    //                 termSeq = new PlusExp(termSeq, nextTerm);
+    //                 System.out.println("\tcostruisco termSeq: " + termSeq);
+    //             }
+    //             else
+    //                 return null;    // opppure eccezione 
+    //         }
+    //         else if( currentToken.equals("-") ) {
+    //             currentToken = scanner.getNextToken();
+
+    //             Exp nextTerm = parseTerm();
+    //             if (nextTerm != null) {
+    //                 termSeq = new MinusExp(termSeq, nextTerm);
+    //                 System.out.println("\tcostruisco termSeq: " + termSeq);
+    //             }
+    //             else
+    //                 return null;    // opppure eccezione
+    //         }
+    //         else if (currentToken.isIdentifier()) {
+    //             String id = currentToken.toString();
+    //             currentToken = scanner.getNextToken();
+
+    //             if ( !(currentToken.equals("=")) )
+    //                 return null;    // oppure eccezione
+
+    //             currentToken = scanner.getNextToken();
+    //             Exp rightExp = parseExp();
+                
+    //             Exp completeAssignExp = new AssignExp(new LIdentExp(id), rightExp);
+    //             System.out.println("\tcostruisco termSeq: " + completeAssignExp);
+
+    //             return completeAssignExp;
+    //         }
+    //         else {
+    //             // next token non fa parte di L(Exp)
+    //             System.out.println("\tparseExp non riconosce: " + currentToken + " perciò ritorna");
+    //             return termSeq; 
+    //         }
+    //     } 
+
+    //     // next token nullo -> end input
+    //     return termSeq; 
+    // }
 
     public Exp parseTerm() {
         Exp powSeq = parsePow();
@@ -152,20 +220,18 @@ public class MyParser {
             
             return rIdent;
         }
-        else {
-            // dev’essere un numero
-            if (currentToken.isNumber()) {
-                int value = currentToken.getAsInt();
-                System.out.println("\tconsidero il termine: "+value);
+        // dev’essere un numero
+        else if (currentToken.isNumber()) {
+            int value = currentToken.getAsInt();
+            System.out.println("\tconsidero il termine: "+value);
 
-                currentToken = scanner.getNextToken();
+            currentToken = scanner.getNextToken();
 
-                return new NumExp(value);
-            }
-            else {  
-                // non si è costruito nulla, restituiamo null   
-                return null;
-            }
+            return new NumExp(value);
+        }
+        else {  
+            // non si è costruito nulla, restituiamo null   
+            return null;
         }
     }
 }
