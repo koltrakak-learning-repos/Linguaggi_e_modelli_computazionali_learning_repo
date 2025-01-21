@@ -114,34 +114,47 @@ Un valutatore **valuta un AST in un dato dominio**, secondo la sua funzione di i
 - fondamentale per il valutatore **discriminare che tipo di nodo sta visitando**
 
 **possibili implementazioni**:
+1. Una semplice funzione che implementa la funzione di interpretazione per ogni tipo di nodo:
+    - brutto, dentro la funzione bisogna distinguere tutte le tipologie di nodo con switch/lunghe catene di if/else
+    - **racchiude un tipo di valutazione in un solo posto** 
+        - Se avessi bisogno di un nuovo valutatore mi basterebbe scrivere una nuova funzione che lo implemente; **tutte le funzioni valutatrici precedenti non cambierebbero**
+    - Se volessi modificare la grammatica aggiungendo qualche nuova produzione (e quindi un nuovo tipo di nodo) **occorrerebbe modificare il codice di tutte le funzioni di interpretazione** 
+        - nuova produzione significa nuovo tipo di nodo, di cui tenere conto ovunque con un altro *case*
+
+2. Un metodo per ogni nodo dell'AST che specifica come quel nodo va valutato:
+    - sfrutta il polimorfismo per interpretare correttamente ogni tipo di nodo dell'AST durante la sua visita
+        - ogni nodo dice come deve essere valutato
+        - facile introdurre nuovi tipi di nodi (nuove produzioni): la funzione d'interpretazione di quelli vecchi rimane la stessa, il nuovo nodo definisce come deve venire valutato
+    - ma la **funzione di valutazione è "sparsa nell'AST"**
+        - se volessi una nuova funzione di interpretazione dovrei aggiungere un metodo nuovo per ogni tipologia di nodo del mio AST.
 
 
-
-
-
-
-
-
+Uhm... sarebbe bello poter introdurre nuove tipologie di nodo e nuove funzioni di interpretazione, unendo i vantaggi dei due approcci, senza dover andare a modificare troppo codice. Questo è quello che ci permette di fare il pattern visitor.
 
 ### IL VISITOR COME INTERPRETE
-Il visitor realizza la logica di interpretazione in modo coerente all'approccio a oggetti
-- cattura UNA logica di interpretazione
-    - si scrivono tanti visitor quante le interpretazioni richieste possibile organizzarle in una TASSONOMIA
-- la logica di interpretazione è concentrata in UN unico luogo, ma non ha più la forma di una "old style function": è suddivisa, all'interno del visitor, in tante implementazioni del metodo visit quante sono le classi della tassonomia (overloading)
+Il visitor realizza la logica di interpretazione in modo coerente all'approccio a oggetti:
+- **cattura UNA logica di interpretazione**
+    - si scrivono tanti visitor quante le interpretazioni richieste (possibile organizzarle in una TASSONOMIA)
+    - la logica di interpretazione è concentrata in UN unico luogo, ma non ha più la forma di una "old style function"; è suddivisa all'interno del visitor in **tante implementazioni del metodo *visit* tante quante sono le tipologie di nodo da visitare**.
 
-Il visitor incorpora la logica di visita
-- metodi visit (uno per ogni tipo di espressione)
-L'espressione accetta la visita del visitor
-- metodo accept
+Il visitor incorpora la logica di visita:
+- metodi *visit* (uno per ogni tipo di nodo)
+- I nodi dell'AST accettano la visita del visitor con il metodo *accept*
+- Trucco: lo fanno rimpallando l'azione sul visitor, passandogli loro stessi come oggetto da visitare
+    - "accetto la tua visita" = "ti ordino di visitarmi"
+    - exp.accept(Visitor v) { // polimorfismo nel tipo di visitor che i nodi accettano
+        v.visit(this);        // polimorfismo nel tipo di nodo che i vistor possono visitare
+      }
+    - Tecnica di Double Dispatch
 
-Trucco: lo fa rimpallando l'azione sul visitor stesso, passandogli se stessa come oggetto da visitare
-- "accetto la tua visita" = "ti ordino di visitarmi"
-- Tecnica di Double Dispatch
-
-### Double dispatch
+**Double dispatch**
 - Si attiva la valutazione chiedendo all'espressione di accettare la visita di un certo visitor 
     - expression.accept(visitor)
 - L'espressione serve le richiesta rimpallando l'azione sul visitor e passando se stessa come oggetto da visitare, ossia invocando:
     - visitor.visit(this)
-- In questo "BOTTA & RISPOSTA" __la risoluzione dell'overloading__ seleziona automaticamente la visit appropriata senza bisogno di instanceof 
+- In questo "BOTTA & RISPOSTA" __la risoluzione dell'overloading__ seleziona automaticamente la **visit** appropriata senza bisogno di instanceof 
     - cast dinamico
+
+Utilizzando questo pattern abbiamo che:
+- Descrizione: Con il pattern Visitor, puoi aggiungere nuove operazioni all'AST semplicemente creando un nuovo Visitor, senza toccare le classi che rappresentano i nodi. logica in un posto solo 
+- doppio dispatch mi permette di distinguere la tipologia di nodo che sto visitando senza controlli espliciti
