@@ -156,5 +156,10 @@ Il visitor incorpora la logica di visita:
     - cast dinamico
 
 Utilizzando questo pattern abbiamo che:
-- Descrizione: Con il pattern Visitor, puoi aggiungere nuove operazioni all'AST semplicemente creando un nuovo Visitor, senza toccare le classi che rappresentano i nodi. logica in un posto solo 
-- doppio dispatch mi permette di distinguere la tipologia di nodo che sto visitando senza controlli espliciti
+- Si possono aggiungere nuove funzioni di valutazione dell'AST semplicemente creando un nuovo Visitor, **senza toccare le classi che rappresentano i nodi**.
+    - disaccopiammento tra struttura dati e logica di interpretazione
+    - logica di interpretazione in un posto solo come nel caso della funzione unica enorme
+
+- Si possono aggiungere nuove tipologie di nodo, semplicemente creando la nuova classe ed implementando la funzione di accettazione del visitor
+    - bisogna comunque modificare tutti i visitor per tenere conto dell'interpretazione di questo nuovo nodo
+    - tuttavia, è più leggibile dato che non si ha una unica funzione enorme che fa dispatching, ma tante funzioni overloaded! Una per ogni nodo da visitare
