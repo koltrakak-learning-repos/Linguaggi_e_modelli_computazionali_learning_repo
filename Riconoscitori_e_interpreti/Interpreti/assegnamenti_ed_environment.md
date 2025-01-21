@@ -127,9 +127,9 @@ COSA SONO: sequenze di espressioni separate da virgola (,)
 - IPOTESI 1: la prima espressione è sempre un assegnamento
 - IPOTESI 2: il valore complessivo è quello dell'exp più a destra
 
-Sintassi astratta:
+Nuova produzione:
 
-    EXP ::= ASSIGN , EXP // SeqExp
+    EXP ::= ASSIGN, EXP // SeqExp
 
 __NB__: con questa estensione ci si avvicina sempre più alla sintassi e ai costrutti di un "vero" linguaggio di programmazione, in cui di solito:
 - prima si inizializzano le variabili
