@@ -12,6 +12,10 @@ public class BytecodeVisitor implements ExpVisitor {
         this.p = new PrintWriter(new File(path));
     }
     
+    public void end() {
+        this.p.close();
+    }
+
     public void visit(PlusExp e) {
         e.left().accept(this);
         e.right().accept(this);

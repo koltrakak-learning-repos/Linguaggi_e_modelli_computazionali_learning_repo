@@ -10,7 +10,7 @@ public class App {
 
         ParseExpVisitor v = new ParseExpVisitor();
         EvalExpVisitor v2 = new EvalExpVisitor();
-        BytecodeVisitor v3 = new BytecodeVisitor("./compilato.code");
+        BytecodeVisitor v3 = new BytecodeVisitor("./Riconoscitori_e_interpreti/Interpreti/Implementazioni/Interprete_AST_con_visitor/compilato.code");
 
         MyScanner scanner = new MyScanner(expression1);
         MyParser parser = new MyParser(scanner);
@@ -34,6 +34,6 @@ public class App {
         parser = new MyParser(scanner);
         Exp ast4 = parser.parseExp();
         ast4.accept(v3);
-        System.out.println(ast4 + " = " + v2.getResult() + "\n");
+        v3.end();
     }
 }
