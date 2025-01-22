@@ -254,6 +254,8 @@ Nel corso il primo algoritmo che abbiamo studiato per il riconoscimento di lingu
 
 **es**: mostra pseudocodice parentesi bilanciate S -> ( S ) | c
 
+- evidenzia il comportamento dello stack con le chiamate ricorsive
+
 Notare le parole chiave:
 - **discendente/top-down**: si scende dallo scopo alla frase finale da parsare (approccio a generazione piuttosto che a riduzione)
 - **ricorsiva**: ogni metasimbolo, per riconoscere il suo sottolinguaggio, presuppone che quello dei metasimboli appartenenti alla sua regola di produzione sia già stato riconosciuto ricorsivamente
@@ -300,11 +302,12 @@ Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri a
 
 
 
-
-
-
-5. Lazyness
-    1. Unified memory con allocazione lazy delle pagine nel posto giusto
-
-6. Chiusure
+4. Chiusure
     1. Tra le varie cose, puoi far vedere come esempio finale la realizzazione della struttura di controllo until; sia in js che scala
+
+
+5. Modelli iterativi e ricorsivi + TRO
+
+
+6. Lazyness
+    1. Unified memory con allocazione lazy delle pagine nel posto giusto

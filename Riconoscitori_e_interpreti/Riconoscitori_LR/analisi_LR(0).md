@@ -37,7 +37,7 @@ Il parser LR richiede (concettualmente) la presenza al suo interno di un __ORACO
 
 Dunque, un parser LR è costituito da:
 - un **oracolo**, che gli dice se fare SHIFT o REDUCE
-- uno **stack** (d'altronde i linguaggi di tipo 2 si riconoscono con un PDA) in cui conservare lo stato corrente (input letto + albero)
+- uno **stack** (d'altronde i linguaggi di tipo 2 si riconoscono con un PDA) in cui conservare lo stato corrente (input letto/ridotto corrente)
 - un **controller** "orchestratore" che fa le domande all'oracolo ed applica i shift/reduce suggeriti dall'oracolo sullo stack.
 
 __NB__: La sequenza di riduzioni non è casuale, è una __derivazione canonica destra usata a rovescio__(bottom-up), per risalire dalla frase allo scopo. Per questo LR.
@@ -46,7 +46,7 @@ __NB__: La sequenza di riduzioni non è casuale, è una __derivazione canonica d
 
 L'oracolo è un __RICONOSCITORE DI CONTESTI__
 - si calcolano le informazioni di contesto di ogni produzione
-    - ogni produzione ha quindi un contesto (simile agli Start Set dell'analisi LL)
+    - ogni produzione ha quindi un contesto associato che la identifica (simile agli Start Set dell'analisi LL)
 - l'oracolo riconosce il contesto attuale e in base a ciò risponde SHIFT o REDUCE
 - quando riconosce un contesto di riduzione, ordina la REDUCE giusta per costruire a **colpo sicuro** quel certo pezzo di albero
 
@@ -75,12 +75,35 @@ Passi:
     - **COLLISIONE**: quando una stringa appartenente a un contesto è un **prefisso proprio** di una stringa di un altro contesto
     - **PREFISSO PROPRIO**: una stringa è prefisso di un’altra e ciò che segue è un **terminale** (non un metasimbolo)
 3. Se non ci sono collisioni, si possono usare i contesti LR(0) per guidare l’analisi
-    - shifto finche la mia stringa in input non combacia con il contesto di una produzione
+    - shifto finche la mia stringa in input non combacia con il contesto di una delle mie produzioni
     - applico la riduzione relativa alla produzione che ha combaciato alla mia stringa di input
     - ripeti finchè non raggiungi S (bottom-up)
     - la grammatica è LR(0)
 4. se sfortunatamente ci fossero collisioni, i contesti LR(0) non basterebbero per avere un parser deterministico 
     - tentare con LR(1)
+
+### Analisi LR(0) | caso critico:
+Il calcolo dei contesti può dare un’informazione fuorviante se lo **scopo è riusato nella parte destra di qualche produzione**.
+
+S → S a     contesto LR(0): { Sa }
+S → a       contesto LR(0): { a }
+
+Apparentemente i contesti LR(0) sono diversi. Tuttavia, il problema è che, potendo S comparire anche in forme di frase intermedie, «ridursi a S» non è più sinonimo di «aver sicuramente finito la frase» (è uno stato finale con un arco uscente etichettato da un terminale)
+
+supponiamo di dover riconoscere la frase "aaa".
+- Senza produzione di top level Z → S, la prima mossa è sicuramente una riduzione di *a* a *S*, ma poi non è chiaro se l’analisi debba terminare o meno:
+    - se non ci fossero altre *a*, ci si è già ridotti allo scopo S
+    - se invece la stringa continuasse con ulteriori a, occorrerebbe applicare ulteriori riduzioni da *S a* ad *S*
+    - ma per sapere se la stringa è finita occorre guardare avanti di un simbolo e questo significa che la grammatica non è LR(0).
+
+**Aggiungere la produzione di top level Z → S risolve l’ambiguità, perché «aver finito» significa ora «ridursi a Z**
+
+Z → S       contesto LR(0): { S }
+S → S a     contesto LR(0): { Sa }
+S → a       contesto LR(0): { a }
+
+si vede chiaramente che i primi **due contesti collidono**, perché S è un prefisso proprio di S a.
+
 
 ### CALCOLO DEI CONTESTI LR(0)
 Il calcolo dei contesti LR(0) si basa sul fatto che essi sono **definiti da un'opportuna grammatica**.
@@ -187,12 +210,43 @@ Operativamente, la forma di frase corrente è mantenuta su uno stack (non sorpre
 Quando si pone sullo stack lo scopo S, la frase è accettata → spesso si evita di farlo, distinguendo l’ultima reduce in accept
 
 
-### Condizione sufficiente per analisi LR(0) di una grammatica
+## Condizione sufficiente per analisi LR(0) di una grammatica
 Dunque, in sintesi, quand'è che una grammatica è analizzabile mediante analisi LR(0) ?
 
 Condizione sufficiente perché una grammatica sia LR(0) è che ogni __stato (finale) di riduzione__ dell'automa ausiliario sia etichettato da una
-__produzione unica__ e non abbia __archi di uscita etichettati da terminali__.
+__produzione unica__ e non abbia __archi di uscita etichettati da terminali__ (etichettati da non terminale andrebbe bene perchè immagino corrisponderebbe ad un prefisso non proprio?).
 
 A quanto pare questo non corrisponde al 100% con una condizione di determinismo sull'automa caratteristico.
 
 **Teorema bonus che centra con la condizione ma non so perchè**: una grammatica LR(0) non è mai ambigua.
+
+
+
+
+
+
+## Strada pragmatica
+l’automa caratteristico può essere ottenuto senza calcolare esplicitamente né i contesti sinistri né i contesti LR(0)
+
+Idea base:
+- **non calcoliamo i contesti**, per poi dover sintetizzare l'automa
+- piuttosto, partiamo dalla regola di top-level Z → S$ e analizziamo via via le situazioni che si presentano
+    - scriviamo ogni situazione in un diverso rettangolo ("LR item")
+    - quando una regola ne usa un'altra, la includiamo nel rettangolo
+    - introduciamo l'**astrazione cursore** "." per indicare "dove siamo" all'interno di ogni regola
+- studiamo le evoluzioni possibili di ogni "rettangolo"
+    - costruiamo direttamente l'automa dal basso, caso per caso
+
+Più chiaro con un esempio:
+
+// impossibile riportarlo
+
+
+### tabella di parsing LR
+Ogni cella contiene l'indicazione dell'azione da compiere fra le quattro possibili (shift, goto, reduce, accept) nonché le indicazioni accessorie necessarie.
+
+Solitamente si adotta la notazione:
+- s / 5: per dire “shift (legge input) e vai nello stato 5”
+- g / 5: per dire “vai nello stato 5 (consuma un metasimbolo)”
+- r / 4: per dire “riduci usando la produzione n° 4” (e termina)
+- a:     per dire “accetta” (e termina)
