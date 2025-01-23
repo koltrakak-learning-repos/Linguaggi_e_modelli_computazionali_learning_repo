@@ -142,7 +142,7 @@ tutte le stringhe del contesto LR(0) della produzione *A → alpha* hanno la for
 **CONSEGUENZA**: si può esprimere il contesto LR(0) come concatenazione fra l’insieme dei *beta* e il suffisso *alpha*
 - L’insieme dei *beta* si chiama **contesto sinistro di A**.
 - *LR(0)ctx(A → alpha) = leftctx(A) • {alpha}* ;        
-    - con *leftctx(A)* == tutte le forme di frase *beta* che possono precedere il non-terminale *A* in **qualsiasi sequenza di derivazione**. 
+    - **DEF**: con *leftctx(A)* == tutte le forme di frase *beta* che possono precedere il non-terminale *A* in **qualsiasi sequenza di derivazione**. 
 
 **Conclusione**:
 Cosa mi rappresenta un contesto? 
