@@ -10,7 +10,7 @@ F = function(x) {
     }
 }
 
-// chiaramente a queste funzioni qua sotto bisogna passare le funzioni di sopra come primi argomenti
+// chiaramente, alle funzioni qua sotto bisogna passare le funzioni di sopra come primi argomenti
 not = function(x) {
     return x(F)(T) 
 }

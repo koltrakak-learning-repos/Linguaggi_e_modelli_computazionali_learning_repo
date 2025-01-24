@@ -39,21 +39,3 @@ compute by sinthesis
 
 ...
 
-### Funzioni come first class entities
-...
-funzioni di ordine superiore, ovvero funzioni che hanno come argomento altre funzioni
-
-di che tipo sono le funzioni?
-
-#### Funzioni come tipi
-due approcci:
-- nominale: vince la semantica; se due cose hanno nomi diversi allora sono diversi anche se hanno la stessa struttura
-    - pro: semantica
-    - contro: producono un puttanaio di nomi
-- strutturale
-    - dice come è fatta la funzione
-    - risparmio nomi
-
-#### Funzioni di ordine più alto
-...
-si privilegia la facilità del chiamante rispetto a quello del chiamato
