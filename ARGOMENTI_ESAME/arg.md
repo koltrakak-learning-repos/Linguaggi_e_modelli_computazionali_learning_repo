@@ -310,4 +310,7 @@ Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri a
 
 
 6. Lazyness
-    1. Unified memory con allocazione lazy delle pagine nel posto giusto
+    1. Unified memory con allocazione lazy delle pagine nel posto giusto deterministicamente
+    2. Insiemi infiniti subdoli, relazioni circolari in un DB (Marco amico di Mirco e Mirco amico di Marco)
+        - fetch eager fa scoppiare tutto (stack overflow se va bene)
+        - fetch lazy fa funzioinare tutto perfettamente
