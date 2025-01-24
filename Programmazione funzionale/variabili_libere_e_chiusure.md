@@ -23,7 +23,7 @@ function ff(f,x) {
 Invocando *ff(f, x)* si ottiene come risultato un oggetto-funzione (chiusura) che incorpora al proprio interno i riferimenti alle due variabili *f* e *x* che **non sono definite al suo interno**.
 
 
-### Tempo di vita delle variabili chiuse
+### Tempo di vita delle variabili di chiusura
 La presenza di chiusure ha delle **conseguenze sul modello computazionale** del linguaggio che le adotta!
 
 In particolare:
@@ -49,22 +49,59 @@ Se così fosse, **si otterrebbere delle gran NPE**!
 
 
 ### Chiusura lessicale e chiusura dinamica
-Occorre stabilire un criterio sul __come e dove cercare una definizione per le variabili libere da chiudere__. In presenza di funzioni innestate, si apre una questione:
-- da un lato, il testo del programma contiene fisicamente una catena di ambienti di definizione innestati (catena lessicale)
-- dall'altro, l'attivazione delle funzioni crea a run-time una catena di ambienti attivi (catena dinamica) che riflette l'ordine delle chiamate
-Le due catene sono in generale diverse, quindi bisogna scegliere quale seguire
+Occorre stabilire un criterio sul __come e dove cercare una definizione per le variabili libere da chiudere__.
 
-Caso lessicale:
-- più predicibile; alla definizione della chiusura so chiaramente qual'è la variabile puntata
+ In presenza di funzioni innestate, si apre una questione:
+- da un lato, **il testo del programma** contiene fisicamente una catena di ambienti di definizione innestati (**catena lessicale**)
+    - la variabile libera viene **chiusa a "compile-time"**, staticamente, appena viene valutata la funzione che la contiene
+    - considero gli ambienti del codice:
+        - nell'esempio, *globalEnv(dove x = 20) <- provaEnv*
+- dall'altro, **l'attivazione delle funzioni** crea a **run-time** una catena di ambienti attivi (**catena dinamica**) che riflette **l'ordine delle chiamate**
+    - la variabile libera viene **chiusa a run-time**, dinamicamente, appena viene invocata la funzione che la contiene per la prima volta
+    - considero gli ambienti definiti dall'ordine delle chiamate:
+        - nell'esempio, *testEnv(dove x=-1) <- provaEnv*
+
+Le due catene sono in generale diverse, quindi bisogna scegliere quale seguire.
+
+**es**:
+var x = 20;
+
+// qua ho definito la chiusura, con catena lessicale
+// la variabile libera viene chiusa staticamente qua 
+function provaEnv(z) {
+    return z + x;   
+}
+
+function testEnv() {
+    var x = -1;
+    // qua utilizzo la chiusura per la prima volta
+    // con catena dinamica la variabile libera viene chiusa solo in questo momento
+    return provaEnv(18);
+} 
+
+Se si utilizza catena lessicale provaEnv(18) = 38; altrimenti, provaEnv(18) = 17
+
+**Caso lessicale**:
+- **più predicibile**
+    - alla definizione della chiusura so chiaramente qual'è il valore della variabile puntata
+    - NON devo ricostruire la sequenza delle chiamate
 - compatibile con la costruzione di librerie
+    - **non importa chi mi chiama**, le variabili libere hanno il valore che definisco io
+- per lo stesso motivo facilità anche di testing
 
-Caso dinamico: 
-- per dare valore alle variabili libere aspetto di vedere chi mi chiama
-- il risultato della chiamata a funzione dipende da chi mi chiama
+**Caso dinamico**: 
+- più difficile da debuggare
+    - per dare valore alle variabili libere **devo considerare la sequenza delle chiamate**
+    - il risultato della chiamata a funzione dipende da chi mi chiama
 - incompatibile con la costruzione delle librerie
+    - **le variabili libere dipendono da chi mi chiama**
 - impredicibilità anche nel testing
 
-### A che cosa servono le chiusure
+Poiché la comprensibilità è cruciale, **praticamente tutti i linguaggi di programmazione adottano il criterio di chiusura lessicale**.
+
+
+
+## A che cosa servono le chiusure?
 Permettono di modellare cose carine in linguaggi che non hanno il concetto di oggetto o qualificatori private ecc...
 - stato privato
 - oppuredue funzioni che codividono una variabile di una funzione esterne ottengono un canale di comunicazione
