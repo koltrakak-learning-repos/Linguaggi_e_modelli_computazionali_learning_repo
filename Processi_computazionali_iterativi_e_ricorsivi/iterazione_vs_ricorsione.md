@@ -89,11 +89,7 @@ IDEA CHIAVE:
 per non riempire lo stack, prima di effettuare la chiamata ricorsiva **occorre terminare la chiamata precedente**
 - PER FARLO, occorre un qualche «ausilio esterno» che «scateni la prossima chiamata», ma non prima che la precedente sia terminata
     - il «trampolino»
-- Internamente, il trampolino effettuerà un’iterazione; ma esternamente, consentirà di mantenere il «look» ricorsivo
-
-
-...
-
+- Internamente, il trampolino effettuerà un’iterazione; ma esternamente, **consentirà di mantenere il «look» ricorsivo**
 
 ### Perchè c'è bisogno della Tail recursion?
 La tail recursion può essere usata in **alternativa ai cicli per esprimere l’iterazione** ove quest'ultimi non sono disponibili.
