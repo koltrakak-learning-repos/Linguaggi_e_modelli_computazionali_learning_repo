@@ -525,15 +525,26 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
     - stato privato di oggetti (utile con costruttori/factory)
         - si può ottenere una proprietà privata **mappando lo stato su un argomento della funzione "generatrice"**
     - definizione di nuove strutture di controllo
-        -   function until(n){
-                var start = 0;  
-                var fun = function iter(action){
-                    if(start<n) { action(); start++; iter(action); }    // start, n e action -> variabili di chiusura
+        -   function until(cond){                   // cond è una function 
+                var fun = function iter(action){    // action è una function
+                    if(!cond()) { action(); iter(action); }
                 }
 
                 return fun
             }
 
             // uso
-            until(5)( () => console.log(ciao) ) // se avessi supporto alla call by name come in scala la lambda sparirebbe
+            until( () => i>9 )( () => {console.log("ciao"); i++}) 
+        - **NB**: se avessi **supporto alla call by name come in scala** la lambda sparirebbe
+        - def until(condition: =>Boolean)(action: =>Unit) : Unit = {
+            action;
+            if (!condition)
+                until(condition)(action)
+          }
+
+          var i = 0
+          until(i == 10) {
+            println("hi")
+            i = i+1
+          }
     - canale di comunicazione privato tra due o più chiusure che condividono la stessa variabile di chiusura
