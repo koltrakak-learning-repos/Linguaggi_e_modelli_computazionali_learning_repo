@@ -301,16 +301,222 @@ Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri a
 
 
 
+## 4) Modelli iterativi e ricorsivi + TRO
+- **Modello computazionale iterativo**
+    - opera su di un accumulatore (variabile, schermo, buffer driver di rete, file ...) che al termine del ciclo contiene il risultato
+    - assegnamenti distruttivi
+        - non si ha la storia di come si è arrivati al risultato finale
+    - terminato prematuramente da un risultato parziale
+    - **computa in avanti**
+- **Modello computazionale ricorsivo**
+    - non ha un accumulatore
+    - le chiamate ricorsive generano stack frame distinti -> singoli assegnamenti
+        - si ha la storia di come si è arrivati al risultato
+    - il risultato comincia a venire sintetizzato solamente quando si è arrivati al caso base e le chiamate cominciano a chiudersi e ritornare
+        - se le chiamate ricorsive vengono interrotte prematuramente, non si ha alcun risultato parziale
+    - **computa all'indietro**
+- **NB**: 
+    - la macchina iterativa occupa sempre e solo la **memoria necessaria all'accumulatore**
+    - la macchina ricorsiva occupa tutta la **memoria necessaria ai vari stack frame**.
+        - **Gli stack frame sono tutti necessari e da mantenere in memoria** fino a che non si incomincia ritornare dal caso base (il risultato n-esimo si ottiene solo dopo aver recuperato il [n-1]-esimo)
+- **TRO**
+    - tipicamente cicli implementano un modello computazionale iterativo e chiamate ricorsive implementano un modello computazionale ricorsivo. **Ma non sono per forza le uniche opzioni**.
+    - Con dei cicli (uno per caricare lo stack e l'altro per scaricarlo) ed uno stack posso implementare un modello ricorsivo
+    - Con funzioni Tail ricorsive posso implementare un modello iterativo
+    - Una funzine **tail ricorsiva** è:
+        - una funzione in cui la chiamata ricorsiva è **l'ultima istruzione della funzione**
+        - uno degli argomenti della funzione è l'accumulatore in cui viene calcolato il risultato parziale k-esimo
+            - il risultato parziale è contenuto nell'accumulatore che viene portato in avanti da chiamata a chiamata
+                - Come nel caso del ciclo, se si interrompe l’iterazione al passo k, l’accumulatore contiene il risultato k-esimo
+            - arrivati al caso base l'accumulatore contiene già il risultato finale (modello iterativo d'altronde) e quest'ultimo viene semplicemente restituito indietro senza altre computazioni dalle altre chiamate
+            - non c'è bisogno di mantere tutti i record di attivazione in memoria (modello iterativo d'altronde)
+- es. Fattoriale:
+    - Fattoriale ricorsivo normale:
+        - int fact(int n) { return n==1 ? 1 : fact(n-1)*n; }
+    - Fattoriale tail ricorsivo:
+        - int fact(int acc=1, int n) { return n==1 ? acc : fact(acc*n, n-1)}
+- **NB**: una funzione tail-ricorsiva, siccome computa in avanti e siccome raggiunto il caso base ha gia in mano il risultato finale, **non ha bisogno di mantenere in memoria i record di attivazione delle chiamate precedenti**.
+- La tail recursion può essere quindi ottimizzata (**TRO**) stabilendo **sovrascrivere il vecchio record di attivazione con il nuovo**. In tal modo, l’occupazione di memoria è identica al caso ciclico!
+- Non tutti i linguaggi supportano però la TRO (tipicamente quelli imperativi; dichiarativi, funzionali e blended di solito si)...
+    - trasformare la ricorsione in iterazione (non sempre comodo/possibile)
+    - implementare la TRO con il TRAMPOLINO!
+- **TRAMPOLINO**
+    - non voglio modificare troppo la mia funzione tail-ricorsiva perchè, in tal caso, potevo direttamente riscriverla in forma iterativa
+    - idea: al posto di restituire il risultato della prossima chiamata ricorsiva, restituisco una funzione (FCE) che mi svolge quest'ultima.
+        - **approccio lazy**, simile alla valutazione degli argomenti con call-by-name
+        - in questa maniera:
+            - la chiamata può terminare subito **il record di attivazione può venire deallocato**  
+            - il trampolino, in base a se gli viene restituita una funzione o un valore, decide se invocare la prossima chiamata (risultato della chiamata precedente) o se restituire il risultato finale 
+    - **es linguaggio loosely typed**:
+        function fact(acc, n) {
+            return n==1 ? acc : () => fact(acc*n, n-1)      // notare la chiusura su _n_ e _acc_
+        }
 
-4. Chiusure
-    1. Tra le varie cose, puoi far vedere come esempio finale la realizzazione della struttura di controllo until; sia in js che scala
+        function trampolino(f) {
+            while (f && f instanceof Function) {
+                f = f()
+            }
+
+            return f;   // risultato finale
+        }
+    - **NB**: in un linguaggio tipato lascamente, posso avere una argomento che in un momento è una funzione e in un altro un valore di un altro tipo. **Nei linguaggi tipati fortemente invece devo definire una architettura di classi/interfacce** per accontentare il type system
+        - Interfaccia Trampolinable e classi More/Done
+
+In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parlare in seguito:
+- funzioni come FCE
+- Lazyness
+- Chiusure
 
 
-5. Modelli iterativi e ricorsivi + TRO
 
 
-6. Lazyness
-    1. Unified memory con allocazione lazy delle pagine nel posto giusto deterministicamente
-    2. Insiemi infiniti subdoli, relazioni circolari in un DB (Marco amico di Mirco e Mirco amico di Marco)
-        - fetch eager fa scoppiare tutto (stack overflow se va bene)
-        - fetch lazy fa funzioinare tutto perfettamente
+
+
+## 5) Funzioni come FCE
+- Quando si parla di funzioni come FCE si intende **manipolare funzioni come ogni altro tipo di dato**, e quindi:
+    - deve poter essere **assegnata a variabili** (di un tipo "funzione")
+    - deve poter essere **passata come argomento** a un'altra funzione
+    - deve poter essere **restituita** da un'altra funzione
+    - deve poter essere **definita e usata "al volo"** come ogni altro valore (literal) di ogni altro tipo
+        - magari anche senza avere per forza un nome, (funzioni anonime/lambda expression)
+- si rompe la separazione tra codice e dati
+    - i nuovi tipi funzione sono tipi di dato analoghi agli altri con in più la caratteristica di poter essere eseguiti
+        - tasto rosso che permette di valutare i dati (di tipo funzione) come codice
+    - in realtà la distinzione era arbitraria fin dall'inizio, in memoria sia codice che dati sono memorizzati allo stesso modo
+        - magari a livello di SO la pagine contenenti codice sono RX, e le pagine contenenti dati sono RW 
+- siccome le funzioni diventano un nuovo tipo di dato **bisogna definire meglio questi tipi**. Due approcci:
+    - **approccio strutturale**: il tipo della funzione è definito dal numero e tipo degli argomenti, e dal tipo di ritorno
+        - es Scala: (String) -> (); (Int, Int) => Int
+    - **approccio nominale**: il tipo della funzione è definito da un nome apposito 
+        - si distinguono semanticamente tipi strutturalmente identici
+        - es Java: Function<Int, Int> == UnaryOperator<Int>; Consumer<Int>; Supplier<Int>
+- Disporre di funzioni come FCE apre le porte a molti altri concetti:
+- **funzioni di ordine superiore**
+    - funzioni di secondo ordine (trampolino) manipolano (accettano/ritornano) funzioni 
+    - funzioni di terzo ordine manipolano funzioni di terzo ordine
+    - ecc...
+- **Chiusure (trampolino)**
+- Currying
+- **Lazyness (trampolino)**
+
+## 6) Lazyness
+- La Lazyness è una tecnica di programmazione in cui **si computa solo se strettamente necessario ed il più tardi possibile** 
+- Un approccio lazy porta a vari vantaggi, che descriverò in seguito accompagnando ogni vantaggio con un esempio:
+    1. **efficienza**:
+        - **si evita lavoro inutile** 
+            - vedi **call by name** in cui la valutazione degli argomenti viene fatta solo se necessario
+                - argomenti utilizzato all'interno di un ramo, che in una determinata chiamata, non viene mai percorso, non vengono mai valutati  
+                - inoltre mi permette di **salvare chiamate di funzioni normalmente fatali** (argomenti che causerebbero  DivByZero, NPE, ...) 
+                - eventualmente mostra come implementare la call by name in un linguaggio che non la supporta nativamente
+        - il costo delle computazioni strettamente necessarie viene **"spalmato" nei momenti distinti in cui servono**
+            - vedi **lazy init** in cui l'inizializzazione/costruzione delle proprietà di un oggetto
+                - solamente all'effettivo uso della variabile/proprietà quest'ultima verrà inizializzata
+                - se quest'ultime non vengono mai usate (tutte), come prima, si evita del lavoro inutile
+                - ma, anche se vengono usate tutte, il costo viene spalmato nei vari momenti d'uso e non si paga tutto upfront (avendo un'alta latenza)
+                    - esempio di PAW della catena: cliente -> ordini -> ordine  -> ...;
+                    - caricare tutto in maniera eager avrebbe un costo elevato, molti join su db
+                    - caricare in maniera lazy, mi evita di caricare se non ne ho mai bisogno, e quando carico, recupero solo quello che mi serve, spalmando il costo nel tempo
+            - **allocazione di pagine di memoria lazy**
+                - un'altro esempio simile che esemplifica questo concetto
+                - in un SO non tutta la memoria che un processo richiede viene utilizzata subito e/o interamente 
+                - allocare le pagine in maniera lazy
+                    - mi permette di ridurre il memory footprint di un processo alle pagine che usa effettivamente
+                    - mi permette di spalmare il costo (potenzialmente elevato) di allocazione di tante pagine nel tempo (e.g. 1GiB ~= 250k pagine)   
+    
+    2. permette di **generare e gestire insiemi infiniti** senza entrare in loop 
+        - Il primo esempio che mi viene in mente è quello degli **stream in Java**
+            - essi **gestiscono insiemi infiniti generando un elemento alla volta** fino a rispondere alla richiesta dell'ultimo stadio dello stream. 
+            - es: *Stream.iterate(2, n->n+2).filter(x -> x>40).findFirst();*    
+            - ragionare allo stesso modo sarebbe impossibile con un approccio eager (mi inloopo subito)
+
+        - Un'esempio un po' più subdolo di insieme infito è quello di **entità in relazione ciclica**
+            - **es: *utente <-> amici*** 
+                - se Marco è amico di Mirco, e Mirco è amico di Marco, questa relazione ciclica mi porterebbe ad inloopparmi se tentassi di generare tutta la catena di oggetto a partire dall'oggetto Marco con un **fetch eager**.
+                - Un **fetch lazy**, gestisce questa situazione tranquillamente, facendo al DB una richiesta alla volta.
+
+    3. permette di fare **scelte deterministiche**
+        - Siccome la computazione è ritardata il più possibile, al momento dell'effettiva computazione avrò più informazioni rispetto al momento della richiesta. Questa è la situazione ideale per fare scelte deterministiche
+        - **es: Unified Memory in CUDA**
+            - Quando si programma una GPU, tipicamente bisogna considerare due memorie diverse
+                - memoria lato CPU
+                - memoria lato GPU
+            - questo implica per il programmatore dover prestare attenzione a:
+                - distinguere puntatori CPU da puntatori GPU
+                - allocare/liberare la memoria nei due dispositivi
+                - eseguire correttamente i trasferimenti di memoria tra i due dispositivi
+            - Per semplificare la gestione della memoria in questo ambiente, la piattaforma CUDA introduce questa astrazione chiamata UM in cui
+                - lo spazio di indirizzamento è unico (non c'è distinzione tra puntatori host e puntatori device)
+                - i trasferimenti di memoria sono automatizzati
+                - non bisogna specificare dove si sta allocando/liberando la memoria
+            - Problema: **come si fa a decidere dove allocare la memoria se il programmatore non lo specifica?**
+            - Soluzione: **allocazione lazy!**
+                - la memoria viene allocata sul lato del primo dispositivo che la usa
+                - la logica è che il primo dispostivo che la usa è quello che ci fa le computazioni e quindi ha bisogno di avere quei dati localmente per sfruttare la maggiore bandwith della sua RAM piuttosto che quella del bus PCIe della scheda madre.
+            - **Con una allocazione eager si sarebbe dovuto scegliere non deterministicamente**, sparando a caso 
+
+## 7) Chiusure
+- **DEF PRELIMINARE**: una **variabile libera** è una variabile usata dentro ad una funzione ma **non definita nell'ambiente locale di quest'ultima**
+- **DEF**: una chiusura è un oggetto di tipo "Funzione" ottenuto **"chiudendo" una definizione di funzione con variabili libere**, dentro a un contesto più esterno (contenente la definizione della variabili libere).
+    - Le variabili libere, in quanto non definite localmente, vanno ricercate negli ambienti più esterni rispetto a quello della definizione della funzione. Una volta trovato un ambiente contenente la definizione della/delle variabili libere, la definizione della funzione di partenza può venire completata (**chiusa**) con un riferimento all'ambiente esterno trovato.
+
+- Le chiusure cominciano a diventare interessante solamente quando si dispone di funzioni come FCE e, di conseguenza, quando si possono definire **funzioni di ordine superiore**, ovvero funzioni che che ricevono/creano/restituiscono altre funzioni.
+    - Questo perchè altrimenti l'unico ambiente più esterno è quello globale
+    - mostra un esempio a caso di chiusura:
+        - funzione ff() del secondo ordine che restituisce una funzione f(x) con dentro un riferimento ad una variabile locale di ff()
+        - disegna l'esempio con dei cerchi, e mostra come la chiusura f(x) venga completata con il riferimento alla variabile locale di ff()
+
+- La presenza di chiusure ha delle **conseguenze sul modello computazionale** del linguaggio che le adotta!
+    - il tempo di vita delle variabili locali di una funzione appartenenti ad una chiusura, non coincide più necessariamente con quello della funzione che le contiene
+    - queste variabili di chiusura **non si possono più allocare sullo stack**. In quanto quest'ultimo **viene deallocato al termine della funzione**.
+    - il tempo di vita delle variabili locali che fanno parte di una chiusura è pari a quello della chiusura
+        - la chiusura ha bisogno di continuare ad avere un riferimento valido anche se la funzione che definisce le variabili libere termina prima
+    - perciò **tali variabili sono allocate sull'heap e non sullo stack!**
+        - la chiusura poi, mantiene un semplice riferimento a queste variabili
+        - l'interprete/compilatore del linguaggio si complica
+            - deve identificare le chiusure e capire cosa allocare sullo stack e cosa sull'heap 
+
+- **NB**: Bisogna fare attenzione alle variabili libere all'interno di una chiusura, esse, essendo risolte per riferimento, hanno visibilità di tutte le modifiche fatte alle variabili di chiusura **anche dopo la creazione della chiusura**
+    - **es**:
+        // qua sto salvando 10 chiusure che però puntano alla stessa variabile *i* che a fine ciclo vale 10
+        // tutte le chiusure stampano 10!
+        // (i cicli non definiscono un nuovo ambiene e quindi la variabile viene semplicemente sovrascritta) 
+        for (var i=0; i<10; i++) {
+            array.push( () => console.log(i) )
+        }
+
+- Occorre stabilire un **criterio su dove e quando vadano risolte le variabili libere di una chiusura**. Due alternative:
+    - **catena lessicale**
+        - le variabili libere di una chiusura vengono risolte **al momento di VALUTAZIONE della funzione che le contiene** e vengono cercate in **ambienti via via più esterni rispetto quella della funzione** che contiene le variabili libere
+        - considero gli ambienti del codice
+            - "compile"-time
+    - **catena dinamica**
+        - le variabili libere di una chiusura vengono risolte **al momento di INVOCAZIONE della funzione che le contiene** e vengono cercate in ambienti via via più esterni rispetto quello dove è stata invocata la funzione
+        - considero gli ambienti definiti dall'ordine delle chiamate
+            - run-time
+    - es:
+        var i = 10
+        foo(x) {
+            return x + i
+        }
+
+        bar() {
+            var i = -1
+            console.log(foo(10))
+        }
+    - **Caso lessicale**:
+        - più predicibile
+            - alla definizione della chiusura so chiaramente qual'è il valore della variabile puntata
+            - NON devo ricostruire la sequenza delle chiamate
+        - compatibile con la costruzione di librerie
+            - **non importa chi mi chiama**, le variabili libere hanno il valore che definisco io
+        - per lo stesso motivo facilità anche di testing
+    - **Caso dinamico**: 
+        - più difficile da debuggare
+            - per dare valore alle variabili libere **devo considerare la sequenza delle chiamate**
+            - il risultato della chiamata a funzione dipende da chi mi chiama
+        - incompatibile con la costruzione delle librerie
+            - **le variabili libere dipendono da chi mi chiama**
+        - impredicibilità anche nel testing
+    - Poiché la comprensibilità è cruciale, **praticamente tutti i linguaggi di programmazione adottano il criterio di chiusura lessicale**.
+
+- A che cosa servono le chiusure?
