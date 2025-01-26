@@ -453,6 +453,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
                 - la memoria viene allocata sul lato del primo dispositivo che la usa
                 - la logica è che il primo dispostivo che la usa è quello che ci fa le computazioni e quindi ha bisogno di avere quei dati localmente per sfruttare la maggiore bandwith della sua RAM piuttosto che quella del bus PCIe della scheda madre.
             - **Con una allocazione eager si sarebbe dovuto scegliere non deterministicamente**, sparando a caso 
+            - **stessa idea delle grammatiche sostanzialmente LL(1)**
 
 ## 7) Chiusure
 - **DEF PRELIMINARE**: una **variabile libera** è una variabile usata dentro ad una funzione ma **non definita nell'ambiente locale di quest'ultima**
@@ -520,3 +521,19 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
     - Poiché la comprensibilità è cruciale, **praticamente tutti i linguaggi di programmazione adottano il criterio di chiusura lessicale**.
 
 - A che cosa servono le chiusure?
+    - fanno ricordare alle funzioni il contesto in cui sono state definite
+    - stato privato di oggetti (utile con costruttori/factory)
+        - si può ottenere una proprietà privata **mappando lo stato su un argomento della funzione "generatrice"**
+    - definizione di nuove strutture di controllo
+        -   function until(n){
+                var start = 0;  
+                var fun = function iter(action){
+                    if(start<n) { action(); start++; iter(action); }    // start, n e action -> variabili di chiusura
+                }
+
+                return fun
+            }
+
+            // uso
+            until(5)( () => console.log(ciao) ) // se avessi supporto alla call by name come in scala la lambda sparirebbe
+    - canale di comunicazione privato tra due o più chiusure che condividono la stessa variabile di chiusura

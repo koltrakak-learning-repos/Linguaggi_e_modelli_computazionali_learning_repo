@@ -101,14 +101,25 @@ Poiché la comprensibilità è cruciale, **praticamente tutti i linguaggi di pro
 
 
 
-## A che cosa servono le chiusure?
-Permettono di modellare cose carine in linguaggi che non hanno il concetto di oggetto o qualificatori private ecc...
-- stato privato
-- oppuredue funzioni che codividono una variabile di una funzione esterne ottengono un canale di comunicazione
+### A che cosa servono le chiusure?
+1. Rappresentare uno stato privato e nascosto
+    - Utile per realizzare factory di oggetti
+    - Utile per realizzare un canale di comunicazione mediante oggetti privati della chiusura
+
+2. Realizzare nuove strutture di controllo
+    - la funzione esterna esprime il controllo, mentre quella ricevuta come argomento esprime il "corpo da eseguire"
+
+3. Riprogettare/semplificare API
+    - attraverso metodi parametrici che «ricevono comportamento» come argomento, anziché metodi specializzati
+
+4. **bonus**: Un caso interessante di chiusura, ispirata al lambda calcolo, è il **currying** – ovvero, la possibilità di **simulare una funzione a N argomenti, con N funzioni a 1 argomento**
+- al posto di sum(a, b) {return a+b}        ->          sum = a => b => a + b
+    - invocazione con sum(3)(4)
+    - posso fissare un argomento sum3 = sum(3); e poi sum3(4)
+- ciò evidenzia una volta di più come **l’unico «ingrediente essenziale» siano proprio le funzioni a un argomento**
+
+
+
+- oppure, due funzioni che codividono una variabile di una funzione esterne ottengono un canale di comunicazione
     - una sorta di sistema ad oggetti
 - modo per costruirsi nuovi costrutti che non esistono nel linguaggio (pensa tipo all'esempio della funzione loop())
-
-...
-
-idea di cedere il controllo alle strutture dati e non di lasciarle passive: lista.iterate( () => comportamento )
-ci si concentra su cosa si vuole e non sul controllo totale  -> di nuovo l'idea di non avere l'ossessione del controllo

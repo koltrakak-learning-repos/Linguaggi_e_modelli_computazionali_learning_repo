@@ -153,5 +153,3 @@ Il messaggio di javascript è che non ti serve necessariamente il concetto di cl
 
 
 ### CHIEDI PERCHÈ L'OGGETTO P1 BIANCO HA I CAMPI X E Y
-
-### CHIEDI INFO PER L'ESAME e PRENOTATI 
