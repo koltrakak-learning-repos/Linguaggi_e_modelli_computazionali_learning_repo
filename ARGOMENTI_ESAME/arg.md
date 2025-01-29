@@ -173,27 +173,32 @@ Il pumping lemma dà una **condizione NECESSARIA, ma non sufficiente, perché un
     - se pumping lemma: false -> linguaggio non è di tipo 2 (o 3)
     - se pumping lemma: true  -> linguaggio potrebbe essere di tipo 2 (o 3), ma non è detto
 
-**Idea**: In un linguaggio infinito, ogni stringa **sufficientemente lunga** deve avere una parte che si ripete (regola ricorsiva). Ergo, essa può essere "pompata" un qualunque numero di volte **ottenendo sempre altre stringhe del linguaggio**!
+**Idea**: In un linguaggio infinito, **OGNI stringa sufficientemente lunga** deve avere una parte che si ripete (regola ricorsiva). Ergo, essa può essere "pompata" un **numero QUALUNQUE** (per ogni i>=0) di volte **ottenendo SEMPRE altre stringhe del linguaggio**!
 - nei linguaggi di tipo due la parte pompabili è "bilaterale" in quanto caratteristica fondamentale di questo tipo di linguaggi è il **self embedding** (un non terminale paninato tra due terminali)
 - nei linguaggi di tipo uno la parte pompabili sarà "monolatera" in quanto le ricorsive possono far crescere una stringa o solo a destra o solo a sinistra
 
-Abbiamo quindi che una stringa abbastanza lunga di un linguaggio di tipo 2 può essere suddivisa in 5 parti: "abcde" con:
-- *a* ed *e* che rapresentano il prefisso e suffisso della parte centrale pompabile
-- *b* e *d* rappresentano la parte pompabile bilateralmente in cui i due lati crescono insieme
-- *c* rappresentano la parte paninata mediante self-embedding (e.g. espressione dentro parentesi)
-- (tutte queste parti possono essere composte da più caratteri)  
+**Semi-formalmente**:
 
-Se pompando *b* e *d* un numero *i* volte (ab^icd^ie) la stringa che si ottiene non appartiene al linguaggio, allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 2 (e quindi neanche di tipo 3).
+Considerando una stringa qualunque "lunga sufficientemente" (|z| >= N, con N pumping length) di un linguaggio di tipo che supponiamo essere di tipo 2:
+- Essa può essere suddivisa in 5 parti: "abcde" con:
+    - *a* ed *e* che rapresentano il prefisso e suffisso della parte centrale pompabile
+    - *b* e *d* rappresentano la parte pompabile bilateralmente in cui i due lati crescono insieme
+    - *c* rappresentano la parte "paninata" mediante self-embedding (e.g. espressione dentro parentesi)
+    - (tutte queste parti possono essere composte da più caratteri)  
+    - **NB**: la parte centrale **|bcd| <= N**
 
-Analogamente, una stringa abbastanza lunga di tipo 3 può essere suddivisa in 3 parti: "abc" con:
+Se pompando *b* e *d* un numero ARBITRARIO *i* volte (ab^icd^ie) la stringa che si ottiene NON appartiene al linguaggio (anche per un solo *i*), allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 2 (e quindi neanche di tipo 3).
+
+Analogamente, una stringa sufficientemente lunga di un linguaggio che supponiamo essere di tipo 3 può essere suddivisa in 3 parti: "abc"; con:
 - *a* ed *c* che rapresentano il prefisso e suffisso della parte centrale pompabile
 - *b* che rappresenta la parte pompabile unilateralmente
+- **NB**: in questo caso **è |ab| <= N** 
 
 Se pompando *b* un numero *i* volte (ab^ic) la stringa che si ottiene non appartiene al linguaggio, allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 3.
 
 Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 - L1 = {a^n b^n c^n } non è di Tipo 2 (quindi è almeno di Tipo 1)
-- L2 = {a^p , p primo } non è di Tipo 3 (quindi è almeno di Tipo 2 ma in realtà neanche quello)
+- L2 = {a^p , p pari } non è di Tipo 3 (quindi è almeno di Tipo 2 ma in realtà neanche quello)
 - L3 = { (^n a )^n } non è di tipo 3 (si sbilanciano le parentesi) ma sembra essere di tipo 2
 
 **NOTA**: nota magari prova anche a scrivere mano a mano un esempio di grammatica di tipo 2/3 in cui mostri le parti che formano il prefisso e suffisso, ed anche la parte pompabili data da una regola ricorsiva 
