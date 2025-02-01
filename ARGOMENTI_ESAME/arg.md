@@ -92,21 +92,23 @@ In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero qu
 
 
 ## 2) Grammatiche, Classificazione di Chomsky e riconoscibilità dei linguaggi
-Abbiamo detto che i linguaggi di nostro interesse in quanto riconoscibili da un interprete/compilatore, sono quelli decidibili... ok, ma che forma hanno quest'ultimi?
+Abbiamo detto che i linguaggi di nostro interesse (in quanto riconoscibili da un interprete/compilatore) sono quelli decidibili... ok, ma che forma hanno quest'ultimi?
 
-Introduciamo il concetto di grammatica e la classificazione di Chomsky.
+Introduciamo il concetto di grammatica, che ci permette di descrivere le frasi appartenenti ad un linguaggio, e la classificazione di Chomsky che categorizza le grammatiche in varie tipologie.
 
 Una grammatica è una notazione formale che ci permette di descrivere la sintassi di un linguaggio e come se ne possono derivare le frasi.
 - Una grammatica è definita dalla quadrupla <alfabeto VT, alfabeto VN, S, Prod>
 - Le grammatiche sono utili in quanto un linguaggio è spesso infinito e quindi non se ne possono elencare tutte le frasi .
 
-Le grammatiche sono poi classificate in ciò che prende il nome di classificazione di Chomsky. Questa categorizzazione distingue vari tipi di grammatica in base alla struttura delle produzioni (che influenza direttamente le caratteristiche dei linguaggi producibili). Abbiamo in ordine di complessità decrescente:
+Le grammatiche sono poi classificate in ciò che prende il nome di classificazione di Chomsky. Questa categorizzazione distingue vari tipi di grammatica in base alla struttura delle produzioni (che influenza direttamente le caratteristiche dei linguaggi producibili).
+
+Abbiamo in ordine di complessità decrescente:
 **Tipo 0**: nessuna restrizione sulle produzioni
 - In particolare, le regole possono specificare riscritture che **accorciano la forma di frase** corrente.
     - Regole del tipo: *G → epsilon* che fanno svanire un simbolo non terminale
 
 **Tipo 1 | dipendenti dal contesto**: produzioni vincolate alla forma: *"beta" A "delta"* → *"beta" "alpha" "delta"*. **con *alpha* != *epsilon***
-- A non terminale, lettere greche appartenenti V* tranne alpha che deve essere != epsilon
+- *A* non terminale, lettere greche appartenenti V* tranne alpha che deve essere != epsilon
 - *A* può essere sostituita da *alpha* solo nel contesto *"beta" A "delta"* 
     - **regole chirurgiche**
 - Le riscritture **non ACCORCIANO MAI la forma di frase** corrente (*alpha != epsilon*)
@@ -129,6 +131,8 @@ Le grammatiche sono poi classificate in ciò che prende il nome di classificazio
 - lineare a sinistra
     - *A → delta*
     - *A → B delta*
+- con *A, B* appartenenti a *VN*, *delta* appartenente a _VT*_
+
 - le frasi crescono da una parte sola. 
     - è possibile avere un singolo metasimbolo a destra o a sinistra (*delta* è composta da terminali) 
 - non posso costruire frasi che crescono contemporaneamente in più punti
