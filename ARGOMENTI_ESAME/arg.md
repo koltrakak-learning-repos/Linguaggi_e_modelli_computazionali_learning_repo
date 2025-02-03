@@ -231,7 +231,18 @@ Abbiamo detto che i linguaggi che ci interessano sono quelli di tipo 2 e tipo 3 
 
 In particolare, vorrei parlare del solo riconoscimento dei linguaggio di tipo due in quanto quelli regolari sono riconoscibili in maniera molto semplice. Basta passare alla forma su ASF (che è minimizzabile e in cui si può eliminare il non determismo) e considerare la tabella delle transizioni di stato ad ogni carattere letto.
 
-Il riconoscimento dei linguaggi di tipo 2 invece è un po' più complicato (d'altronde richiede un PDA che memorizza le sequenze non limitabili a priori). In particolare la parte problematica è che **anche i PDA possono essere non deterministici**, e questo non determismo porta ad un incremento nella complessità computazionale del riconoscimento (N^3, N^2 se non ambigua... comunque sovra-lineare).
+Il riconoscimento dei linguaggi di tipo 2 invece è un po' più complicato (d'altronde richiede un PDA che memorizza le sequenze non limitabili a priori). 
+
+Innanzitutto essi richiedono una macchina riconoscitrice più complicata di un semplice ASF; un PDA. Un PDA può essere pensato come ad un ASF + stack, più nel dettaglio, è definito dalla seguente sestupla: <A, S, S_0, sfn, Z, Z_0> con la *sfn*: (A unito epsilon)xSxZ → SxZ*.
+
+Lo stato futuro (e la nuova configurazione dello stack) adesso è  funzione sia del simbolo d’ingresso sia di quello attualmente in cima allo stack (e, chiaramente, dello stato corrente).
+- Adesso si può giocare da due parti, posso avere un gran numero di stati e usare poco lo stack o viceversa. Spesso è più conveniente il secondo metodo con uno stato di accumulo e uno stato di decrescita.
+
+L'idea che rende il PDA più potente è che si può superare il limite di memoria finita degli RSF appoggiandosi allo stack (che è illimitatamente espandibile)
+- **mostra esempio del bilanciamento delle parentesi**
+    - stato di push e stato di pop
+
+La parte problematica del riconoscimento dei linguaggi di tipo 2 è che **anche i PDA possono essere non deterministici**, e questo non determismo porta ad un incremento nella complessità computazionale del riconoscimento (N^3, N^2 se non ambigua... comunque sovra-lineare).
 - Dato uno stato Q0, con simbolo in cima allo stack Z e ingresso x, un PDA non det. può:
     - portarsi in più stati futuri
         - *sfn(Q0, x, Z) = { (Q1,Z1), (Q2,Z2), … (Qk, Zk) }*
@@ -244,18 +255,30 @@ Purtroppo, non esiste un equivalente del teorema del martello per i PDA, inoltre
 ```
 La classe dei linguaggi riconosciuti da un PDA non-deterministico coincide con la classe dei linguaggi context-free. Qualunque linguaggio context free può sempre essere riconosciuto da un opportuno PDA non-determistico. 
 ```
-Ma è anche dimostrato che **esistono anche dei linguaggi context-free che possono essere riconosciuti solamente tramite un PDA non-deterministico**. Siamo quindi costretti a scegliere se accettare il costo computazionale elevato di un PDA non det., oppure restringere l'insieme dei linguaggi che vogliamo riconoscere a quello dei deterministici. Delle due, noi abbiamo scelto la seconda in quanto i linguaggi non det. abbiamo detto che sono per loro natura "brutti" e di poco interesse pratico.
 
+Ma è anche dimostrato che 
+```
+**esistono anche dei linguaggi context-free che possono essere riconosciuti SOLAMENTE tramite un PDA non-deterministico**.
+```
 
+Siamo quindi costretti a scegliere se accettare il costo computazionale elevato di un PDA non det., oppure restringere l'insieme dei linguaggi che vogliamo riconoscere a quello dei deterministici. Delle due, noi abbiamo scelto la seconda in quanto i linguaggi non det. abbiamo detto che sono per loro natura "brutti" e di poco interesse pratico.
 
 
 A questo punto è naturale chiedersi:
 ```
 Che forma deve avere una grammatica di un linguaggio deterministico?
 ```
-Detta subito, sono le grammatiche LL(k), e più in generale, LR(k). Ma procediamo per passi.
+Detta subito, sono le grammatiche LL(k), e più in generale, LR(k). Ma procediamo per passi e vediamo prima come si può implementare in codice un riconoscitore di linguaggi di tipo 2 deterministici.
 
 Nel corso il primo algoritmo che abbiamo studiato per il riconoscimento di linguaggi di tipo 2 deterministici è **l'analisi ricorsiva discendente**!
+
+L'idea è quella di pilotare uno stack con il meccanismo delle chiamate (ricorsive) a funzione. Quest'ultime:
+- generano un record di attivazione quando invocate (push sullo stack)
+- distruggono quest'ultimo quando ritornano (pop dallo stack)
+
+Queste due operazioni corrispondono agli stati di crescita e calo del nostro PDA
+
+Più nel dettaglio l'algoritmo funziona così:
 - si introduce __una funzione per ogni metasimbolo__ della grammatica e la si invoca ogni volta che si incontra quel metasimbolo.
 - ogni funzione copre le regole del proprio metasimbolo, ossia **riconosce il sotto-linguaggio corrispondente**:
     - termina normalmente, o restituisce un segno di successo, se incontra simboli coerenti con le proprie regole

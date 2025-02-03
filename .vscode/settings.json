@@ -1,6 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "Riconoscitori_e_interpreti/Interpreti/Implementazioni/Interprete_esteso/src",
-        "Riconoscitori_e_interpreti/Interpreti/Implementazioni/Interprete_esteso_con_sequenze/src"
+        "Riconoscitori_e_interpreti/Riconoscitori_con_PDA/Implementazioni_PDA_deterministici/Implementazione_parentesi/src"
     ]
 }
