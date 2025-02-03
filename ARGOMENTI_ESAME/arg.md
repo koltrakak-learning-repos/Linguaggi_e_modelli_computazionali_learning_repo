@@ -262,7 +262,6 @@ Nel corso il primo algoritmo che abbiamo studiato per il riconoscimento di lingu
     - abortisce, o restituisce un qualche segno di fallimento, se incontra simboli che non corrispondono alle proprie regole.
 
 **es**: mostra pseudocodice parentesi bilanciate S -> ( S ) | c
-
 - evidenzia il comportamento dello stack con le chiamate ricorsive
 
 Notare le parole chiave:
