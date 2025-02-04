@@ -275,8 +275,7 @@ Nel corso il primo algoritmo che abbiamo studiato per il riconoscimento di lingu
 L'idea è quella di pilotare uno stack con il meccanismo delle chiamate (ricorsive) a funzione. Quest'ultime:
 - generano un record di attivazione quando invocate (push sullo stack)
 - distruggono quest'ultimo quando ritornano (pop dallo stack)
-
-Queste due operazioni corrispondono agli stati di crescita e calo del nostro PDA
+- Queste due operazioni corrispondono agli stati di crescita e calo del nostro PDA
 
 Più nel dettaglio l'algoritmo funziona così:
 - si introduce __una funzione per ogni metasimbolo__ della grammatica e la si invoca ogni volta che si incontra quel metasimbolo.
@@ -288,22 +287,42 @@ Più nel dettaglio l'algoritmo funziona così:
 - evidenzia il comportamento dello stack con le chiamate ricorsive
 
 Notare le parole chiave:
-- **discendente/top-down**: si scende dallo scopo alla frase finale da parsare (approccio a generazione piuttosto che a riduzione)
+- **discendente/top-down**: si scende dallo scopo alla frase finale da parsare
+    - **approccio a generazione** piuttosto che a riduzione (L'analisi LR sarà opposta)
 - **ricorsiva**: ogni metasimbolo, per riconoscere il suo sottolinguaggio, presuppone che quello dei metasimboli appartenenti alla sua regola di produzione sia già stato riconosciuto ricorsivamente
-- (L'analisi LR invece sarà opposta)
 
-**NB**: **questo algoritmo non funziona con ogni tipologia di grammatica**. Anche nell'esempio semplice appena mostrato, vi è una assunzione di base: per poter applicare analisi ricorsiva discendente è necessario che:
+
+**es più completo**: Mostra esempio del linguaggio degli if innestati
+- IfStatement := 'if' '(' Expression ')' IfStatement ['else' IfStatement] | 'done'
+
+
+**NB**: **questo algoritmo non funziona con ogni tipologia di grammatica**. Anche nell'esempio semplice appena mostrato, vi è una assunzione di base: per poter applicare analisi ricorsiva discendente in maniera deterministica (costo di riconoscimento lineare) è necessario che:
 ```
 le parti destre di produzioni relative ad uno stesso metasimbolo, incomincino tutte con un simbolo terminale distinto l'una dalle altre.
 ```
-Questa condizione mi permette di riconoscere la produzione giusta da applicare, e quindi che funzione invocare, in **maniera deterministica**.
-- Puoi fare vedere come esempio-aggiuntivo l'algoritmo di recursive descent non deterministico di questo video: https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
+Questa condizione mi permette di riconoscere la produzione giusta da applicare, e quindi che funzione invocare, in **maniera deterministica** facendomi guidare dalle iniziali delle varie produzioni.
+- i simboli iniziali devono essere visibili
+- grammatica in forma normale di Greibach
 
-Definiamo quindi una prima categoria di grammatica che descrive un linguaggio deterministico: le grammatiche LL(k). **Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
+Chiaramente:
+- non tutte le grammatiche context-free rispettano questo requisito
+- neanche tutte le grammatiche che descrivono un linguaggio deterministico come ci insegna l'analisi LR(k)
+- Tuttavia molte grammatiche di linguaggi utili si! 
+
+Identifichiamo quindi una classe ristretta di **grammatiche contextfree, che garantisca il determinismo dell’analisi ricorsiva discendente**. 
+
+Rispondendo alla domanda iniziale, definiamo una prima categoria di grammatiche che descrivono i linguaggio context-free deterministici: le grammatiche LL(k).
+
+**Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
 - procedendo Left to right nella lettura dell'input
 - applicando la Left-most derivation (sequenzializzazione nel riconoscimento dei sottolinguaggi)
     - costruisce prima il sottoalbero di derivazione più a sinistra
 - **guardando avanti nell'input di al più k simboli** per discriminare quale produzione applicare
+
+**OPZIONALE**: Ricordiamo che il determinismo è desiderabile perchè ci permette di ridurre il costo computazionale del riconoscimento del linguaggio. Esso però non è strettamente necessario per un riconoscitore che (seppure lentissimo) funzioni. Puoi fare vedere come esempio-aggiuntivo l'algoritmo di recursive descent non deterministico di questo video: https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
+
+
+
 
 In realtà è possibile generalizzare l'idea di simbolo iniziale in quanto, quest'ultimi potrebbero essere nascosti da:
 - **metasimboli**, che vanno quindi sviluppati in una o più riscritture per capire il simbolo terminale iniziale
