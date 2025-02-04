@@ -324,20 +324,85 @@ Rispondendo alla domanda iniziale, definiamo una prima categoria di grammatiche 
 
 
 
-In realtà è possibile generalizzare l'idea di simbolo iniziale in quanto, quest'ultimi potrebbero essere nascosti da:
-- **metasimboli**, che vanno quindi sviluppati in una o più riscritture per capire il simbolo terminale iniziale
-- **parti annullabili**, se un metasimbolo è riscrivibile come epsilon, tutti i simboli (terminali e non) che venivano dopo di lui, e che quindi pensavano di non essere iniziali, si ritrovano ad essere delle valide iniziali per la riscrittura e quindi vanno considerate
+In realtà è possibile **generalizzare l'idea di simbolo iniziale** di una produzione in quanto, quest'ultimi potrebbero essere nascosti da:
+- **metasimboli**, che vanno quindi sviluppati in una o più derivazioni per capire il simbolo terminale iniziale
+- **parti annullabili**, se un metasimbolo è riscrivibile come epsilon, tutti i simboli (terminali e non) che venivano dopo di lui (che pensavano di non essere iniziali) si ritrovano ad essere delle valide iniziali per la produzione e quindi vanno considerati
 
-Una definizione più generale di grammatica LL(1) è quindi una grammatica in cui: **i lookahead set delle rescritture relative allo stesso metasimbolo sono distinti**.
+es:
+    A -> Ba | CD        // conflitto dovuto a epsilon
+    B -> bB | D         // conflitto dovuto a mascheramento da parte di D
+    C -> cC | epsilon
+    D -> b
 
-Con Lookahead-set(A->alpha) definito come l'**unione** degli insiemi:
-- FIRST(Alpha): l’insieme dei simboli terminali iniziali che si riescono a trovare applicando * produzioni ad alpha.
-- FOLLOW(A):    l'insieme dei simboli terminali tutti che possono seguire A (se A annullabile) **in qualsiasi produzione**
+NB: si possono avere anche conflitti più subdoli con le epsilon se un intera riscrittura può annullarsi
 
-**OSS**: questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio (grammatica diversa == derivazione diversa == AST diverso; ricorda sempre ricorsione sinistra)
+Per tenere conto di queste problematiche, una definizione più generale di grammatica LL(1) è quindi una grammatica in cui: **i lookahead-set delle produzioni relative allo stesso metasimbolo sono distinti**.
 
-La necessità di poter vedere le iniziali delle produzioni di una grammatica è una **condizione stringente**. È infatti dimostrabile che:
-**esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k**. Quindi con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici. **La copertura maggiore c'è la da l'analisi LR(k)** in cui si ha un approccio opposto e più potente:
+Con con lookahead set di una produzione *Lookahead-set(A->alpha)* definito come l'**unione** degli insiemi:
+- SS(Alpha): l’insieme dei simboli terminali iniziali che si riescono a trovare applicando zero o più produzioni ad alpha.
+    - tengono conto dei metasimboli che nascono l'iniziale di una riscrittura
+- FOLLOW(A): l'insieme dei simboli terminali che possono seguire A (se _alpha_ annullabile) **in qualsiasi sequenza di derivazione A PARTIRE DALLO SCOPO**
+    - tengono conto dei terminali che seguono un simbolo annullabile
+
+**es che non mi ricorderò mai**:
+Produzioni:
+    S → A B
+    A → P Q | B C
+    P → p P | e
+    Q → q Q | e 
+    B → b B | d
+    C → c C | f
+
+La produzione problematica è quella di A in quanto l'intero blocco PQ è annullabile
+
+    SS(P) = {p}
+    SS(Q) = {q}
+    SS(PQ) = SS(P) U SS(Q) = {p,q}
+    SS(BC) = SS(B) = {b,d}
+
+    FIRST(P) = {p,e}
+    FIRST(Q) = {q,e}
+    FIRST(PQ)= {p,q,e}
+    FIRST(BC)= SS(B) = {b,d}
+
+    FOLLOW(A) = {b, d}
+    FOLLOW(P) = {q, b, d}   // perchè dopo Q ci può essere una B (S -> AB)
+    FOLLOW(Q) = {b, d}      // stesso motivo
+    ...
+
+
+    DS(A → PQ) = SS(PQ) U FOLLOW(A) = {p,q, b,d}            // perché PQ genera e
+    DS(A → BC) = SS(BC) = {b,d}                             // perché BC non genera e
+
+**conflitto**:
+- quando posso riscrivere A come PQ?
+    - Sicuramente quando davanti ho una p od una q, ma anche quando ho una b ed una d (iniziali di B proveniente dalla regola S -> AB con A che si è annullato)
+- quanto posso riscrivere A come BC? solamente quando davanti ho una b od una d. Non ho nulla che mi si può annullare davanti? 
+
+**In conclusione**:
+```
+CONDIZIONE NECESSARIA E SUFFICIENTE perché una grammatica sia LL(1) è che i Director Symbols set relativi a produzioni alternative siano disgiunti (DS(alpha_1) != DS(alpha_2) )
+```
+
+**OSS**:
+questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio!
+- grammatica diversa == derivazione diversa == AST diverso
+
+Esempio classico è quello della **ricorsione sinistra**:
+- non è mai analizzabile in maniera LL(1)
+- ma trasformarla in ricorsione destra **cambia l'associatività** in fase di analisi semantica
+- (opzionale) mostra trucco EBNF per espressioni
+
+
+
+La necessità di avere simboli iniziali distinti in tutte le produzioni alternative di uno stesso metasimbolo è una **condizione stringente**. È infatti dimostrabile che:
+```
+esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che tuttavia non sono LL(k) per nessun k.
+```
+
+**Conclusione**: con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici.
+
+**La copertura maggiore c'è la da l'analisi LR(k)** in cui si ha un approccio opposto e più potente:
 - approccio a riduzione in cui dalla frase si cerca di arrivare allo scopo
 
 es ricorsione sinistra:
