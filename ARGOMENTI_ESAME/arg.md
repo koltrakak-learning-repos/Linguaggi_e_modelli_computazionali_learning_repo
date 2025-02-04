@@ -218,14 +218,28 @@ Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 
 
 ## 3) Analisi Ricorsiva discendente e Grammatiche LL(1)
-- PDA deterministici e non deterministici
+- PDA
+    - definizione e confronto con ASF
+    - esempio di uso dello stack con esempio su bilanciamento delle parentesi
+    - PDA non deterministici, costo computazionale e relazione con linguaggi context-free
 - Analisi ricorsiva discendente
-    - Approccio generativo top-down
-    - Quando è applicabile 
+    - Definizione (approccio generativo top-down)
+    - esempio semplice bilanciamento delle parentesi
+    - esempio più completo parsing di IfStatement
+- Grammatiche LL(k) e determinismo
+    - Applicabilità analisi ricorsiva discendente
         - forma normale di Greibach
-        - più in generale quando i lookahead set di riscritture distinte di uno stesso metasimbolo sono diversi
-        - se questa condizione non è vera devo fare backtracking e non ho più un costo di riconoscimento lineare
-    - Grammatiche LL(1) e Determinismo
+        - (se questa condizione non è vera posso sempre fare backtracking ma non ho più un costo di riconoscimento lineare)
+    - Definizione grammatiche LL(k) e LL(1)
+        - leggo L to R, Derivo L e guardo di k simboli in avanti
+        - ok, ma cosa mi dicono i simboli che guardo?
+    - Generalizzazione lookahead set di riscritture distinte di uno stesso metasimbolo sono diversi
+        - esempio conflitti dovuti a epsilon e a mascheramenti da parte di metasimboli
+        - interi blocchi annullabili che producono conflitti subdoli  
+- Copertura dei linguaggi deterministici con grammatiche LL(K)
+    - cenni analisi LR(k)
+    - esempio ricorsione sinistra
+
 
 Abbiamo detto che i linguaggi che ci interessano sono quelli di tipo 2 e tipo 3 in quanto sono quelli utilizzati effettivamente nei linguaggi di programmazione data la "economicità" del loro riconoscimento. Ora discutiamo di come avviene il riconoscimento effettivo.
 
