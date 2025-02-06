@@ -325,6 +325,10 @@ es ricorsione sinistra:
 - con LL(1) le produzioni ricorsive a sinistra, della forma *A ::= A alpha | a*, **danno sempre luogo a starter symbol set identici per le due alternative** e quindi non è possibile l'analisi ricorsiva discendente
 - LR(1) analizzerebbe tranquillamente questa grammatica invece.
 
+Mostra relazione insiemistica tra gammatiche LL(k) e LR(k)
+- ogni grammatica LL(k) è anche LR(k) -> inclusione
+- l'inclusione non vale per le versioni semplificate SLR e LALR
+
 Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri argomenti...
 
 

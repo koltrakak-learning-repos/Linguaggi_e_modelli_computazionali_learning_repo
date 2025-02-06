@@ -37,7 +37,7 @@ Il parser LR richiede (concettualmente) la presenza al suo interno di un __ORACO
 
 Dunque, un parser LR è costituito da:
 - un **oracolo**, che gli dice se fare SHIFT o REDUCE
-- uno **stack** (d'altronde i linguaggi di tipo 2 si riconoscono con un PDA) in cui conservare lo stato corrente (input letto/ridotto corrente)
+- uno **stack** (d'altronde i linguaggi di tipo 2 si riconoscono con un PDA) in cui conservare lo stato corrente (input letto/ridotto fino ad ora)
 - un **controller** "orchestratore" che fa le domande all'oracolo ed applica i shift/reduce suggeriti dall'oracolo sullo stack.
 
 __NB__: La sequenza di riduzioni non è casuale, è una __derivazione canonica destra usata a rovescio__(bottom-up), per risalire dalla frase allo scopo. Per questo LR.
@@ -147,7 +147,7 @@ tutte le stringhe del contesto LR(0) della produzione *A → alpha* hanno la for
 **Conclusione**:
 Cosa mi rappresenta un contesto? 
 - l'applicazione di una produzione mi riscrive un metasimbolo *A* in una forma di frase *alpha*
-- Grazie al concetto di contesto sinistro, io posso calcolare la forma di frase *beta* che precede *A* in qualsiasi sequenza di derivazione
+- Grazie al concetto di contesto sinistro, io posso calcolare la grammatica che mi descrive la forma di frase *beta* che precede *A* in qualsiasi sequenza di derivazione
 - dopo l'applicazione della produzione *A -> alpha*, la forma di frase *beta* che precedeva *A* prima della produzione rimane invariata
 - A questo punto, se nella mia stringa corrente di input trovo una forma di frase che riconosco essere composta come *beta* *alpha*, sono sicuro di poter ridurre alpha indietro ad A siccome è preceduto dal suo contesto sinistro *beta*
     - (chiaramente per poter essere sicuro della riduzione non ci devono essere due metasimboli con lo stesso contesto sinistro, altrimenti non saprei a quale dei due ridurre (determinismo))
@@ -213,8 +213,7 @@ Quando si pone sullo stack lo scopo S, la frase è accettata → spesso si evita
 ## Condizione sufficiente per analisi LR(0) di una grammatica
 Dunque, in sintesi, quand'è che una grammatica è analizzabile mediante analisi LR(0) ?
 
-Condizione sufficiente perché una grammatica sia LR(0) è che ogni __stato (finale) di riduzione__ dell'automa ausiliario sia etichettato da una
-__produzione unica__ e non abbia __archi di uscita etichettati da terminali__ (etichettati da non terminale andrebbe bene perchè immagino corrisponderebbe ad un prefisso non proprio?).
+Condizione sufficiente perché una grammatica sia LR(0) è che ogni __stato (finale) di riduzione__ dell'automa ausiliario sia etichettato da una __produzione unica__ e non abbia __archi di uscita etichettati da terminali__ (etichettati da non terminale andrebbe bene perchè immagino corrisponderebbe ad un prefisso non proprio?).
 
 A quanto pare questo non corrisponde al 100% con una condizione di determinismo sull'automa caratteristico.
 
