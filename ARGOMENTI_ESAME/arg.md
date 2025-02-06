@@ -31,13 +31,17 @@ Arrivati alla MdT ci siamo fermati in quanto essa è la macchina pià potente ch
 
 **Concentrandoci ora sui problemi irrisolubili.** Esistono? Se si, sarebbe desiderabile capire quali sono in modo da poterli evitare.
 
-La tesi di Church-Turing ci dice che se neanche la macchina di Turing riesce a risolvere un problema, quel problema è IRRISOLUBILE in quanto essa è la macchina più potente che abbiamo a disposizione. 
+Innanzitutto, la tesi di Church-Turing ci dice che se neanche la macchina di Turing riesce a risolvere un problema (anche per un solo ingresso), quel problema è IRRISOLUBILE in quanto essa è la macchina più potente che abbiamo a disposizione. 
 
 **NB**: Irrisolubilità non significa che ho ottengo una risposta sbagliata (a causa di bug), significa che la macchina non riesce a risolvere il problema in **tempo finito**, ovvero si inlooppa (loop infinito).
 - NON c'è modo di distinguere una macchina inlooppata da una macchina che ci sta mettendo tanto tempo.
 - a volte l'irrisolubilità di un problema si manifesta in base ai dati d'ingresso. I problemi vengono etichettati come irrisolubili anche se si riescono a risolvere in 99 casi su 100 (Bisogna poter contare sulla macchina). 
 
-Abbiamo appurato che le funzioni definibili e le funzioni computabili hanno la stessa cardinalità. A questo punto, chiedersi se esistono dei problemi irrisolubili equivale a cercare almeno un problema definibile che però risulta non computabile, anche per un solo ingresso.
+**OSS**: La capacità di andare in loop è l'ipotesi fondamentale per risolvere la classe maggiore di problemi possibile. Una macchina che non va in loop è per sua natura meno potente.
+
+Abbiamo poi che chiedersi se un problema è irrisolubile è equivalente a chiedersi se la relativa funzione caratteristica è innanzitutto definibile, e inoltre se quest'ultima sia computabile da una MdT.
+
+È dimostrato che le funzioni definibili (con un alfabeto finito di simboli) e le funzioni computabili hanno la stessa cardinalità. La MdT non tralascia alcuna funzione.  A questo punto, chiedersi se esistono dei problemi irrisolubili equivale a cercare almeno un problema definibile che però risulta non computabile, anche per un solo ingresso.
 
 Se trovassimo quindi un problema definibile ma per cui la macchina di Turing va in loop, dimostreremmo che i due insiemi non coincidono e che quindi esistono dei problemi irrisolubili da una MdT. Esistono dei problemi di questo tipo? La risposta a questa domanda è si!
 
