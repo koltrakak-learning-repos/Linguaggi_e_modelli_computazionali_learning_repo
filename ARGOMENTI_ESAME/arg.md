@@ -1,4 +1,27 @@
 ## 1) Teoria della computabilità e decidibilità degli insiemi (linguaggi)
+- Computabilità
+    - definizione preliminare
+    - definizione tramite gerarchia di macchine astratte
+        - reti combinatorie
+        - ASF
+        - MdT
+    - tesi di Church Turing
+- Problemi irrisolubili
+    - Come sono definiti? (tesi di Church Turing)
+    - cosa succede alla MdT che opera su un problema irrisolubile?
+    - Esistono?
+        - insiemi dei problemi definibili e dei problemi computabili hanno la stessa cardinalità?
+        - coincidono? No!
+    - Cerchiamo un problema definibile ma non computabile
+    - Problema dell'halt della MdT
+    - Esistono problemi che non siamo mai in grado di far risolvere ad una Macchina... la MdT non ce la fà
+- Computabilità e linguaggi
+    - definire il concetto di computabilità è necessario per capire quali sono i linguaggi che è possibile riconoscere con un compilatore/interprete
+    - problema del decidere se una frase appartiene o meno ad un linguaggio (analisi sintattica)
+    - insiemi semidecidibili
+    - perchè non bastano
+    - insiemi decidibili e teorema
+
 Una delle prime domande che ci siamo posti in questo corso è stata: "**esistono problemi che un elaboratore NON PUÒ risolvere?**"
 
 Il concetto di problema risolvibile è strettamente legato al concetto di computabilità che possiamo definire inizialmente in questo modo: "**la computabilità è una caratteristica di un problema che lo rende risolvibile da una macchina in un tempo finito**". Chiaramente è utile far risolvere i problemi alla macchine perchè così non dobbiamo risolverli noi esseri umani.
@@ -82,7 +105,19 @@ Noi siamo stati interessati a capire se: data una stringa, essa appartenga o men
     - ossia, che si possano generare le frasi “lecite” previste
 - è indispensabile poter decidere se una frase è giusta o sbagliata senza entrare in ciclo infinito
     - decidibilità
+
 Se così non fosse, il compilatore o interprete potrebbe non rispondere, entrando in un ciclo infinito, davanti a una frase errata mentre ovviamente noi vogliamo che si fermi e segnali l’errore.
+
+Abbiamo che un linguaggio deve essere innanzitutto generabile, ovvero una MdT deve essere in grado di produrne le frasi. Purchè questo sia verò abbiamo che la funzione di corrispondenza con i naturali deve essere computabile. Insiemi di frasi di questo tipo si dicono **generabili** o **semidecidibili**.
+
+Questo non basta dato che non ci basta poter decidere se una stringa appartenga al linguaggio, ma dobbiamo anche riuscire a decidere il contrario, quando una stringa NON appartiene al linguaggio.
+- es. riconoscimento di un dispari con una macchina che riconosce solo i pari
+
+Stiamo cioè chiedendo che la funzione di appartenenza all'insieme che definisce il linguaggio sia computabile. Insiemi di questo tipo si dicono **decidibili** e comprendono tutti i linguaggi di nostro interesse.
+- disegna prima grafico insiemistico dei linguaggi 
+
+Per capire se un insieme è decidibile o meno abbiamo il seguente teorema:
+- Un insieme S è decidibili se e solo se sia S che il suo complemento N-S, sono generabili.
 
 In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero quelli per cui si riesce a decidere se una qualsiasi stringa appartenga o meno al linguaggio e per cui bisogna poter saper generare anche l'insieme complementare a quello delle frasi appartenenti al linguaggio. I linguaggi non decidibili sono da evitare in quanto provare a costruire un compilatore/interprete per questa categoria di linguaggi è un causa persa (problema irrisolubile)
 
