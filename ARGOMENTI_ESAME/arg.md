@@ -218,14 +218,28 @@ Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 
 
 ## 3) Analisi Ricorsiva discendente e Grammatiche LL(1)
-- PDA deterministici e non deterministici
+- PDA
+    - definizione e confronto con ASF
+    - esempio di uso dello stack con esempio su bilanciamento delle parentesi
+    - PDA non deterministici, costo computazionale e relazione con linguaggi context-free
 - Analisi ricorsiva discendente
-    - Approccio generativo top-down
-    - Quando è applicabile 
+    - Definizione (approccio generativo top-down)
+    - esempio semplice bilanciamento delle parentesi
+    - esempio più completo parsing di IfStatement
+- Grammatiche LL(k) e determinismo
+    - Applicabilità analisi ricorsiva discendente
         - forma normale di Greibach
-        - più in generale quando i lookahead set di riscritture distinte di uno stesso metasimbolo sono diversi
-        - se questa condizione non è vera devo fare backtracking e non ho più un costo di riconoscimento lineare
-    - Grammatiche LL(1) e Determinismo
+        - (se questa condizione non è vera posso sempre fare backtracking ma non ho più un costo di riconoscimento lineare)
+    - Definizione grammatiche LL(k) e LL(1)
+        - leggo L to R, Derivo L e guardo di k simboli in avanti
+        - ok, ma cosa mi dicono i simboli che guardo?
+    - Generalizzazione lookahead set di riscritture distinte di uno stesso metasimbolo sono diversi
+        - esempio conflitti dovuti a epsilon e a mascheramenti da parte di metasimboli
+        - interi blocchi annullabili che producono conflitti subdoli  
+- Copertura dei linguaggi deterministici con grammatiche LL(K)
+    - cenni analisi LR(k)
+    - esempio ricorsione sinistra
+
 
 Abbiamo detto che i linguaggi che ci interessano sono quelli di tipo 2 e tipo 3 in quanto sono quelli utilizzati effettivamente nei linguaggi di programmazione data la "economicità" del loro riconoscimento. Ora discutiamo di come avviene il riconoscimento effettivo.
 
@@ -275,8 +289,7 @@ Nel corso il primo algoritmo che abbiamo studiato per il riconoscimento di lingu
 L'idea è quella di pilotare uno stack con il meccanismo delle chiamate (ricorsive) a funzione. Quest'ultime:
 - generano un record di attivazione quando invocate (push sullo stack)
 - distruggono quest'ultimo quando ritornano (pop dallo stack)
-
-Queste due operazioni corrispondono agli stati di crescita e calo del nostro PDA
+- Queste due operazioni corrispondono agli stati di crescita e calo del nostro PDA
 
 Più nel dettaglio l'algoritmo funziona così:
 - si introduce __una funzione per ogni metasimbolo__ della grammatica e la si invoca ogni volta che si incontra quel metasimbolo.
@@ -288,37 +301,122 @@ Più nel dettaglio l'algoritmo funziona così:
 - evidenzia il comportamento dello stack con le chiamate ricorsive
 
 Notare le parole chiave:
-- **discendente/top-down**: si scende dallo scopo alla frase finale da parsare (approccio a generazione piuttosto che a riduzione)
+- **discendente/top-down**: si scende dallo scopo alla frase finale da parsare
+    - **approccio a generazione** piuttosto che a riduzione (L'analisi LR sarà opposta)
 - **ricorsiva**: ogni metasimbolo, per riconoscere il suo sottolinguaggio, presuppone che quello dei metasimboli appartenenti alla sua regola di produzione sia già stato riconosciuto ricorsivamente
-- (L'analisi LR invece sarà opposta)
 
-**NB**: **questo algoritmo non funziona con ogni tipologia di grammatica**. Anche nell'esempio semplice appena mostrato, vi è una assunzione di base: per poter applicare analisi ricorsiva discendente è necessario che:
+
+**es più completo**: Mostra esempio del linguaggio degli if innestati
+- IfStatement := 'if' '(' Expression ')' IfStatement ['else' IfStatement] | 'done'
+
+
+**NB**: **questo algoritmo non funziona con ogni tipologia di grammatica**. Anche nell'esempio semplice appena mostrato, vi è una assunzione di base: per poter applicare analisi ricorsiva discendente in maniera deterministica (costo di riconoscimento lineare) è necessario che:
 ```
 le parti destre di produzioni relative ad uno stesso metasimbolo, incomincino tutte con un simbolo terminale distinto l'una dalle altre.
 ```
-Questa condizione mi permette di riconoscere la produzione giusta da applicare, e quindi che funzione invocare, in **maniera deterministica**.
-- Puoi fare vedere come esempio-aggiuntivo l'algoritmo di recursive descent non deterministico di questo video: https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
+Questa condizione mi permette di riconoscere la produzione giusta da applicare, e quindi che funzione invocare, in **maniera deterministica** facendomi guidare dalle iniziali delle varie produzioni.
+- i simboli iniziali devono essere visibili
+- grammatica in forma normale di Greibach
 
-Definiamo quindi una prima categoria di grammatica che descrive un linguaggio deterministico: le grammatiche LL(k). **Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
+Chiaramente:
+- non tutte le grammatiche context-free rispettano questo requisito
+- neanche tutte le grammatiche che descrivono un linguaggio deterministico come ci insegna l'analisi LR(k)
+- Tuttavia molte grammatiche di linguaggi utili si! 
+
+Identifichiamo quindi una classe ristretta di **grammatiche contextfree, che garantisca il determinismo dell’analisi ricorsiva discendente**. 
+
+Rispondendo alla domanda iniziale, definiamo una prima categoria di grammatiche che descrivono i linguaggio context-free deterministici: le grammatiche LL(k).
+
+**Si definiscono grammatiche LL(k) quelle che sono analizzabili in modo deterministico** (con analisi ricorsiva discendente):
 - procedendo Left to right nella lettura dell'input
 - applicando la Left-most derivation (sequenzializzazione nel riconoscimento dei sottolinguaggi)
     - costruisce prima il sottoalbero di derivazione più a sinistra
 - **guardando avanti nell'input di al più k simboli** per discriminare quale produzione applicare
 
-In realtà è possibile generalizzare l'idea di simbolo iniziale in quanto, quest'ultimi potrebbero essere nascosti da:
-- **metasimboli**, che vanno quindi sviluppati in una o più riscritture per capire il simbolo terminale iniziale
-- **parti annullabili**, se un metasimbolo è riscrivibile come epsilon, tutti i simboli (terminali e non) che venivano dopo di lui, e che quindi pensavano di non essere iniziali, si ritrovano ad essere delle valide iniziali per la riscrittura e quindi vanno considerate
+**OPZIONALE**: Ricordiamo che il determinismo è desiderabile perchè ci permette di ridurre il costo computazionale del riconoscimento del linguaggio. Esso però non è strettamente necessario per un riconoscitore che (seppure lentissimo) funzioni. Puoi fare vedere come esempio-aggiuntivo l'algoritmo di recursive descent non deterministico di questo video: https://youtu.be/ENKT0Z3gldE?si=drAJf970ANFIK3EZ  
 
-Una definizione più generale di grammatica LL(1) è quindi una grammatica in cui: **i lookahead set delle rescritture relative allo stesso metasimbolo sono distinti**.
 
-Con Lookahead-set(A->alpha) definito come l'**unione** degli insiemi:
-- FIRST(Alpha): l’insieme dei simboli terminali iniziali che si riescono a trovare applicando * produzioni ad alpha.
-- FOLLOW(A):    l'insieme dei simboli terminali tutti che possono seguire A (se A annullabile) **in qualsiasi produzione**
 
-**OSS**: questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio (grammatica diversa == derivazione diversa == AST diverso; ricorda sempre ricorsione sinistra)
 
-La necessità di poter vedere le iniziali delle produzioni di una grammatica è una **condizione stringente**. È infatti dimostrabile che:
-**esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che non sono LL(k) per nessun k**. Quindi con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici. **La copertura maggiore c'è la da l'analisi LR(k)** in cui si ha un approccio opposto e più potente:
+In realtà è possibile **generalizzare l'idea di simbolo iniziale** di una produzione in quanto, quest'ultimi potrebbero essere nascosti da:
+- **metasimboli**, che vanno quindi sviluppati in una o più derivazioni per capire il simbolo terminale iniziale
+- **parti annullabili**, se un metasimbolo è riscrivibile come epsilon, tutti i simboli (terminali e non) che venivano dopo di lui (che pensavano di non essere iniziali) si ritrovano ad essere delle valide iniziali per la produzione e quindi vanno considerati
+
+es:
+    A -> Ba | CD        // conflitto dovuto a epsilon
+    B -> bB | D         // conflitto dovuto a mascheramento da parte di D
+    C -> cC | epsilon
+    D -> b
+
+NB: si possono avere anche conflitti più subdoli con le epsilon se un intera riscrittura può annullarsi
+
+Per tenere conto di queste problematiche, una definizione più generale di grammatica LL(1) è quindi una grammatica in cui: **i lookahead-set delle produzioni relative allo stesso metasimbolo sono distinti**.
+
+Con con lookahead set di una produzione *Lookahead-set(A->alpha)* definito come l'**unione** degli insiemi:
+- SS(Alpha): l’insieme dei simboli terminali iniziali che si riescono a trovare applicando zero o più produzioni ad alpha.
+    - tengono conto dei metasimboli che nascono l'iniziale di una riscrittura
+- FOLLOW(A): l'insieme dei simboli terminali che possono seguire A (se _alpha_ annullabile) **in qualsiasi sequenza di derivazione A PARTIRE DALLO SCOPO**
+    - tengono conto dei terminali che seguono un simbolo annullabile
+
+**es che non mi ricorderò mai**:
+Produzioni:
+    S → A B
+    A → P Q | B C
+    P → p P | e
+    Q → q Q | e 
+    B → b B | d
+    C → c C | f
+
+La produzione problematica è quella di A in quanto l'intero blocco PQ è annullabile
+
+    SS(P) = {p}
+    SS(Q) = {q}
+    SS(PQ) = SS(P) U SS(Q) = {p,q}
+    SS(BC) = SS(B) = {b,d}
+
+    FIRST(P) = {p,e}
+    FIRST(Q) = {q,e}
+    FIRST(PQ)= {p,q,e}
+    FIRST(BC)= SS(B) = {b,d}
+
+    FOLLOW(A) = {b, d}
+    FOLLOW(P) = {q, b, d}   // perchè dopo Q ci può essere una B (S -> AB)
+    FOLLOW(Q) = {b, d}      // stesso motivo
+    ...
+
+
+    DS(A → PQ) = SS(PQ) U FOLLOW(A) = {p,q, b,d}            // perché PQ genera e
+    DS(A → BC) = SS(BC) = {b,d}                             // perché BC non genera e
+
+**conflitto**:
+- quando posso riscrivere A come PQ?
+    - Sicuramente quando davanti ho una p od una q, ma anche quando ho una b ed una d (iniziali di B proveniente dalla regola S -> AB con A che si è annullato)
+- quanto posso riscrivere A come BC? solamente quando davanti ho una b od una d. Non ho nulla che mi si può annullare davanti? 
+
+**In conclusione**:
+```
+CONDIZIONE NECESSARIA E SUFFICIENTE perché una grammatica sia LL(1) è che i Director Symbols set relativi a produzioni alternative siano disgiunti (DS(alpha_1) != DS(alpha_2) )
+```
+
+**OSS**:
+questa generalizzazione potrebbe sembrare non necessaria in quanto ogni grammatica context-free è riscrivibile in **forma normale di Greibach**, tuttavia abbiamo anche imparato che non sempre è possibile riorganizzare la grammatica senza influenzare la semantica del linguaggio!
+- grammatica diversa == derivazione diversa == AST diverso
+
+Esempio classico è quello della **ricorsione sinistra**:
+- non è mai analizzabile in maniera LL(1)
+- ma trasformarla in ricorsione destra **cambia l'associatività** in fase di analisi semantica
+- (opzionale) mostra trucco EBNF per espressioni
+
+
+
+La necessità di avere simboli iniziali distinti in tutte le produzioni alternative di uno stesso metasimbolo è una **condizione stringente**. È infatti dimostrabile che:
+```
+esistono linguaggi DETERMINISTICI (e quindi riconoscibili con costo linerare) che tuttavia non sono LL(k) per nessun k.
+```
+
+**Conclusione**: con analisi ricorsiva discendente non copriamo l'interezza dei linguaggi di tipo 2 deterministici.
+
+**La copertura maggiore c'è la da l'analisi LR(k)** in cui si ha un approccio opposto e più potente:
 - approccio a riduzione in cui dalla frase si cerca di arrivare allo scopo
 
 es ricorsione sinistra:

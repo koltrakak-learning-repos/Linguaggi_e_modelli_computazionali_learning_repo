@@ -121,6 +121,42 @@ Definiamo quindi il **director symbol set** come **l'unione di questi due insiem
     Condizione NECESSARIA E SUFFICIENTE perché una grammatica sia LL(1) è che i Director Symbols set relativi a produzioni alternative di uno stesso metasimbolo siano disgiunti.
 ```
 
+**es**: 
+
+Produzioni:
+    S → A B
+    A → P Q | B C
+    P → p P | e
+    Q → q Q | e 
+    B → b B | d
+    C → c C | f
+
+La produzione problematica è quella di A in quanto l'intero blocco PQ è annullabile
+
+    SS(P) = {p}
+    SS(Q) = {q}
+    SS(PQ) = SS(P) U SS(Q) = {p,q}
+    SS(BC) = SS(B) = {b,d}
+
+    FIRST(P) = {p,e}
+    FIRST(Q) = {q,e}
+    FIRST(PQ)= {p,q,e}
+    FIRST(BC)= SS(B) = {b,d}
+
+    FOLLOW(A) = {b, d}
+    FOLLOW(P) = {q, b, d}   // perchè dopo Q ci può essere una B (S -> AB)
+    FOLLOW(Q) = {b, d}      // stesso motivo
+    ...
+
+
+    DS(A → PQ) = SS(PQ) U FOLLOW(A) = {p,q, b,d}            // perché PQ genera e
+    DS(A → BC) = SS(BC) = {b,d}                             // perché BC non genera e
+
+**conflitto**:
+- quando posso riscrivere A come PQ?
+    - Sicuramente quando davanti ho una p od una q, ma anche quando ho una b ed una d (iniziali di B proveniente dalla regola S -> AB con A che si è annullato)
+- quanto posso riscrivere A come BC? solamente quando davanti ho una b od una d. Non ho nulla che mi si può annullare davanti? 
+
 ... Flash: esistono algoritmi che ti calcono i simboli di follow
 
 
@@ -171,7 +207,7 @@ Le **grammatiche LR(k)** consentono l’analisi deterministica delle frasi Left 
 - L'analisi LR è meno naturale dell'analisi LL ma è superiore dal punto di vista teorico: «arriva dove l’LL non arriva»
 - Infatti, vi sono linguaggi context-free deterministici (vedi linguaggi con ricorsione sinistra)
     - NON analizzabili in modo deterministico con tecniche LL...
-    - ma **riconoscibili in modo deterministico con tecniche LR! **
+    - ma **riconoscibili in modo deterministico con tecniche LR!**
 
 **Abbiamo quindi che lo strumento più potente che abbiamo a disposizione è l'analisi LR**. Data una grammatica che descrive il mio linguaggio deterministico, nel caso in cui essa non sia LL(1), posso provare a lasciarla così senza alcuna trasformazione, e provare ad analizzarla con la tecnica LR che è quella che mi permette di riconoscere (con tempo lineare) il più grande insieme di linguaggi deterministici.
 
