@@ -153,7 +153,7 @@ TEOREMA: una grammatica di Tipo 2 che non contenga self-embedding genera un ling
 
 Dunque, è il self-embedding la caratteristica cruciale di una grammatica di Tipo 2, che la differenzia da una di Tipo 3.
 
-Più nel dettaglio il **self-embedding è una condizione sufficiente** affinche una grammatica sia di tipo 2, ovvero:
+Più nel dettaglio il **self-embedding è una condizione necessaria** affinche una grammatica sia di tipo 2, ovvero:
 - Se non c'è self-embedding in nessuna produzione (come dice il teorema) esiste una grammatica equivalente di Tipo 3. Quindi il linguaggio è regolare.
 - Non vale necessariamente il viceversa, **una grammatica con self-embedding potrebbe comunque generare un linguaggio regolare**, se il self-embedding è "finto" (ovvero, "disattivato" da altre regole)
 

@@ -131,13 +131,47 @@ In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero qu
 
 
 ## 2) Grammatiche, Classificazione di Chomsky e riconoscibilità dei linguaggi
+- Che forma hanno i linguaggi decidibili?
+    - Grammatiche Come specificare tutte le frasi appartenenti ad un linguaggio 
+        - quadrupla <VT,VN,P,S>
+- Classificazione di Chomsky
+    - tipo 0
+        - forme di frase possono accorciarsi
+    - tipo 1
+        - non ammette più l'accorciarsi delle forme di frase
+        - ammette lo scambio di due metasimboli
+        - contempla vicoli ciechi nella derivazione
+    - tipo 2
+        - teorema self embedding
+        - teorema per epsilon
+        - fa crescere due cosa contemporaneamente
+    - tipo 3
+        - fa crescere la frase da una parte sola
+    - relazione gerarchica delle grammatiche
+    - grammatiche equivalenti
+    - tipo di una grammatica e tipo di un linguaggio
+- Riconoscibilità dei linguaggi
+    - collegamento con computabilità, i linguaggi decidibii sono sicuramente quelli di tipo 1,2 e 3; tipo 0 non sempre decidibili
+    - quali macchine riconoscono quale linguaggio?
+        - tipo 0: se decidibile, MdT
+        - tipo 1: MdT
+        - tipo 2: PDA
+        - tipo 3: ASF
+        - per ottenere efficenza nel riconoscimento bisogno usare almeno linguaggi di tipo 2 (**non ci sono più vicoli ciechi**)
+        - per parti estremamente comuni (numeri, identificatori, ... tutti i token insomma), sufficente linguaggio di tipo 3
+- Pumping lemma
+    - dato un linguaggio e trovata una grammatica che lo descrive come possiamo capire se quest'ultima è la grammatica più econominca?
+    - idea del pumping lemma
+    - esempio L = {1^n, 2^n, 3^n} 
+
 Abbiamo detto che i linguaggi di nostro interesse (in quanto riconoscibili da un interprete/compilatore) sono quelli decidibili... ok, ma che forma hanno quest'ultimi?
 
 Introduciamo il concetto di grammatica, che ci permette di descrivere le frasi appartenenti ad un linguaggio, e la classificazione di Chomsky che categorizza le grammatiche in varie tipologie.
 
 Una grammatica è una notazione formale che ci permette di descrivere la sintassi di un linguaggio e come se ne possono derivare le frasi.
 - Una grammatica è definita dalla quadrupla <alfabeto VT, alfabeto VN, S, Prod>
-- Le grammatiche sono utili in quanto un linguaggio è spesso infinito e quindi non se ne possono elencare tutte le frasi .
+- Le grammatiche sono utili in quanto un linguaggio è spesso infinito e quindi non se ne possono elencare tutte le frasi.
+- fai un es. a caso
 
 Le grammatiche sono poi classificate in ciò che prende il nome di classificazione di Chomsky. Questa categorizzazione distingue vari tipi di grammatica in base alla struttura delle produzioni (che influenza direttamente le caratteristiche dei linguaggi producibili).
 
@@ -178,13 +212,28 @@ Abbiamo in ordine di complessità decrescente:
 **NB**: IMPORTANTE:  produzioni o tutte lineari a destra, o tutte lineari a sinistra - non mischiate.
 **NB**: anche qui alpha può essere epsilon ma anche qui esiste una grammatica equivalente con al più *S -> epsilon*.
 
-Abbiamo poi che queste grammatiche rispettano una relazione gerarchica, in cui la più generale è quella di tipo 0 e la più specifica è qulla di tipo 3
+**fai un esempio per ogni tipo di grammatica**: ...
+
+
+
+
+
+Abbiamo poi che queste grammatiche rispettano una **relazione gerarchica**, in cui la più generale è quella di tipo 0 e la più specifica è qulla di tipo 3
 - una grammatica di tipo 3 è quindi anche di tipo 2/1/0
 - una grammatica di tipo 2 è quindi anche di tipo 1/0
 - ecc...
 
+**Fai un disegno:**
+
 **NB**: per questo il teorema riguardo le epsilon-rules è importante, fa rimanere valida questa relazione.
 - **Come ottenere la grammatica equivalente senza *epsilon-rules*?** Data una grammatica G che contiene epsilon-rules, per generare una grammatica equivalente G', senza epsilon rules, **basta fare delle sostituzioni e semplificazioni**.
+
+Poiché le grammatiche sono in relazione gerarchica, può accadere che un linguaggio possa essere generato da più grammatiche, anche di tipo diverso. Grammatiche di questo tipo si dicono **equivalenti**, dato che che generano lo stesso linguaggio. Tuttavia, una grammatica potrebbe essere preferibile ad un'altra ad esse equivalenti per quanto riguarda il costo di riconoscimento.
+
+Non è detto infatti che la prima grammatica che si trova per generare un dato linguaggio sia necessariamente la migliore (più semplice e meno costosa da riconoscere). Definiamo quindi oltre alle tipologie di grammatiche, le **tipologie di un linguaggio**. Diciamo che un linguaggio è di un certo quando la grammatica più semplice che lo descrive è di quel tipo. 
+
+
+
 
 Torniamo ora alla domanda iniziale, volevamo capire **che forma hanno i linguaggi caratterizzati da un insieme delle frasi valide decidibile**. Essi sono proprio i linguaggi di tipo 1/2/3, i linguaggi di tipo 0 potrebbero (non è detto) invece essere non riconoscibili. 
 
@@ -195,7 +244,10 @@ Tuttavia, linguaggi di tipo più semplice, sono riconoscibili pagando un costo c
 - tipo 2 -> PDA
 - tipo 3 -> ASF
 
-In particolare i linguaggi di programmazione sono di tipo 2, e alcune sottoparti di quest'ultimi molto comuni (numeri, identificatori, keywords) sono di tipo 3 e quindi riconoscibili con particolare efficienza. Questi sono i due tipi di linguaggio che abbiamo imparato a riconoscere durante il corso.
+In particolare i linguaggi di programmazione sono tutti al massimo di tipo 2 (**evitiamo backtracking del tipo 1**), e alcune sottoparti di quest'ultimi molto comuni (numeri, identificatori, keywords; in genere i token) sono di tipo 3 e quindi riconoscibili con particolare efficienza. Questi sono i due tipi di linguaggio che abbiamo imparato a riconoscere durante il corso.
+
+
+
 
 A questo punto nasce il seguente problema: "dato un linguaggio e trovata una grammatica che lo descrive, mi piacerebbe sapere se la grammatica che ho trovato è quella più "economica" per il mio linguaggio, ovvero quella di tipo più basso". 
 
@@ -217,8 +269,10 @@ Il pumping lemma dà una **condizione NECESSARIA, ma non sufficiente, perché un
     - se pumping lemma: true  -> linguaggio potrebbe essere di tipo 2 (o 3), ma non è detto
 
 **Idea**: In un linguaggio infinito, **OGNI stringa sufficientemente lunga** deve avere una parte che si ripete (regola ricorsiva). Ergo, essa può essere "pompata" un **numero QUALUNQUE** (per ogni i>=0) di volte **ottenendo SEMPRE altre stringhe del linguaggio**!
-- nei linguaggi di tipo due la parte pompabili è "bilaterale" in quanto caratteristica fondamentale di questo tipo di linguaggi è il **self embedding** (un non terminale paninato tra due terminali)
+- nei linguaggi di tipo due la parte pompabile è "bilaterale" in quanto caratteristica fondamentale di questo tipo di linguaggi è il **self embedding** (un non terminale paninato tra due terminali)
 - nei linguaggi di tipo uno la parte pompabili sarà "monolatera" in quanto le ricorsive possono far crescere una stringa o solo a destra o solo a sinistra
+
+Se trovata **anche solo una stringa** sufficientemente lunga, che per **anche solo un numero di pompaggio** produce una stringa non appartenente al linguaggio iniziale: allora il pumping lemme non è rispettato è il linguaggio non è di tipo 2/3. 
 
 **Semi-formalmente**:
 
@@ -230,7 +284,7 @@ Considerando una stringa qualunque "lunga sufficientemente" (|z| >= N, con N pum
     - (tutte queste parti possono essere composte da più caratteri)  
     - **NB**: la parte centrale **|bcd| <= N**
 
-Se pompando *b* e *d* un numero ARBITRARIO *i* volte (ab^icd^ie) la stringa che si ottiene NON appartiene al linguaggio (anche per un solo *i*), allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 2 (e quindi neanche di tipo 3).
+Se pompando *b* e *d* un numero ARBITRARIO *i* volte (ab^icd^ie) la stringa che si ottiene NON appartiene al linguaggio (anche per un solo *i*), allora possiamo sicuramente dire che quest'ultimo sicuramente non è di tipo 2.
 
 Analogamente, una stringa sufficientemente lunga di un linguaggio che supponiamo essere di tipo 3 può essere suddivisa in 3 parti: "abc"; con:
 - *a* ed *c* che rapresentano il prefisso e suffisso della parte centrale pompabile
@@ -243,9 +297,6 @@ Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 - L1 = {a^n b^n c^n } non è di Tipo 2 (quindi è almeno di Tipo 1)
 - L2 = {a^p , p pari } non è di Tipo 3 (quindi è almeno di Tipo 2 ma in realtà neanche quello)
 - L3 = { (^n a )^n } non è di tipo 3 (si sbilanciano le parentesi) ma sembra essere di tipo 2
-
-**NOTA**: nota magari prova anche a scrivere mano a mano un esempio di grammatica di tipo 2/3 in cui mostri le parti che formano il prefisso e suffisso, ed anche la parte pompabili data da una regola ricorsiva 
-
 
 
 
@@ -278,6 +329,7 @@ Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 - Copertura dei linguaggi deterministici con grammatiche LL(K)
     - cenni analisi LR(k)
     - esempio ricorsione sinistra
+        - in teoria sempre trasformabile in ricorsione destra, ma cambia anche la semantica
 
 
 Abbiamo detto che i linguaggi che ci interessano sono quelli di tipo 2 e tipo 3 in quanto sono quelli utilizzati effettivamente nei linguaggi di programmazione data la "economicità" del loro riconoscimento. Ora discutiamo di come avviene il riconoscimento effettivo.
