@@ -144,7 +144,8 @@ In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero qu
     - tipo 2
         - teorema self embedding
         - teorema per epsilon
-        - fa crescere due cosa contemporaneamente
+        - un solo metasimbolo a sinista
+        - fa crescere due cose contemporaneamente
     - tipo 3
         - fa crescere la frase da una parte sola
     - relazione gerarchica delle grammatiche
