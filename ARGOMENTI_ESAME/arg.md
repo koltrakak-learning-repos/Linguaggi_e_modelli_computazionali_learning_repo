@@ -312,7 +312,11 @@ Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 - PDA
     - definizione e confronto con ASF
     - esempio di uso dello stack con esempio su bilanciamento delle parentesi
-    - PDA non deterministici, costo computazionale e relazione con linguaggi context-free
+    - PDA non deterministici
+        - costo computazionale
+        - distinzione tra linguaggi deterministici e non det. 
+        - teoremi su linguaggi di tipo 2 e determinismo
+        - che forme hanno le grammatiche dei linguaggi deterministici?
 - Analisi ricorsiva discendente
     - Definizione (approccio generativo top-down)
     - esempio semplice bilanciamento delle parentesi
@@ -355,7 +359,7 @@ La parte problematica del riconoscimento dei linguaggi di tipo 2 è che **anche 
     - oppure, optare se leggere o non leggere il simbolo di ingresso x a causa della presenza di una mossa spontanea 
         - sono definite entrambe: *sfn(Q0, x, Z)* e *sfn(Qi, epsilon, Z)*
 
-I linguaggi deterministici (riconoscibili mediante un PDA deterministico) invece, sono riconoscibili con costo lineare rispetto alla lunghezza della stringa da riconoscere. **È desiderabile quindi utilizzare sempre un PDA deterministico** per il riconoscimento dei linguaggi di tipo 2
+I PDA deterministici invece, riconoscono con costo lineare rispetto alla lunghezza della stringa. **È desiderabile quindi utilizzare sempre un PDA deterministico** per il riconoscimento dei linguaggi di tipo 2
 
 Purtroppo, non esiste un equivalente del teorema del martello per i PDA, inoltre:
 ```
@@ -367,7 +371,9 @@ Ma è anche dimostrato che
 **esistono anche dei linguaggi context-free che possono essere riconosciuti SOLAMENTE tramite un PDA non-deterministico**.
 ```
 
-Siamo quindi costretti a scegliere se accettare il costo computazionale elevato di un PDA non det., oppure restringere l'insieme dei linguaggi che vogliamo riconoscere a quello dei deterministici. Delle due, noi abbiamo scelto la seconda in quanto i linguaggi non det. abbiamo detto che sono per loro natura "brutti" e di poco interesse pratico.
+Distinguiamo quindi tra linguaggi di tipo 2 deterministici e non deterministici.
+
+Siamo costretti a scegliere se accettare il costo computazionale elevato di un PDA non det., oppure restringere l'insieme dei linguaggi che vogliamo riconoscere a quello dei deterministici. Delle due, noi abbiamo scelto la seconda in quanto i linguaggi non det. abbiamo detto che sono per loro natura "brutti" e di poco interesse pratico.
 
 
 A questo punto è naturale chiedersi:
@@ -526,16 +532,19 @@ Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri a
 
 
 
+
+
+
 ## 4) Modelli iterativi e ricorsivi + TRO
 - **Modello computazionale iterativo**
-    - opera su di un accumulatore (variabile, schermo, buffer driver di rete, file ...) che al termine del ciclo contiene il risultato
-    - assegnamenti distruttivi
+    - opera su di un **accumulatore** (variabile, schermo, buffer driver di rete, file ...) che al termine del ciclo contiene il risultato
+    - **assegnamenti distruttivi**
         - non si ha la storia di come si è arrivati al risultato finale
-    - terminato prematuramente da un risultato parziale
+    - terminato prematuramente, da un risultato parziale
     - **computa in avanti**
 - **Modello computazionale ricorsivo**
-    - non ha un accumulatore
-    - le chiamate ricorsive generano stack frame distinti -> singoli assegnamenti
+    - **non ha un accumulatore**
+    - le chiamate ricorsive generano stack frame distinti -> **singoli assegnamenti**
         - si ha la storia di come si è arrivati al risultato
     - il risultato comincia a venire sintetizzato solamente quando si è arrivati al caso base e le chiamate cominciano a chiudersi e ritornare
         - se le chiamate ricorsive vengono interrotte prematuramente, non si ha alcun risultato parziale
@@ -548,7 +557,7 @@ Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri a
     - tipicamente cicli implementano un modello computazionale iterativo e chiamate ricorsive implementano un modello computazionale ricorsivo. **Ma non sono per forza le uniche opzioni**.
     - Con dei cicli (uno per caricare lo stack e l'altro per scaricarlo) ed uno stack posso implementare un modello ricorsivo
     - Con funzioni Tail ricorsive posso implementare un modello iterativo
-    - Una funzine **tail ricorsiva** è:
+    - Una funzione **tail ricorsiva** è:
         - una funzione in cui la chiamata ricorsiva è **l'ultima istruzione della funzione**
         - uno degli argomenti della funzione è l'accumulatore in cui viene calcolato il risultato parziale k-esimo
             - il risultato parziale è contenuto nell'accumulatore che viene portato in avanti da chiamata a chiamata
@@ -561,7 +570,7 @@ Non parlerò però di questo tipo di analisi dato che voglio, passare ad altri a
     - Fattoriale tail ricorsivo:
         - int fact(int acc=1, int n) { return n==1 ? acc : fact(acc*n, n-1)}
 - **NB**: una funzione tail-ricorsiva, siccome computa in avanti e siccome raggiunto il caso base ha gia in mano il risultato finale, **non ha bisogno di mantenere in memoria i record di attivazione delle chiamate precedenti**.
-- La tail recursion può essere quindi ottimizzata (**TRO**) stabilendo **sovrascrivere il vecchio record di attivazione con il nuovo**. In tal modo, l’occupazione di memoria è identica al caso ciclico!
+- La tail recursion può essere quindi ottimizzata (**TRO**) **sovrascrivere il vecchio record di attivazione con il nuovo**. In tal modo, l’occupazione di memoria è identica al caso ciclico!
 - Non tutti i linguaggi supportano però la TRO (tipicamente quelli imperativi; dichiarativi, funzionali e blended di solito si)...
     - trasformare la ricorsione in iterazione (non sempre comodo/possibile)
     - implementare la TRO con il TRAMPOLINO!
@@ -623,6 +632,18 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
 - **Chiusure (trampolino)**
 - Currying
 - **Lazyness (trampolino)**
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 6) Lazyness
 - La Lazyness è una tecnica di programmazione in cui **si computa solo se strettamente necessario ed il più tardi possibile** 
