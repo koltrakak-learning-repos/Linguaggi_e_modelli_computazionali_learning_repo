@@ -806,7 +806,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
     - stato privato di oggetti (utile con costruttori/factory)
         - si può ottenere una proprietà privata **mappando lo stato su un argomento della funzione "generatrice"**
     - definizione di nuove strutture di controllo
-        -   function until(cond, action){           // cond è una function variabili di chiusura 
+        -   function until(cond){           // cond è una function variabili di chiusura 
                 var fun = function iter(action){    // action è una function
                     if(!cond()) { action(); iter(action); }
                 }
@@ -820,9 +820,10 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
         
         - **NB**: se avessi **supporto alla call by name come in scala** la lambda sparirebbe
         - def until(condition: =>Boolean)(action: =>Unit) : Unit = {
-            action;
-            if (!condition)
-                until(condition)(action)
+            if (!condition) {
+                action;
+                until(condition)(action);
+            }
           }
 
           var i = 0
