@@ -165,6 +165,10 @@ In conclusione, i linguaggi di nostro interesse sono quelli decidibili ovvero qu
     - idea del pumping lemma
     - esempio L = {1^n, 2^n, 3^n} 
 
+
+
+
+
 Abbiamo detto che i linguaggi di nostro interesse (in quanto riconoscibili da un interprete/compilatore) sono quelli decidibili... ok, ma che forma hanno quest'ultimi?
 
 Introduciamo il concetto di grammatica, che ci permette di descrivere le frasi appartenenti ad un linguaggio, e la classificazione di Chomsky che categorizza le grammatiche in varie tipologie.
@@ -339,7 +343,7 @@ Alcuni esempi di linguaggi in cui il pumping lemma chiarisce le idee:
 
 Abbiamo detto che i linguaggi che ci interessano sono quelli di tipo 2 e tipo 3 in quanto sono quelli utilizzati effettivamente nei linguaggi di programmazione data la "economicità" del loro riconoscimento. Ora discutiamo di come avviene il riconoscimento effettivo.
 
-In particolare, vorrei parlare del solo riconoscimento dei linguaggio di tipo due in quanto quelli regolari sono riconoscibili in maniera molto semplice. Basta passare alla forma su ASF (che è minimizzabile e in cui si può eliminare il non determismo) e considerare la tabella delle transizioni di stato ad ogni carattere letto.
+In particolare, vorrei parlare del solo riconoscimento dei linguaggio di tipo due in quanto quelli regolari sono riconoscibili in maniera molto semplice. Basta passare alla forma su ASF (che è minimizzabile e in cui si può eliminare il non determismo) leggendo la grammatica top-down/bottom-up, e considerare la tabella delle transizioni di stato ad ogni carattere letto.
 
 Il riconoscimento dei linguaggi di tipo 2 invece è un po' più complicato (d'altronde richiede un PDA che memorizza le sequenze non limitabili a priori). 
 
@@ -347,10 +351,12 @@ Innanzitutto essi richiedono una macchina riconoscitrice più complicata di un s
 
 Lo stato futuro (e la nuova configurazione dello stack) adesso è  funzione sia del simbolo d’ingresso sia di quello attualmente in cima allo stack (e, chiaramente, dello stato corrente).
 - Adesso si può giocare da due parti, posso avere un gran numero di stati e usare poco lo stack o viceversa. Spesso è più conveniente il secondo metodo con uno stato di accumulo e uno stato di decrescita.
+- Il PDA fa sempre pop dallo stack ad ogni simbolo letto, (può decidere se e quanti push fare)
 
 L'idea che rende il PDA più potente è che si può superare il limite di memoria finita degli RSF appoggiandosi allo stack (che è illimitatamente espandibile)
 - **mostra esempio del bilanciamento delle parentesi**
     - stato di push e stato di pop
+    - tabella con 3 input (A, S, Z) e due output (S, Z*)
 
 La parte problematica del riconoscimento dei linguaggi di tipo 2 è che **anche i PDA possono essere non deterministici**, e questo non determismo porta ad un incremento nella complessità computazionale del riconoscimento (N^3, N^2 se non ambigua... comunque sovra-lineare).
 - Dato uno stato Q0, con simbolo in cima allo stack Z e ingresso x, un PDA non det. può:
@@ -358,6 +364,7 @@ La parte problematica del riconoscimento dei linguaggi di tipo 2 è che **anche 
         - *sfn(Q0, x, Z) = { (Q1,Z1), (Q2,Z2), … (Qk, Zk) }*
     - oppure, optare se leggere o non leggere il simbolo di ingresso x a causa della presenza di una mossa spontanea 
         - sono definite entrambe: *sfn(Q0, x, Z)* e *sfn(Qi, epsilon, Z)*
+            - In tal caso, infatti, l'automa può sia leggere x, sia non farlo (non è importante dove si finisce)
 
 I PDA deterministici invece, riconoscono con costo lineare rispetto alla lunghezza della stringa. **È desiderabile quindi utilizzare sempre un PDA deterministico** per il riconoscimento dei linguaggi di tipo 2
 
@@ -452,7 +459,7 @@ Per tenere conto di queste problematiche, una definizione più generale di gramm
 
 Con con lookahead set di una produzione *Lookahead-set(A->alpha)* definito come l'**unione** degli insiemi:
 - SS(Alpha): l’insieme dei simboli terminali iniziali che si riescono a trovare applicando zero o più produzioni ad alpha.
-    - tengono conto dei metasimboli che nascono l'iniziale di una riscrittura
+    - tengono conto dei metasimboli che nascondono l'iniziale di una riscrittura
 - FOLLOW(A): l'insieme dei simboli terminali che possono seguire A (se _alpha_ annullabile) **in qualsiasi sequenza di derivazione A PARTIRE DALLO SCOPO**
     - tengono conto dei terminali che seguono un simbolo annullabile
 
@@ -666,7 +673,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
                 - un'altro esempio simile che esemplifica questo concetto
                 - in un SO non tutta la memoria che un processo richiede viene utilizzata subito e/o interamente 
                 - allocare le pagine in maniera lazy
-                    - mi permette di ridurre il memory footprint di un processo alle pagine che usa effettivamente
+                    - mi permette di ridurre il memory footprint di un processo alle pagine che usa effettivamente in un dato momento
                     - mi permette di spalmare il costo (potenzialmente elevato) di allocazione di tante pagine nel tempo (e.g. 1GiB ~= 250k pagine)   
     
     2. permette di **generare e gestire insiemi infiniti** senza entrare in loop 
@@ -694,7 +701,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
                 - lo spazio di indirizzamento è unico (non c'è distinzione tra puntatori host e puntatori device)
                 - i trasferimenti di memoria sono automatizzati
                 - non bisogna specificare dove si sta allocando/liberando la memoria
-            - Problema: **come si fa a decidere dove allocare la memoria se il programmatore non lo specifica?**
+            - Problema: **come si fa a decidere dove allocare la memoria se il programmatore non lo specifica?** Importante per le prestazioni
             - Soluzione: **allocazione lazy!**
                 - la memoria viene allocata sul lato del primo dispositivo che la usa
                 - la logica è che il primo dispostivo che la usa è quello che ci fa le computazioni e quindi ha bisogno di avere quei dati localmente per sfruttare la maggiore bandwith della sua RAM piuttosto che quella del bus PCIe della scheda madre.
@@ -702,6 +709,34 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
             - **stessa idea delle grammatiche sostanzialmente LL(1)**
 
 ## 7) Chiusure
+- Definizione
+    - def: variabili libere
+    - def: chiusura
+    - disegno con inglobamento delle variabili di chiusura
+    - sinergia con Funzioni come FCE
+- Conseguenze sul modello computazionale
+    - allocazione nell'heap
+    - complicazione dell'interprete
+    - attenzione a modificare le variabili di chiusura che hanno riferimenti attivi + es con for e array
+- Criteri di risoluzione delle variabili di chiusura
+    - catena lessicale
+    - catena dinamica
+    - es: due funzioni
+- Casi d'uso delle chiusure:
+    - fanno ricordare alle funzioni il contesto in cui sono state definite
+        - stato privato (della funzione generatrice)
+        - canali di comunicazione privati tra due o più chiusure che condividono la stessa variabile di chiusura
+        - creazione di nuove strutture di controllo
+            - es. until js
+            - es. until scala con call by name e brace-syntax
+
+
+
+
+
+
+
+
 - **DEF PRELIMINARE**: una **variabile libera** è una variabile usata dentro ad una funzione ma **non definita nell'ambiente locale di quest'ultima**
 - **DEF**: una chiusura è un oggetto di tipo "Funzione" ottenuto **"chiudendo" una definizione di funzione con variabili libere**, dentro a un contesto più esterno (contenente la definizione della variabili libere).
     - Le variabili libere, in quanto non definite localmente, vanno ricercate negli ambienti più esterni rispetto a quello della definizione della funzione. Una volta trovato un ambiente contenente la definizione della/delle variabili libere, la definizione della funzione di partenza può venire completata (**chiusa**) con un riferimento all'ambiente esterno trovato.
@@ -722,7 +757,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
         - l'interprete/compilatore del linguaggio si complica
             - deve identificare le chiusure e capire cosa allocare sullo stack e cosa sull'heap 
 
-- **NB**: Bisogna fare attenzione alle variabili libere all'interno di una chiusura, esse, essendo risolte per riferimento, hanno visibilità di tutte le modifiche fatte alle variabili di chiusura **anche dopo la creazione della chiusura**
+- **NB**: Bisogna fare attenzione alle variabili libere all'interno di una chiusura, esse, essendo risolte per riferimento, hanno visibilità di tutte le modifiche fatte **anche dopo la creazione della chiusura**
     - **es**:
         // qua sto salvando 10 chiusure che però puntano alla stessa variabile *i* che a fine ciclo vale 10
         // tutte le chiusure stampano 10!
@@ -771,7 +806,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
     - stato privato di oggetti (utile con costruttori/factory)
         - si può ottenere una proprietà privata **mappando lo stato su un argomento della funzione "generatrice"**
     - definizione di nuove strutture di controllo
-        -   function until(cond){                   // cond è una function 
+        -   function until(cond, action){           // cond è una function variabili di chiusura 
                 var fun = function iter(action){    // action è una function
                     if(!cond()) { action(); iter(action); }
                 }
@@ -780,7 +815,9 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
             }
 
             // uso
+            var i=1;    // variabile di chiusura
             until( () => i>9 )( () => {console.log("ciao"); i++}) 
+        
         - **NB**: se avessi **supporto alla call by name come in scala** la lambda sparirebbe
         - def until(condition: =>Boolean)(action: =>Unit) : Unit = {
             action;
@@ -793,4 +830,5 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
             println("hi")
             i = i+1
           }
+
     - canale di comunicazione privato tra due o più chiusure che condividono la stessa variabile di chiusura
