@@ -638,7 +638,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
     - ecc...
 - **Chiusure (trampolino)**
 - Currying
-- **Lazyness (trampolino)**
+- **Approcci lazy (trampolino)**
 
 
 
@@ -662,11 +662,11 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
                 - inoltre mi permette di **salvare chiamate di funzioni normalmente fatali** (argomenti che causerebbero  DivByZero, NPE, ...) 
                 - eventualmente mostra come implementare la call by name in un linguaggio che non la supporta nativamente
         - il costo delle computazioni strettamente necessarie viene **"spalmato" nei momenti distinti in cui servono**
-            - vedi **lazy init** in cui l'inizializzazione/costruzione delle proprietà di un oggetto
+            - vedi **lazy init/load** in cui l'inizializzazione/costruzione delle proprietà di un oggetto
                 - solamente all'effettivo uso della variabile/proprietà quest'ultima verrà inizializzata
                 - se quest'ultime non vengono mai usate (tutte), come prima, si evita del lavoro inutile
                 - ma, anche se vengono usate tutte, il costo viene spalmato nei vari momenti d'uso e non si paga tutto upfront (avendo un'alta latenza)
-                    - esempio di PAW della catena: cliente -> ordini -> ordine  -> ...;
+                    - esempio di PAW della catena: cliente -> carrello -> prodotti  -> ...;
                     - caricare tutto in maniera eager avrebbe un costo elevato, molti join su db
                     - caricare in maniera lazy, mi evita di caricare se non ne ho mai bisogno, e quando carico, recupero solo quello che mi serve, spalmando il costo nel tempo
             - **allocazione di pagine di memoria lazy**
@@ -683,7 +683,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
             - ragionare allo stesso modo sarebbe impossibile con un approccio eager (mi inloopo subito)
 
         - Un'esempio un po' più subdolo di insieme infito è quello di **entità in relazione ciclica**
-            - **es: *utente <-> amici*** 
+            - **es: *utente <-> amici/follow*** 
                 - se Marco è amico di Mirco, e Mirco è amico di Marco, questa relazione ciclica mi porterebbe ad inloopparmi se tentassi di generare tutta la catena di oggetto a partire dall'oggetto Marco con un **fetch eager**.
                 - Un **fetch lazy**, gestisce questa situazione tranquillamente, facendo al DB una richiesta alla volta.
 
@@ -803,6 +803,7 @@ In questo esempio del trampolino ho accennato molti argomenti di cui vorrei parl
 
 - A che cosa servono le chiusure?
     - fanno ricordare alle funzioni il contesto in cui sono state definite
+        - esse mantengono un riferimento privato a questo contesto
     - stato privato di oggetti (utile con costruttori/factory)
         - si può ottenere una proprietà privata **mappando lo stato su un argomento della funzione "generatrice"**
     - definizione di nuove strutture di controllo
