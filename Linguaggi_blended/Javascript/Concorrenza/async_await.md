@@ -60,6 +60,8 @@ Async
     const promise = getPromiseForUserData();
 ```
 
+**NB**: il valore di ritorno di una async function è una promise dato che, trattandosi di una funzione async, essa **ritorna prima che il valore sia pronto** (magari questo valore è un altra promise ancora e così via) 
+
 **NB**: **await can only be used inside an async function or at the top level of a module (file)**. In an async function, returning a Promise, will implicitly be awaited by the async function.
 
 
