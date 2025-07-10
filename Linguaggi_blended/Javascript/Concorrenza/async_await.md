@@ -54,13 +54,13 @@ Async
 ```Javascript
     async function getPromiseForUserData() {
         const user = await fetchDataFromServer();
-        return user;
+        return user; // nota qua sto restituendo una promise === resolve(user)
     }
 
     const promise = getPromiseForUserData();
 ```
 
-**NB**: await can only be used inside an async function or at the top level of a module (file). In an async function, returning a Promise, will implicitly be awaited by the caller.
+**NB**: **await can only be used inside an async function or at the top level of a module (file)**. In an async function, returning a Promise, will implicitly be awaited by the async function.
 
 
 
